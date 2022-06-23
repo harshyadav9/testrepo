@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 
 function App() {
   const [count, setCount] = useState(0);
-  axios.get(`http://localhost:4000`)
+  axios.get(`http://localhost:4000/api`)
     .then(res => {
       setCount(res.data.data);
     })
@@ -13,7 +12,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
         <p>
           Edit <code>src/App.js</code> and save to reload.{count}
         </p>
