@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function App() {
   const [count, setCount] = useState(0);
-  axios.get(`http://localhost:4000/api`)
+  axios.get(`/api`)
     .then(res => {
       setCount(res.data.data);
     })
