@@ -1,4 +1,3 @@
-/*@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');*/
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap');
 
 :root {
@@ -6,8 +5,8 @@
   --primary-light: #e6f2fe;
   --primary-dark: #0e4080;
   /*--my-secondary: #FFE7BF;
-	--my-secondary-light: #fffaf2;
-	--my-secondary-dark: #E6D0AC;*/
+    --my-secondary-light: #fffaf2;
+    --my-secondary-dark: #E6D0AC;*/
   --accent: #186dd7;
   --accent-light: #468adf;
   --accent-dark: #1662c2;
@@ -17,8 +16,6 @@
 body {
   padding-top: 74px;
   background-color: white;
-  /*background-image: url(../images/school_bg.png); background-repeat: no-repeat; background-position: center right; background-size: auto 100%;*/
-  /*font-family: 'Lato', sans-serif;*/
   font-family: 'Quicksand', sans-serif;
 }
 
@@ -34,7 +31,44 @@ footer,
   background-color: var(--my-secondary);
 }
 
-/*.bg-left { background: url('../images/school1_bg.png') no-repeat center left; background-size: auto 100%; }*/
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+section,
+figure,
+aside,
+article,
+figcaption {
+  margin: 0;
+  padding: 0
+}
+
+h1,
+h2 {
+  font-size: 32px;
+}
+
+h3,
+h4 {
+  font-size: 20px;
+}
+
+img {
+  max-width: 100%;
+}
+
+.form-control {
+  border-radius: 0
+}
 
 .mybg-primary {
   background-color: var(--primary);
@@ -70,11 +104,12 @@ footer,
   padding-bottom: 0;
 }
 
-aside .list-group-item {
-  background-color: transparent;
-  border-left: 0 none;
-  border-right: 0 none;
+.btn {
+  padding: 9px 20px;
 }
+
+/*.btn-primary{background-color: #186dd7;border-color: #186dd7;}
+.btn-primary:hover{background-color: #fff;border-color: #186dd7;color: #186dd7;}*/
 
 .form-wrapper {
   margin-bottom: 1.5rem;
@@ -175,3 +210,84 @@ aside .list-group-item {
   margin: 0;
   font-size: 1rem;
 }
+
+/*login page*/
+.login {
+  background: url(../images/school_bg.png), url(../images/school1_bg.png);
+  background-repeat: no-repeat;
+  background-position: -30% 0, 130% 0;
+  background-size: 35%;
+}
+
+.login .loginbox {
+  position: relative;
+  background: url(../images/paper-education-information-university-text.jpg) no-repeat center center;
+  background-size: cover;
+  display: flex;
+  background-position-x: 25%;
+  padding: 3em 40px;
+  height: 100%;
+}
+
+.login .loginbox:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(24 109 215 / 80%);
+}
+
+.login .loginInner {
+  position: relative;
+  color: #fff;
+  width: 100%;
+  margin: auto;
+}
+
+.login .loginInner .newSchool {
+  background: #0e478e;
+  padding: 20px 3em;
+}
+
+.login h3 {
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.login h4 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.login h5 {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.login p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.login .forgetpwd {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.login .forgetpwd:hover {
+  color: var(--accent);
+}
+
+.login .card {
+  height: 100%;
+}
+
+
+/*.back-to-top {font-size: 20px;position: fixed;display: none;width: 40px;height: 40px;line-height:40px;border-radius: 3px;right: 15px;
+bottom: 15px;background: #0e478e;color: #fff;transition: display 0.5s ease-in-out;z-index: 99999;text-align: center;
+border-radius: 50%;box-shadow: 0 0 10px #ddd;}
+.back-to-top:hover{background:#fff;color: #0e478e}*/
