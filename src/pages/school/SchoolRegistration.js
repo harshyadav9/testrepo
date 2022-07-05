@@ -701,7 +701,14 @@ export default function SchoolRegistration() {
                     <div className="form-wrapper">
                       <label>E-Mail:</label>
                       <div className="d-flex">
-                        <input type="text" className="me-3" placeholder="Mobile (Principal/Teacher)" name="psw" required="" />
+                        {/* <input type="text" className="me-3" placeholder="Mobile (Principal/Teacher)" name="psw" required="" /> */}
+                        <input
+                          type="text"
+                          placeholder="E-mail (Principal/Teacher)"
+                          name="psw"
+                          required
+                          onChange={(email) => setemail(email.target.value)}
+                        />
                         <button className="otbutton btn btn-accent" style={{ whiteSpace: 'nowrap' }}>Generate OTP</button>
                       </div>
                     </div>
