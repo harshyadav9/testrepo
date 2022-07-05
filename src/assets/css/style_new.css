@@ -1,0 +1,177 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap');
+
+:root {
+  --primary: #0f478e;
+  --primary-light: #e6f2fe;
+  --primary-dark: #0e4080;
+  /*--my-secondary: #FFE7BF;
+	--my-secondary-light: #fffaf2;
+	--my-secondary-dark: #E6D0AC;*/
+  --accent: #186dd7;
+  --accent-light: #468adf;
+  --accent-dark: #1662c2;
+  --gray: #6e6e6e;
+}
+
+body {
+  padding-top: 74px;
+  background-color: white;
+  /*background-image: url(../images/school_bg.png); background-repeat: no-repeat; background-position: center right; background-size: auto 100%;*/
+  /*font-family: 'Lato', sans-serif;*/
+  font-family: 'Quicksand', sans-serif;
+}
+
+header,
+.header {
+  max-height: 75px;
+  background-color: var(--my-accent);
+  color: white;
+}
+
+footer,
+.footer {
+  background-color: var(--my-secondary);
+}
+
+/*.bg-left { background: url('../images/school1_bg.png') no-repeat center left; background-size: auto 100%; }*/
+
+.mybg-primary {
+  background-color: var(--primary);
+}
+
+.mybg-primary-light {
+  background-color: var(--primary-light);
+}
+
+.mybg-secondary {
+  background-color: var(--secondary);
+}
+
+.mybg-secondary-light {
+  background-color: var(--secondary-light);
+}
+
+.mybg-accent {
+  background-color: var(--accent);
+}
+
+.mybg-accent-light {
+  background-color: var(--accent-light);
+}
+
+/* overrides */
+.navbar-dark .navbar-text {
+  color: white;
+}
+
+.navbar-brand {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+aside .list-group-item {
+  background-color: transparent;
+  border-left: 0 none;
+  border-right: 0 none;
+}
+
+.form-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+.form-wrapper label {
+  font-size: 1rem;
+  display: block;
+  color: var(--gray);
+}
+
+.form-wrapper input,
+.form-wrapper select,
+.form-wrapper textarea {
+  font-size: 1rem;
+  height: 40px;
+  width: 100%;
+  background-color: transparent;
+  border: 0 none;
+  border-bottom: 1px solid var(--gray);
+  padding: 0.5rem 0;
+}
+
+.form-wrapper input:focus {
+  outline: none;
+  border-bottom: 2px solid var(--accent);
+  color: black;
+}
+
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  color: white;
+}
+
+.btn-accent {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.btn-accent:hover,
+.btn-accent:focus {
+  background-color: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: white;
+}
+
+.mytext-primary {
+  color: var(--primary);
+}
+
+.rounded-16 {
+  border-radius: 16px;
+}
+
+.section-title {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.section-title::before {
+  content: '';
+  width: 8px;
+  height: 100%;
+  background-color: var(--accent);
+  position: absolute;
+  left: -8px;
+  border-radius: 2px;
+}
+
+.section-title h6 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.section-title p {
+  margin: 0;
+  font-size: 1rem;
+}

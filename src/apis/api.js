@@ -1,0 +1,24 @@
+// export const API_HOST_URL = window.location.hostname === 'localhost' ? "http://localhost:3020" : 'https://swarnratnaindia.com/dev-apiman';
+export const API_HOST_URL = process.env.REACT_APP_API_URL;
+export const API_MIDD = "/api";
+export const API_MIDD_2 = "/users";
+export const LOGIN_API = "/auth/user/login";
+export const REGISTER_API = "/new-school-user";
+export const EDIT_SCHOOL_API = "/edit-school";
+
+
+export const API_ADMIN_URL = API_HOST_URL + API_MIDD
+export const API_ADMIN_URL_2 = API_HOST_URL + API_MIDD_2
+export const API_BASE_URL = 'http://localhost:4000/'
+export const API_END_POINTS = {
+	getCountry: 'api/country',
+	getIndianState: 'api/indian-state',
+	getInternationalCities: 'api/international-cities?countrycode=',
+	getIndainSchools: 'api/search-indian-school',
+	getInternationalSchools: 'api/search-international-school',
+	getSchoolDetail: 'api/school-detail',
+	saveNewSchool: 'api/new-user',
+	login: "api/login",
+	updateShoolData: "api/update-info",
+	uploadStudantdata: 'api/upload?studant'
+}
