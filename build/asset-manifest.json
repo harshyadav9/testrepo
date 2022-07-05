@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.464fcbee.css",
-    "main.js": "/static/js/main.80cd0a8a.js",
+    "main.js": "/static/js/main.fb57edf9.js",
     "static/js/787.5aa6d655.chunk.js": "/static/js/787.5aa6d655.chunk.js",
     "static/media/terilogo.png": "/static/media/terilogo.c58b254dbf04f3db3274.png",
     "index.html": "/index.html",
     "main.464fcbee.css.map": "/static/css/main.464fcbee.css.map",
-    "main.80cd0a8a.js.map": "/static/js/main.80cd0a8a.js.map",
+    "main.fb57edf9.js.map": "/static/js/main.fb57edf9.js.map",
     "787.5aa6d655.chunk.js.map": "/static/js/787.5aa6d655.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.464fcbee.css",
-    "static/js/main.80cd0a8a.js"
+    "static/js/main.fb57edf9.js"
   ]
 }
