@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import studentimg from "../../assets/icons/login.png";
 import schoolimg from "../../assets/icons/school.png";
 import youthimg from "../../assets/icons/youth.png";
-
 export default function Home() {
   return (
     <div className="container-home">

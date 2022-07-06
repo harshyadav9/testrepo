@@ -3,7 +3,7 @@ import Header from "../main/Header";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
 import { useNavigate } from "react-router";
-// import "../../assets/css/style_new.css";
+import "../../assets/css/style_new.css";
 import axios from "axios";
 import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
 
