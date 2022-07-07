@@ -20,5 +20,6 @@ export const API_END_POINTS = {
 	saveNewSchool: 'api/new-user',
 	login: "api/login",
 	updateShoolData: "api/update-info",
-	uploadStudantdata: 'api/upload?studant'
+	uploadStudantdata: 'api/upload',
+	getStudantData: 'api/get-studant'
 }

@@ -1,9 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
+import "../../assets/css/style_new.css";
 import { Colors } from "../../assets/css/color";
+import jwt_decode from "jwt-decode";
 
 export default function SchoolPayment() {
+  let paymentData = {};
+  let tMockStu = 0;
+  let mockFee = 0;
+  let totalThemeExamPay = 0;
+  let currency = '';
+  try {
+    const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
+    let token = userToken;
+    let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
+    currency = decodedSchoolData.country === 'India' ? 'INR' : "$"
+
+  } catch (e) {
+    console.log('e', e)
+  }
+  try {
+    paymentData = JSON.parse(localStorage.getItem('payment') ?? '[]');
+    mockFee = paymentData[0]?.mockfee;
+    tMockStu = paymentData.reduce((acc, t) => t.optMock + acc, 0);
+    totalThemeExamPay = paymentData.reduce((acc, el) => el.themefee * el.totalCount + acc, 0)
+
+    console.log("total mocak", +tMockStu)
+  } catch (e) {
+
+  }
   return (
     <div className="container-home">
       <div className="card">
@@ -72,11 +98,22 @@ export default function SchoolPayment() {
 
         <div class="paymeny-service">
           <div>
-            <h6>Exam Type = Rs. 1000</h6>
-            <h6>Level of Exam = Rs. 1500</h6>
-            <h6>Mock Test = Rs. 1200</h6>
+            {
+              paymentData.map(theme => (<>
+                <h6>Total Candidate who opted {theme?.theme} : {theme?.totalCount}</h6>
+                <h6>Fee per candidate: {currency}{theme?.themefee}</h6>
+                <h6>Total amount: {currency}{theme?.themefee * theme?.totalCount}</h6>
+
+              </>))
+            }
+            <div>
+              <h6> Total mock opt studants are:{tMockStu}</h6>
+              <h6> Mock fee per studants :{currency}{mockFee}</h6>
+              <h6> Total mock fee = {currency}{tMockStu * mockFee}</h6>
+            </div>
+
           </div>
-          <h4>Rs.3700</h4>
+          <h4>Gross Total={currency}{totalThemeExamPay + (tMockStu * mockFee)}</h4>
           <div class="btnmain">
             <Link to="/school-slot">
               <button className="main-btn" type="submit">

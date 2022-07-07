@@ -6,6 +6,9 @@ import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
 import { ExcelDateToJSDate, notify, checkRowDuplicacy } from '../../Utills'
 import { useEffect, useState } from "react";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router";
+var md5 = require('md5');
 
 const MINIMUMROW = 4;
 const XLSX = require("xlsx");
@@ -36,20 +39,83 @@ function to_json(workbook) {
 
 export default function SchoolUploadData() {
   const [file, setFile] = useState(null);
-  const [studantData, setStudanntData] = useState([])
-  const UPLOAD_ENDPOINT = API_END_POINTS.uploadStudantdata
+  const [studantData, setStudanntData] = useState([]);
+  const [duplicateRows, setDuplicateRows] = useState([]);
+  const [headers, setHeaders] = useState([])
+  const UPLOAD_ENDPOINT = API_END_POINTS.uploadStudantdata;
+  const navigate = useNavigate();
+  const [stName, setStName] = useState('');
+  const [stDOB, setDOB] = useState('');
+  const [stClass, setClass] = useState('');
+  const [stSection, setSection] = useState('');
+  const [examTheme, setexamTheme] = useState('');
+  const [demoExam, setDemoExam] = useState('');
+
+  const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
+  let token = userToken;
+  let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
+
 
   const submitStudantData = async e => {
     e.preventDefault();
+    let serverData = [...studantData];
     if (studantData.length <= MINIMUMROW) {
-      notify(`Studant record minmum of ${MINIMUMROW} rows`, false)
+      notify(`Studant record minmum of ${MINIMUMROW} rows. Duplicate data in files`, false)
       return
     }
-    //if await is removed, console log will be called before the uploadFile() is executed completely.
-    //since the await is added, this will pause here then console log will be called
-    let res = await uploadFile(file);
-    if (res.data) {
+    let messge = checkRowDuplicacy(serverData)
+    if (messge.length > 0) {
+      notify(`${messge.join()}`, false);
+      return
+    }
+
+
+    let studantDataExist = await axios.post(`${API_BASE_URL}${API_END_POINTS.getStudantData}`, {
+      "SchoolID": decodedSchoolData?.schoolsCode
+    })
+
+    if (studantDataExist?.data && studantDataExist?.data?.status && studantDataExist.data.data.length > 0) {
+      let serverStudant = studantDataExist.data.data;
+      let existingStud = serverStudant.map(st => [st.Name, st.DOB, st.Class, st.Section, st.ExamTheme, st.DemoExam]);
+      let newCheckUP = [...studantData, ...existingStud];
+      let hashes = {};
+      let message = []
+      newCheckUP.forEach(function (row, idx) {
+
+        var hash = md5(row.slice(0, 2).join('~~~'));
+
+        if (hash in hashes) {
+          hashes[hash].push(idx);
+        } else {
+          hashes[hash] = [idx];
+        }
+      })
+
+      Object.keys(hashes).forEach(function (key, idx) {
+        var msg = '';
+        if (hashes[key].length > 1) {
+          msg = 'Rows ' + hashes[key].join(' and ') + ' are duplicate\n';
+          message.push(msg);
+          // console.log(msg);
+        }
+      });
+      if (message.length > 0) {
+        notify(`${"These studants are already in DB \'n" + message.join()}`, false);
+        return
+      }
+
+      console.log("studantData", serverStudant, studantData, existingStud)
+
+    }
+    // return ;
+
+
+
+    let res = await uploadFile(JSON.stringify(serverData));
+    if (res?.data && res?.data?.status) {
+      localStorage.setItem('payment', JSON.stringify(res.data.data))
       setStudanntData([])
+      navigate("/school-payment");
       notify(`studant data uploaded.`, true)
     } else {
       notify(`please try again!.`, false)
@@ -57,15 +123,8 @@ export default function SchoolUploadData() {
   };
 
   const uploadFile = async file => {
-    const formData = new FormData();
-    formData.append("studant", file);
-
-    // return await axios.post(`${API_BASE_URL}${UPLOAD_ENDPOINT}`, formData, {
-    return await axios.post(`${UPLOAD_ENDPOINT}`, formData, {
-      headers: {
-        "content-type": "multipart/form-data"
-      }
-    });
+    let SCHOOLID = decodedSchoolData?.schoolsCode
+    return await axios.post(`${API_BASE_URL}${UPLOAD_ENDPOINT}/${SCHOOLID}`, { fileData: file });
   };
   // Name  DOB  Class   Section ExamTheme MockTest
 
@@ -79,19 +138,18 @@ export default function SchoolUploadData() {
         var contents = processExcel(e.target.result);
         try {
           let d = JSON.parse(contents)?.Sheet1;
-          d.shift();
-          correctData = d.map((exData, i) => [...exData.slice(0, 5), dayjs(ExcelDateToJSDate(exData[5])).format('YYYY-MM-DD'), ...exData.slice(6, 15)]);
-
+          setHeaders(d.shift());
+          correctData = d.map((exData, i) => [...exData.slice(0, 1), dayjs(ExcelDateToJSDate(exData[1])).format('YYYY-MM-DD'), ...exData.slice(2, 15)]);
           if (correctData.length <= MINIMUMROW) {
             notify(`this file must contain minimum ${MINIMUMROW} rows.`, false)
             return
           }
           let duplicateRows = checkRowDuplicacy(correctData);
+          // console.log("=tetst",duplicateRows)
+          // setDuplicateRows(duplicateRows)
           if (duplicateRows.length > 0) {
             notify(`${duplicateRows.join()}`, false)
-
           }
-          console.log('duplicateRows', duplicateRows);
           setStudanntData(correctData)
 
         } catch (e) {
@@ -104,7 +162,48 @@ export default function SchoolUploadData() {
     }
     setFile(e.target.files[0]);
   };
-  console.log("studantData", studantData)
+  const deleteRow = (data, i) => {
+    // console.log("0900899x",studantData.filter((d,index) => i !== index ))
+    setStudanntData(studantData.filter((d, index) => i !== index))
+  }
+  const editRow = (data, i) => {
+    let inDom = document.querySelectorAll(`._tbls${i}`);
+    inDom.forEach(function (node) {
+      node.removeAttribute('disabled')
+      // Do whatever you want with the node object.
+    });
+  }
+  const handleOnChangeCell = (e, cell, i) => {
+
+    let cellValue = e.target.value
+    let perData = [...studantData];
+    let updatedate = perData.map((sd, ii) => {
+      if (ii == i) {
+        sd[+cell] = cellValue
+        return sd;
+      } else { return sd }
+    })
+
+    setStudanntData(updatedate)
+  }
+
+  const addNewRow = (e) => {
+    e.preventDefault();
+    if (!(stName && stDOB && stClass && stSection && examTheme && demoExam)) {
+      notify(`Please fill all fields!.`, false)
+      return
+    }
+    let cpyStudantData = [...studantData, [stName, stDOB, stClass, stSection, examTheme, demoExam]];
+
+    setStName('');
+    setDOB('');
+    setClass('');
+    setexamTheme('');
+    setSection('');
+    setDemoExam('');
+    setStudanntData(cpyStudantData)
+
+  }
   return (<div className="container-home">
     <div className="card">
       <div className="card-body">
@@ -212,10 +311,123 @@ export default function SchoolUploadData() {
             </div>
             <div class="">
               <p class="upload-text">Add Student Data from Add Button</p>
+              <table className="add-school-data">
+                <tr>
+                  <th>Name</th>
+                  <th>DOB</th>
+                  <th>Class</th>
+                  <th>Section</th>
+                  <th>ExamTheme</th>
+                  <th>DemoExam</th>
 
+                </tr>
+
+                <tr>
+                  <td contenteditable="true">
+                    <input type="text" name="add1" style={{
+                      "width": "90%",
+                      "padding": "6px 15px",
+                      "margin": "0px",
+                      display: "inline-block",
+                      border: "1px solid #ccc",
+                      "box-sizing": "border-box",
+                      "border-radius": "14px"
+                    }}
+                      value={stName}
+
+                      onChange={e => setStName(e.target.value)}
+
+                    /></td>
+                  <td contenteditable="true"><input type="text" name="add1"
+
+                    style={{
+                      "width": "90%",
+                      "padding": "6px 15px",
+                      "margin": "0px",
+                      display: "inline-block",
+                      border: "1px solid #ccc",
+                      "box-sizing": "border-box",
+                      "border-radius": "14px"
+                    }}
+
+                    onChange={e => setDOB(e.target.value)}
+                    value={stDOB}
+
+                  /></td>
+                  <td contenteditable="true"><input type="text" name="add1"
+                    style={{
+                      "width": "90%",
+                      "padding": "6px 15px",
+                      "margin": "0px",
+                      display: "inline-block",
+                      border: "1px solid #ccc",
+                      "box-sizing": "border-box",
+                      "border-radius": "14px"
+                    }}
+
+                    onChange={e => setClass(e.target.value)}
+                    value={stClass}
+
+
+                  /></td>
+                  <td contenteditable="true"><input type="text" name="add1"
+                    style={{
+                      "width": "90%",
+                      "padding": "6px 15px",
+                      "margin": "0px",
+                      display: "inline-block",
+                      border: "1px solid #ccc",
+                      "box-sizing": "border-box",
+                      "border-radius": "14px"
+                    }}
+
+                    onChange={e => setSection(e.target.value)}
+                    value={stSection}
+
+
+                  /></td>
+                  <td contenteditable="true"><input type="text" name="add1"
+
+                    style={{
+                      "width": "90%",
+                      "padding": "6px 15px",
+                      "margin": "0px",
+                      display: "inline-block",
+                      border: "1px solid #ccc",
+                      "box-sizing": "border-box",
+                      "border-radius": "14px"
+                    }}
+
+                    onChange={e => setexamTheme(e.target.value)}
+
+                    value={examTheme}
+
+                  /></td>
+                  <td contenteditable="true"><input type="text" name="add1"
+
+                    style={{
+                      "width": "90%",
+                      "padding": "6px 15px",
+                      "margin": "0px",
+                      display: "inline-block",
+                      border: "1px solid #ccc",
+                      "box-sizing": "border-box",
+                      "border-radius": "14px"
+                    }}
+
+                    onChange={e => setDemoExam(e.target.value)}
+
+
+                    value={demoExam}
+
+                  /></td>
+                </tr>
+
+
+              </table>
               <div class="d-flex justify-content-center btnmain">
                 <a>
-                  <button className="main-btn" type="submit">
+                  <button className="main-btn" onClick={addNewRow}>
                     Add data
                   </button>
                 </a>
@@ -228,26 +440,115 @@ export default function SchoolUploadData() {
                     <th>Class</th>
                     <th>Section</th>
                     <th>ExamTheme</th>
-                    <th>MockTest</th>
+                    <th>DemoExam</th>
                     <th>Action</th>
 
                   </tr>
                   {
-                    studantData.map(tbData => {
+                    studantData.map((tbData, i) => {
                       return (
                         <tr>
-                          <td>{tbData[4] ?? ''} </td>
-                          <td>{tbData[5] ?? ''}</td>
-                          <td>{tbData[7] ?? ''}</td>
-                          <td>{tbData[8] ?? ''}</td>
-                          <td>{tbData[10] ?? ''}</td>
-                          <td>{tbData[11] ?? ''}</td>
+                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[0] ?? ''} style={{
+                            "width": "90%",
+                            "padding": "6px 15px",
+                            "margin": "0px",
+                            display: "inline-block",
+                            border: "1px solid #ccc",
+                            "box-sizing": "border-box",
+                            "border-radius": "14px"
+                          }}
+                            className={`_tbls${i}`}
+                            disabled
+
+                            onChange={e => handleOnChangeCell(e, '0', i)}
+                          /></td>
+                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[1] ?? ''}
+
+                            style={{
+                              "width": "90%",
+                              "padding": "6px 15px",
+                              "margin": "0px",
+                              display: "inline-block",
+                              border: "1px solid #ccc",
+                              "box-sizing": "border-box",
+                              "border-radius": "14px"
+                            }}
+                            className={`_tbls${i}`}
+                            disabled
+                            onChange={e => handleOnChangeCell(e, '1', i)}
+
+                          /></td>
+                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[2] ?? ''}
+                            style={{
+                              "width": "90%",
+                              "padding": "6px 15px",
+                              "margin": "0px",
+                              display: "inline-block",
+                              border: "1px solid #ccc",
+                              "box-sizing": "border-box",
+                              "border-radius": "14px"
+                            }}
+                            className={`_tbls${i}`}
+                            disabled
+                            onChange={e => handleOnChangeCell(e, '2', i)}
+
+                          /></td>
+                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[3] ?? ''}
+                            style={{
+                              "width": "90%",
+                              "padding": "6px 15px",
+                              "margin": "0px",
+                              display: "inline-block",
+                              border: "1px solid #ccc",
+                              "box-sizing": "border-box",
+                              "border-radius": "14px"
+                            }}
+                            className={`_tbls${i}`}
+                            disabled
+                            onChange={e => handleOnChangeCell(e, '3', i)}
+
+                          /></td>
+                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[4] ?? ''}
+
+                            style={{
+                              "width": "90%",
+                              "padding": "6px 15px",
+                              "margin": "0px",
+                              display: "inline-block",
+                              border: "1px solid #ccc",
+                              "box-sizing": "border-box",
+                              "border-radius": "14px"
+                            }}
+                            className={`_tbls${i}`}
+                            disabled
+                            onChange={e => handleOnChangeCell(e, '4', i)}
+
+                          /></td>
+                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[5] ?? ''}
+
+                            style={{
+                              "width": "90%",
+                              "padding": "6px 15px",
+                              "margin": "0px",
+                              display: "inline-block",
+                              border: "1px solid #ccc",
+                              "box-sizing": "border-box",
+                              "border-radius": "14px"
+                            }}
+                            className={`_tbls${i}`}
+                            disabled
+                            onChange={e => handleOnChangeCell(e, '4', i)}
+
+                          /></td>
+
+
+
 
                           <td style={{ display: "flew", flexDirection: "row" }}>
-                            <button className="icon-btn">
+                            <button className="icon-btn" onClick={(e) => editRow(tbData, i)}>
                               <i className="fa fa-pencil-square"></i>
                             </button>
-                            <button className="icon-btn">
+                            <button className="icon-btn" onClick={(e) => deleteRow(tbData, i)}>
                               <i className="fa fa-trash"></i>
                             </button>
                           </td>
@@ -263,6 +564,8 @@ export default function SchoolUploadData() {
         </div>
       </div>
     </div>
+
   </div>
+
   );
 }
