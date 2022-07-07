@@ -183,22 +183,22 @@ export default function SchoolLogin() {
                           userError?.user && userError.user.length > 5 ? <span className="error">{userError.user}</span> : null
                         }
                       </div>
-                      <div class="form-wrapper">
+                      <div className="form-wrapper">
                         {/* <input type="password" class="" placeholder="Password" /> */}
                         <input type="password" placeholder="password" name="psw" required onChange={setPassword} />
                         <br />
                         {
                           passError?.pass && passError.pass.length > 5 ? <span className="error">{passError.pass}</span> : null
                         }
-                        <div class="text-end mt-3">
+                        <div className="text-end mt-3">
                           {/* <a href="forget-password.html" class="forgetpwd">Forgot Password</a> */}
                           <Link to="/school-forget" className="forget">
                             Forgot password?
                           </Link>
                         </div>
                       </div>
-                      <div class="text-sm-center mt-4 mt-md-5">
-                        <button class="btn btn-primary btnReg w-100" onClick={handleSubmit}>Login</button>
+                      <div className="text-sm-center mt-4 mt-md-5">
+                        <button className="btn btn-primary btnReg w-100" onClick={handleSubmit}>Login</button>
                       </div>
                     </div>
                   </div>

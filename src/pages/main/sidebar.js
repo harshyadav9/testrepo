@@ -17,7 +17,7 @@ function Sidebar() {
                 <ul className="list-unstyled">
                     {/* <li className="active"><a href="#"><img src="images/download-icon.png" height="18" alt="" /> School Details</a></li> */}
                     <li className="active">
-                        <Link to="">
+                        <Link to="/school-edit-details">
                             <img src="images/download-icon.png" height="18" alt="" />
                             School Details
                         </Link>

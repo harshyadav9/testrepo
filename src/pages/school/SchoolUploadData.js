@@ -800,7 +800,7 @@ export default function SchoolUploadData() {
                   </table>
                 </div>
                 <div className="row my-3">
-                  <button className="btn btn-primary mx-auto" style={{ width: '15rem' }}>Save Student Data</button>
+                  <button className="btn btn-primary mx-auto" style={{ width: '15rem' }} onClick={submitStudantData}>Save Student Data</button>
                 </div>
               </div>
             </div>
