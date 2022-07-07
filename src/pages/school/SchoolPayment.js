@@ -40,7 +40,7 @@ export default function SchoolPayment() {
             </span>
             SCHOOL DESK
           </h6>
-          <ul class="sidebar">
+          {/* <ul class="sidebar">
             <Link to="">
               <p class="side-text">SCHOOL DETAILS</p>
             </Link>
@@ -87,7 +87,7 @@ export default function SchoolPayment() {
               <p class="side-text">LOGOUT</p>
             </Link>
             <br />
-          </ul>
+          </ul> */}
         </div>
       </div>
 
