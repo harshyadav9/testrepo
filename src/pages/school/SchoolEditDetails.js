@@ -15,7 +15,7 @@ export default function SchoolEditDetails() {
   const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
   let token = userToken;
   let decoded = token !== "" ? jwt_decode(token) : {};
-  console.log('userToken', decoded)
+  console.log('userToken', decoded);
   const navigate = useNavigate();
   const [postalAddress, setpostalAddress] = useState("");
   const [district, setdistrict] = useState("");
@@ -272,7 +272,8 @@ export default function SchoolEditDetails() {
                         type="text"
                         style={{ backgroundColor: "#dfdbdb" }}
                         disabled
-                        placeholder={decoded?.schoolname}
+                        // placeholder={decoded?.schoolname}
+                        value={decoded?.schoolname}
                         name="uname"
                         required
                       />

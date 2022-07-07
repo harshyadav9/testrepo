@@ -586,6 +586,126 @@ export default function SchoolUploadData() {
                 <p>Upload Student Data from Excel</p>
               </div>
 
+              <div className="section-title mb-4 text-muted">
+                <div className="d-flex">
+                  <div className="me-auto">
+                    <h6 className="font-bold ">Add Student Data</h6>
+                    <p>Add Student Data from Add button</p>
+                  </div>
+                  <button className="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#newStudentRow"><svg className="icon align-middle me-1">
+                    <use xlinkHref="#add-plus"></use>
+                  </svg> <span className="align-middle">Add Data</span></button>
+                </div>
+              </div>
+
+
+              <div id="newStudentRow" className="collapse">
+                <div className="table-responsive ">
+                  <table className="table table-bordered table-accent">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>DOB</th>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Exam Theme</th>
+                        <th>Mock Test</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div className="form-wrapper">
+                            {/* <input type="text" placeholder="Enter name" style={{ width: '220px' }} /> */}
+                            <input type="text" name="add1" style={{
+                              "width": "90%",
+                              "padding": "6px 15px",
+                              "margin": "0px",
+                              display: "inline-block",
+                              border: "1px solid #ccc",
+                              "box-sizing": "border-box",
+                              "border-radius": "14px"
+                            }}
+                              value={stName}
+
+                              onChange={e => setStName(e.target.value)}
+
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className="form-wrapper">
+                            {/* <input type="text" placeholder="02-08-2001" style={{ width: '100px' }} /> */}
+                            <input type="text" name="add1"
+
+                              style={{ width: '100px' }}
+
+                              onChange={e => setDOB(e.target.value)}
+                              value={stDOB}
+
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className="form-wrapper">
+                            {/* <input type="text" placeholder="V" style={{ width: '60px' }} /> */}
+                            <input type="text" name="add1"
+                              style={{ width: '60px' }}
+
+                              onChange={e => setClass(e.target.value)}
+                              value={stClass}
+
+
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className="form-wrapper">
+                            {/* <input type="text" placeholder="A" style={{ width: '60px' }} /> */}
+                            <input type="text" name="add1"
+                              style={{ width: '60px' }}
+
+                              onChange={e => setSection(e.target.value)}
+                              value={stSection}
+
+
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className="form-wrapper">
+                            {/* <input type="text" style={{ width: '150px' }} /> */}
+                            <input type="text" name="add1"
+
+                              style={{ width: '150px' }}
+                              onChange={e => setexamTheme(e.target.value)}
+
+                              value={examTheme}
+
+                            />
+                          </div>
+                        </td>
+                        <td>
+                          <div className="form-wrapper">
+                            {/* <input type="text" style={{ width: '150px' }} /> */}
+                            <input type="text" name="add1"
+
+                              style={{ width: '150px' }}
+
+                              onChange={e => setDemoExam(e.target.value)}
+
+
+                              value={demoExam}
+
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
               <div className="shadow bg-white mb-5 rounded-16">
                 <div className="p-4">
                   <div className="row">
@@ -626,7 +746,7 @@ export default function SchoolUploadData() {
                   </div>
                   <button className="btn btn-outline-secondary"><svg className="icon align-middle me-1">
                     <use xlinkHref="#add-plus"></use>
-                  </svg> <span className="align-middle">Add Data</span></button>
+                  </svg> <span className="align-middle" onClick={addNewRow}>Add Data</span></button>
                 </div>
               </div>
 
@@ -746,12 +866,24 @@ export default function SchoolUploadData() {
 
 
                               <td style={{ display: "flew", flexDirection: "row" }}>
-                                <button className="icon-btn" onClick={(e) => editRow(tbData, i)}>
+                                {/* <button className="icon-btn" onClick={(e) => editRow(tbData, i)}>
                                   <i className="fa fa-pencil-square"></i>
                                 </button>
                                 <button className="icon-btn" onClick={(e) => deleteRow(tbData, i)}>
                                   <i className="fa fa-trash"></i>
-                                </button>
+                                </button> */}
+
+                                <div className="btn-group btn-group-sm" role="group">
+                                  <button type="button" className="btn btn-link" onClick={(e) => editRow(tbData, i)}><svg className="icon">
+                                    <use xlinkHref="#edit"></use>
+                                  </svg></button>
+                                  <div className="vr"></div>
+                                  <button type="button" className="btn btn-link" onClick={(e) => deleteRow(tbData, i)}><svg className="icon">
+                                    <use xlinkHref="#delete"></use>
+                                  </svg></button>
+                                </div>
+
+
                               </td>
                             </tr>
                           )

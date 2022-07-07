@@ -530,6 +530,21 @@ border-radius: 50%;box-shadow: 0 0 10px #ddd;}
   border-color: var(--accent);
 }
 
+.table .form-wrapper {
+  margin: 0;
+}
+
+.check-slot {
+  text-decoration: none;
+  color: var(--primary);
+}
+
+.check-slot svg {
+  fill: var(--primary);
+  height: 16px;
+  width: 16px;
+}
+
 @media(max-width:991.8px) {
   .menuOpen {
     overflow-x: hidden;

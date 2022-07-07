@@ -52,8 +52,8 @@ export default function SchoolLogin() {
         "password": pass
       }
       axios
-        // .post(`${API_BASE_URL}${API_END_POINTS?.login}`, serverData)
-        .post(`${API_END_POINTS?.login}`, serverData)
+        .post(`${API_BASE_URL}${API_END_POINTS?.login}`, serverData)
+        //.post(`${API_END_POINTS?.login}`, serverData)
         .then((res) => {
           if (res.data) {
             const { data: {
@@ -69,7 +69,8 @@ export default function SchoolLogin() {
             navigate("/school-edit-details");
             alert("login successfull!");
             // history.push()
-            localStorage.setItem("token", res?.data?.token)
+            localStorage.removeItem("token");
+            localStorage.setItem("token", res?.data?.token);
 
           } else {
             alert("something is rong");
