@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { Link } from "react-router-dom";
 
 function Sidebar() {
     return (
@@ -14,7 +15,19 @@ function Sidebar() {
                 </div>
                 <div class="navtitle">School View</div>
                 <ul class="list-unstyled">
-                    <li class="active"><a href="#"><img src="images/download-icon.png" height="18" alt="" /> School Details</a></li>
+                    {/* <li class="active"><a href="#"><img src="images/download-icon.png" height="18" alt="" /> School Details</a></li> */}
+                    <li class="active">
+                        <Link to="">
+                            <img src="images/download-icon.png" height="18" alt="" />
+                            School Details
+                        </Link>
+                        <Link to="/school-payment">
+                            <img src="images/download-icon.png" height="18" alt="" />
+                            Payment
+                        </Link>
+                    </li>
+
+
                     {/* <li><a href="#"><img src="images/download-icon.png" height="18" alt="" /> Slot for Demo</a></li>
             <li><a href="#"><img src="images/download-icon.png" height="18" alt="" /> Account Details</a></li>
             <li><a href="#"><img src="images/download-icon.png" height="18" alt="" /> Page Navigation</a></li> */}
