@@ -1,13 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
+import uploadfiles from "../../assets/icons/upload_files.svg";
 import { Colors } from "../../assets/css/color";
+import "../../assets/icons/common.svg";
 import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
 import { ExcelDateToJSDate, notify, checkRowDuplicacy } from '../../Utills'
 import { useEffect, useState } from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router";
+import Sidebar from "../main/sidebar";
 var md5 = require('md5');
 
 const MINIMUMROW = 4;
@@ -161,6 +164,8 @@ export default function SchoolUploadData() {
       notify('Failed to load file!', false);
     }
     setFile(e.target.files[0]);
+
+    console.log("studantData", studantData);
   };
   const deleteRow = (data, i) => {
     // console.log("0900899x",studantData.filter((d,index) => i !== index ))
@@ -204,368 +209,606 @@ export default function SchoolUploadData() {
     setStudanntData(cpyStudantData)
 
   }
-  return (<div className="container-home">
-    <div className="card">
-      <div className="card-body">
-        <h6 class="card-title">
-          <span>
-            <img class="card-img-top" src={schoolimg} alt="Card image" />
-          </span>
-          SCHOOL DESK
-        </h6>
-        <ul class="sidebar">
-          <Link to="">
-            <p
-              class="side-text"
-            >
-              SCHOOL DETAILS
-            </p>
-          </Link>
-          <br />
-          <Link to="">
-            <p class="side-text"
-              style={{ backgroundColor: Colors.MAINCOLOR, color: "#fff" }}
-            >UPLOAD STUDENTS DATA</p>
-          </Link>
-          <br />
-          <Link to="">
-            <p class="side-text">MAKE PAYMENT</p>
-          </Link>
-          <br />
-          <Link to="">
-            <p class="side-text">SELECT SLOT DETAILS</p>
-          </Link>
-          <br />
-          <Link to="">
-            <p class="side-text">APPLICATION STATUS</p>
-          </Link>
-          <br />
-          <Link to="/school-helpdesk-ticket">
-            <p class="side-text">SUBMIT HELPDESK TICKET</p>
-          </Link>
-          <br />
-          <Link to="/school-view-helpdesk-ticket">
-            <p class="side-text">VIEW HELPDESK TICKET</p>
-          </Link>
-          <br />
-          <Link to="/school-certificate">
-            <p class="side-text">DOWNLOAD CERTIFICATE</p>
-          </Link>
-          <br />
-          <Link to="/school-change-password" >
-            <p class="side-text">CHANGE PASSWORD</p>
-          </Link>
-          <br />
-          <Link to="/">
-            <p class="side-text">LOGOUT</p>
-          </Link>
-          <br />
-        </ul>
+  return (
+    // <div className="container-home">
+    //   <div className="card">
+    //     <div className="card-body">
+    //       <h6 class="card-title">
+    //         <span>
+    //           <img class="card-img-top" src={schoolimg} alt="Card image" />
+    //         </span>
+    //         SCHOOL DESK
+    //       </h6>
+    //       <ul class="sidebar">
+    //         <Link to="">
+    //           <p
+    //             class="side-text"
+    //           >
+    //             SCHOOL DETAILS
+    //           </p>
+    //         </Link>
+    //         <br />
+    //         <Link to="">
+    //           <p class="side-text"
+    //             style={{ backgroundColor: Colors.MAINCOLOR, color: "#fff" }}
+    //           >UPLOAD STUDENTS DATA</p>
+    //         </Link>
+    //         <br />
+    //         <Link to="">
+    //           <p class="side-text">MAKE PAYMENT</p>
+    //         </Link>
+    //         <br />
+    //         <Link to="">
+    //           <p class="side-text">SELECT SLOT DETAILS</p>
+    //         </Link>
+    //         <br />
+    //         <Link to="">
+    //           <p class="side-text">APPLICATION STATUS</p>
+    //         </Link>
+    //         <br />
+    //         <Link to="/school-helpdesk-ticket">
+    //           <p class="side-text">SUBMIT HELPDESK TICKET</p>
+    //         </Link>
+    //         <br />
+    //         <Link to="/school-view-helpdesk-ticket">
+    //           <p class="side-text">VIEW HELPDESK TICKET</p>
+    //         </Link>
+    //         <br />
+    //         <Link to="/school-certificate">
+    //           <p class="side-text">DOWNLOAD CERTIFICATE</p>
+    //         </Link>
+    //         <br />
+    //         <Link to="/school-change-password" >
+    //           <p class="side-text">CHANGE PASSWORD</p>
+    //         </Link>
+    //         <br />
+    //         <Link to="/">
+    //           <p class="side-text">LOGOUT</p>
+    //         </Link>
+    //         <br />
+    //       </ul>
+    //     </div>
+    //   </div>
+
+    //   <div className="main-head">
+    //     <div className="main">
+    //       <marquee> Welcome to Green Olympiad</marquee>
+    //     </div>
+
+    //     <div style={{ marginLeft: 15 }}>
+    //       <div className="imgcontainer">
+    //         <h5>
+    //           If You have Excel data upload from Upload Student Data Otherwise
+    //           Add <br /> data From Add Student Data
+    //         </h5>
+    //       </div>
+    //       <div>
+    //         <div class="form-card-second">
+    //           <div class="">
+    //             <h2>Upload Students Data</h2>
+    //           </div>
+    //           <div class="">
+    //             <p class="upload-text">Upload Student Data from Excel</p>
+
+    //             <input
+    //               class="upload"
+    //               type="file"
+    //               placeholder="Name"
+    //               name="uname"
+    //               required
+    //               onChange={handleOnChange}
+    //             />
+
+    //             <div class="d-flex justify-content-center btnmain">
+    //               <Link to="/school-payment">
+    //                 <button className="main-btn" onClick={submitStudantData}>
+    //                   Save Student Data
+    //                 </button>
+    //               </Link>
+    //               <button className="main-btn" type="submit">
+    //                 Download Excel Format
+    //               </button>
+    //             </div>
+    //           </div>
+    //         </div>
+    //         <div class="form-card-second" style={{ marginTop: 20 }}>
+    //           <div class="imgcontainer">
+    //             <h2>Add Students Data</h2>
+    //           </div>
+    //           <div class="">
+    //             <p class="upload-text">Add Student Data from Add Button</p>
+    //             <table className="add-school-data">
+    //               <tr>
+    //                 <th>Name</th>
+    //                 <th>DOB</th>
+    //                 <th>Class</th>
+    //                 <th>Section</th>
+    //                 <th>ExamTheme</th>
+    //                 <th>DemoExam</th>
+
+    //               </tr>
+
+    //               <tr>
+    //                 <td contenteditable="true">
+    //                   <input type="text" name="add1" style={{
+    //                     "width": "90%",
+    //                     "padding": "6px 15px",
+    //                     "margin": "0px",
+    //                     display: "inline-block",
+    //                     border: "1px solid #ccc",
+    //                     "box-sizing": "border-box",
+    //                     "border-radius": "14px"
+    //                   }}
+    //                     value={stName}
+
+    //                     onChange={e => setStName(e.target.value)}
+
+    //                   /></td>
+    //                 <td contenteditable="true"><input type="text" name="add1"
+
+    //                   style={{
+    //                     "width": "90%",
+    //                     "padding": "6px 15px",
+    //                     "margin": "0px",
+    //                     display: "inline-block",
+    //                     border: "1px solid #ccc",
+    //                     "box-sizing": "border-box",
+    //                     "border-radius": "14px"
+    //                   }}
+
+    //                   onChange={e => setDOB(e.target.value)}
+    //                   value={stDOB}
+
+    //                 /></td>
+    //                 <td contenteditable="true"><input type="text" name="add1"
+    //                   style={{
+    //                     "width": "90%",
+    //                     "padding": "6px 15px",
+    //                     "margin": "0px",
+    //                     display: "inline-block",
+    //                     border: "1px solid #ccc",
+    //                     "box-sizing": "border-box",
+    //                     "border-radius": "14px"
+    //                   }}
+
+    //                   onChange={e => setClass(e.target.value)}
+    //                   value={stClass}
+
+
+    //                 /></td>
+    //                 <td contenteditable="true"><input type="text" name="add1"
+    //                   style={{
+    //                     "width": "90%",
+    //                     "padding": "6px 15px",
+    //                     "margin": "0px",
+    //                     display: "inline-block",
+    //                     border: "1px solid #ccc",
+    //                     "box-sizing": "border-box",
+    //                     "border-radius": "14px"
+    //                   }}
+
+    //                   onChange={e => setSection(e.target.value)}
+    //                   value={stSection}
+
+
+    //                 /></td>
+    //                 <td contenteditable="true"><input type="text" name="add1"
+
+    //                   style={{
+    //                     "width": "90%",
+    //                     "padding": "6px 15px",
+    //                     "margin": "0px",
+    //                     display: "inline-block",
+    //                     border: "1px solid #ccc",
+    //                     "box-sizing": "border-box",
+    //                     "border-radius": "14px"
+    //                   }}
+
+    //                   onChange={e => setexamTheme(e.target.value)}
+
+    //                   value={examTheme}
+
+    //                 /></td>
+    //                 <td contenteditable="true"><input type="text" name="add1"
+
+    //                   style={{
+    //                     "width": "90%",
+    //                     "padding": "6px 15px",
+    //                     "margin": "0px",
+    //                     display: "inline-block",
+    //                     border: "1px solid #ccc",
+    //                     "box-sizing": "border-box",
+    //                     "border-radius": "14px"
+    //                   }}
+
+    //                   onChange={e => setDemoExam(e.target.value)}
+
+
+    //                   value={demoExam}
+
+    //                 /></td>
+    //               </tr>
+
+
+    //             </table>
+    //             <div class="d-flex justify-content-center btnmain">
+    //               <a>
+    //                 <button className="main-btn" onClick={addNewRow}>
+    //                   Add data
+    //                 </button>
+    //               </a>
+    //             </div>
+    //             <div>
+    //               <table className="add-school-data">
+    //                 <tr>
+    //                   <th>Name</th>
+    //                   <th>DOB</th>
+    //                   <th>Class</th>
+    //                   <th>Section</th>
+    //                   <th>ExamTheme</th>
+    //                   <th>DemoExam</th>
+    //                   <th>Action</th>
+
+    //                 </tr>
+    //                 {
+    //                   studantData.map((tbData, i) => {
+    //                     return (
+    //                       <tr>
+    //                         <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[0] ?? ''} style={{
+    //                           "width": "90%",
+    //                           "padding": "6px 15px",
+    //                           "margin": "0px",
+    //                           display: "inline-block",
+    //                           border: "1px solid #ccc",
+    //                           "box-sizing": "border-box",
+    //                           "border-radius": "14px"
+    //                         }}
+    //                           className={`_tbls${i}`}
+    //                           disabled
+
+    //                           onChange={e => handleOnChangeCell(e, '0', i)}
+    //                         /></td>
+    //                         <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[1] ?? ''}
+
+    //                           style={{
+    //                             "width": "90%",
+    //                             "padding": "6px 15px",
+    //                             "margin": "0px",
+    //                             display: "inline-block",
+    //                             border: "1px solid #ccc",
+    //                             "box-sizing": "border-box",
+    //                             "border-radius": "14px"
+    //                           }}
+    //                           className={`_tbls${i}`}
+    //                           disabled
+    //                           onChange={e => handleOnChangeCell(e, '1', i)}
+
+    //                         /></td>
+    //                         <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[2] ?? ''}
+    //                           style={{
+    //                             "width": "90%",
+    //                             "padding": "6px 15px",
+    //                             "margin": "0px",
+    //                             display: "inline-block",
+    //                             border: "1px solid #ccc",
+    //                             "box-sizing": "border-box",
+    //                             "border-radius": "14px"
+    //                           }}
+    //                           className={`_tbls${i}`}
+    //                           disabled
+    //                           onChange={e => handleOnChangeCell(e, '2', i)}
+
+    //                         /></td>
+    //                         <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[3] ?? ''}
+    //                           style={{
+    //                             "width": "90%",
+    //                             "padding": "6px 15px",
+    //                             "margin": "0px",
+    //                             display: "inline-block",
+    //                             border: "1px solid #ccc",
+    //                             "box-sizing": "border-box",
+    //                             "border-radius": "14px"
+    //                           }}
+    //                           className={`_tbls${i}`}
+    //                           disabled
+    //                           onChange={e => handleOnChangeCell(e, '3', i)}
+
+    //                         /></td>
+    //                         <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[4] ?? ''}
+
+    //                           style={{
+    //                             "width": "90%",
+    //                             "padding": "6px 15px",
+    //                             "margin": "0px",
+    //                             display: "inline-block",
+    //                             border: "1px solid #ccc",
+    //                             "box-sizing": "border-box",
+    //                             "border-radius": "14px"
+    //                           }}
+    //                           className={`_tbls${i}`}
+    //                           disabled
+    //                           onChange={e => handleOnChangeCell(e, '4', i)}
+
+    //                         /></td>
+    //                         <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[5] ?? ''}
+
+    //                           style={{
+    //                             "width": "90%",
+    //                             "padding": "6px 15px",
+    //                             "margin": "0px",
+    //                             display: "inline-block",
+    //                             border: "1px solid #ccc",
+    //                             "box-sizing": "border-box",
+    //                             "border-radius": "14px"
+    //                           }}
+    //                           className={`_tbls${i}`}
+    //                           disabled
+    //                           onChange={e => handleOnChangeCell(e, '4', i)}
+
+    //                         /></td>
+
+
+
+
+    //                         <td style={{ display: "flew", flexDirection: "row" }}>
+    //                           <button className="icon-btn" onClick={(e) => editRow(tbData, i)}>
+    //                             <i className="fa fa-pencil-square"></i>
+    //                           </button>
+    //                           <button className="icon-btn" onClick={(e) => deleteRow(tbData, i)}>
+    //                             <i className="fa fa-trash"></i>
+    //                           </button>
+    //                         </td>
+    //                       </tr>
+    //                     )
+    //                   })
+    //                 }
+
+    //               </table>
+    //             </div>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+
+    // </div>
+
+    <div className="container-fluid">
+      <div className="row ">
+        <div className="col-lg-3">
+          <Sidebar />
+        </div>
+        <div className="col-lg-9 ">
+          <main className="content ">
+            <div className="container-fluid ps-md-4 ps-lg-5 pe-md-4 py-5">
+              <div className="section-title mb-4 text-muted">
+                <h6 className="font-bold ">Upload Student Data</h6>
+                <p>Upload Student Data from Excel</p>
+              </div>
+
+              <div className="shadow bg-white mb-5 rounded-16">
+                <div className="p-4">
+                  <div className="row">
+                    <div className="col-sm-7 mb-5 mb-sm-0">
+                      <div className="upload-box text-center h-100">
+                        <label>
+                          {/* <input type="file" name="upload" accept=".xlsx" /> */}
+                          <input
+                            className="upload"
+                            type="file"
+                            placeholder="Name"
+                            name="uname"
+                            required
+                            onChange={handleOnChange}
+                          />
+                          <img src={uploadfiles} alt="" />
+                          <br />
+                          <strong>browse excel</strong>
+                        </label>
+
+                      </div>
+                    </div>
+
+                    <div className="col-sm-5">
+                      <div className="d-flex h-100 flex-column justify-content-around">
+                        <button className="btn btn-primary mb-4 mb-sm-0 w-100">Download Excel Format</button>
+                        <button className="btn btn-primary w-100 ">Upload Student Data</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="section-title mb-4 text-muted">
+                <div className="d-flex">
+                  <div className="me-auto">
+                    <h6 className="font-bold ">Add Student Data</h6>
+                    <p>Add Student Data from Add button</p>
+                  </div>
+                  <button className="btn btn-outline-secondary"><svg className="icon align-middle me-1">
+                    <use xlinkHref="#add-plus"></use>
+                  </svg> <span className="align-middle">Add Data</span></button>
+                </div>
+              </div>
+
+              <div className="shadow bg-white p-3 rounded-16">
+                <div className="table-responsive ">
+                  <table className="table table-bordered table-accent">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>DOB</th>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Exam Theme</th>
+                        <th>Mock Test</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {
+                        studantData.map((tbData, i) => {
+                          return (
+                            <tr>
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[0] ?? ''} style={{
+                                "width": "90%",
+                                "padding": "6px 15px",
+                                "margin": "0px",
+                                display: "inline-block",
+                                border: "1px solid #ccc",
+                                "box-sizing": "border-box",
+                                "border-radius": "14px"
+                              }}
+                                className={`_tbls${i}`}
+                                disabled
+
+                                onChange={e => handleOnChangeCell(e, '0', i)}
+                              /></td>
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[1] ?? ''}
+
+                                style={{
+                                  "width": "90%",
+                                  "padding": "6px 15px",
+                                  "margin": "0px",
+                                  display: "inline-block",
+                                  border: "1px solid #ccc",
+                                  "box-sizing": "border-box",
+                                  "border-radius": "14px"
+                                }}
+                                className={`_tbls${i}`}
+                                disabled
+                                onChange={e => handleOnChangeCell(e, '1', i)}
+
+                              /></td>
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[2] ?? ''}
+                                style={{
+                                  "width": "90%",
+                                  "padding": "6px 15px",
+                                  "margin": "0px",
+                                  display: "inline-block",
+                                  border: "1px solid #ccc",
+                                  "box-sizing": "border-box",
+                                  "border-radius": "14px"
+                                }}
+                                className={`_tbls${i}`}
+                                disabled
+                                onChange={e => handleOnChangeCell(e, '2', i)}
+
+                              /></td>
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[3] ?? ''}
+                                style={{
+                                  "width": "90%",
+                                  "padding": "6px 15px",
+                                  "margin": "0px",
+                                  display: "inline-block",
+                                  border: "1px solid #ccc",
+                                  "box-sizing": "border-box",
+                                  "border-radius": "14px"
+                                }}
+                                className={`_tbls${i}`}
+                                disabled
+                                onChange={e => handleOnChangeCell(e, '3', i)}
+
+                              /></td>
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[4] ?? ''}
+
+                                style={{
+                                  "width": "90%",
+                                  "padding": "6px 15px",
+                                  "margin": "0px",
+                                  display: "inline-block",
+                                  border: "1px solid #ccc",
+                                  "box-sizing": "border-box",
+                                  "border-radius": "14px"
+                                }}
+                                className={`_tbls${i}`}
+                                disabled
+                                onChange={e => handleOnChangeCell(e, '4', i)}
+
+                              /></td>
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[5] ?? ''}
+
+                                style={{
+                                  "width": "90%",
+                                  "padding": "6px 15px",
+                                  "margin": "0px",
+                                  display: "inline-block",
+                                  border: "1px solid #ccc",
+                                  "box-sizing": "border-box",
+                                  "border-radius": "14px"
+                                }}
+                                className={`_tbls${i}`}
+                                disabled
+                                onChange={e => handleOnChangeCell(e, '4', i)}
+
+                              /></td>
+
+
+
+
+                              <td style={{ display: "flew", flexDirection: "row" }}>
+                                <button className="icon-btn" onClick={(e) => editRow(tbData, i)}>
+                                  <i className="fa fa-pencil-square"></i>
+                                </button>
+                                <button className="icon-btn" onClick={(e) => deleteRow(tbData, i)}>
+                                  <i className="fa fa-trash"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          )
+                        })
+                      }
+
+                      <tr>
+                        <td>Priya</td>
+                        <td>25-05-2012</td>
+                        <td>IV</td>
+                        <td>A</td>
+                        <td>Demo</td>
+                        <td>Dummy</td>
+                        <td>
+                          <div className="btn-group btn-group-sm" role="group">
+                            <button type="button" className="btn btn-link"><svg className="icon">
+                              <use xlinkHref="#edit"></use>
+                            </svg></button>
+                            <div className="vr"></div>
+                            <button type="button" className="btn btn-link"><svg className="icon">
+                              <use xlinkHref="#delete"></use>
+                            </svg></button>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Prakash</td>
+                        <td>15-02-2011</td>
+                        <td>IV</td>
+                        <td>B</td>
+                        <td>Demo</td>
+                        <td>Dummy</td>
+                        <td>
+                          <div className="btn-group btn-group-sm" role="group">
+                            <button type="button" className="btn btn-link"><svg className="icon">
+                              <use xlinkHref="#edit"></use>
+                            </svg></button>
+                            <div className="vr"></div>
+                            <button type="button" className="btn btn-link"><svg className="icon">
+                              <use xlinkHref="#delete"></use>
+                            </svg></button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="row my-3">
+                  <button className="btn btn-primary mx-auto" style={{ width: '15rem' }}>Save Student Data</button>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
       </div>
     </div>
-
-    <div className="main-head">
-      <div className="main">
-        <marquee> Welcome to Green Olympiad</marquee>
-      </div>
-
-      <div style={{ marginLeft: 15 }}>
-        <div className="imgcontainer">
-          <h5>
-            If You have Excel data upload from Upload Student Data Otherwise
-            Add <br /> data From Add Student Data
-          </h5>
-        </div>
-        <div>
-          <div class="form-card-second">
-            <div class="">
-              <h2>Upload Students Data</h2>
-            </div>
-            <div class="">
-              <p class="upload-text">Upload Student Data from Excel</p>
-
-              <input
-                class="upload"
-                type="file"
-                placeholder="Name"
-                name="uname"
-                required
-                onChange={handleOnChange}
-              />
-
-              <div class="d-flex justify-content-center btnmain">
-                <Link to="/school-payment">
-                  <button className="main-btn" onClick={submitStudantData}>
-                    Save Student Data
-                  </button>
-                </Link>
-                <button className="main-btn" type="submit">
-                  Download Excel Format
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="form-card-second" style={{ marginTop: 20 }}>
-            <div class="imgcontainer">
-              <h2>Add Students Data</h2>
-            </div>
-            <div class="">
-              <p class="upload-text">Add Student Data from Add Button</p>
-              <table className="add-school-data">
-                <tr>
-                  <th>Name</th>
-                  <th>DOB</th>
-                  <th>Class</th>
-                  <th>Section</th>
-                  <th>ExamTheme</th>
-                  <th>DemoExam</th>
-
-                </tr>
-
-                <tr>
-                  <td contenteditable="true">
-                    <input type="text" name="add1" style={{
-                      "width": "90%",
-                      "padding": "6px 15px",
-                      "margin": "0px",
-                      display: "inline-block",
-                      border: "1px solid #ccc",
-                      "box-sizing": "border-box",
-                      "border-radius": "14px"
-                    }}
-                      value={stName}
-
-                      onChange={e => setStName(e.target.value)}
-
-                    /></td>
-                  <td contenteditable="true"><input type="text" name="add1"
-
-                    style={{
-                      "width": "90%",
-                      "padding": "6px 15px",
-                      "margin": "0px",
-                      display: "inline-block",
-                      border: "1px solid #ccc",
-                      "box-sizing": "border-box",
-                      "border-radius": "14px"
-                    }}
-
-                    onChange={e => setDOB(e.target.value)}
-                    value={stDOB}
-
-                  /></td>
-                  <td contenteditable="true"><input type="text" name="add1"
-                    style={{
-                      "width": "90%",
-                      "padding": "6px 15px",
-                      "margin": "0px",
-                      display: "inline-block",
-                      border: "1px solid #ccc",
-                      "box-sizing": "border-box",
-                      "border-radius": "14px"
-                    }}
-
-                    onChange={e => setClass(e.target.value)}
-                    value={stClass}
-
-
-                  /></td>
-                  <td contenteditable="true"><input type="text" name="add1"
-                    style={{
-                      "width": "90%",
-                      "padding": "6px 15px",
-                      "margin": "0px",
-                      display: "inline-block",
-                      border: "1px solid #ccc",
-                      "box-sizing": "border-box",
-                      "border-radius": "14px"
-                    }}
-
-                    onChange={e => setSection(e.target.value)}
-                    value={stSection}
-
-
-                  /></td>
-                  <td contenteditable="true"><input type="text" name="add1"
-
-                    style={{
-                      "width": "90%",
-                      "padding": "6px 15px",
-                      "margin": "0px",
-                      display: "inline-block",
-                      border: "1px solid #ccc",
-                      "box-sizing": "border-box",
-                      "border-radius": "14px"
-                    }}
-
-                    onChange={e => setexamTheme(e.target.value)}
-
-                    value={examTheme}
-
-                  /></td>
-                  <td contenteditable="true"><input type="text" name="add1"
-
-                    style={{
-                      "width": "90%",
-                      "padding": "6px 15px",
-                      "margin": "0px",
-                      display: "inline-block",
-                      border: "1px solid #ccc",
-                      "box-sizing": "border-box",
-                      "border-radius": "14px"
-                    }}
-
-                    onChange={e => setDemoExam(e.target.value)}
-
-
-                    value={demoExam}
-
-                  /></td>
-                </tr>
-
-
-              </table>
-              <div class="d-flex justify-content-center btnmain">
-                <a>
-                  <button className="main-btn" onClick={addNewRow}>
-                    Add data
-                  </button>
-                </a>
-              </div>
-              <div>
-                <table className="add-school-data">
-                  <tr>
-                    <th>Name</th>
-                    <th>DOB</th>
-                    <th>Class</th>
-                    <th>Section</th>
-                    <th>ExamTheme</th>
-                    <th>DemoExam</th>
-                    <th>Action</th>
-
-                  </tr>
-                  {
-                    studantData.map((tbData, i) => {
-                      return (
-                        <tr>
-                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[0] ?? ''} style={{
-                            "width": "90%",
-                            "padding": "6px 15px",
-                            "margin": "0px",
-                            display: "inline-block",
-                            border: "1px solid #ccc",
-                            "box-sizing": "border-box",
-                            "border-radius": "14px"
-                          }}
-                            className={`_tbls${i}`}
-                            disabled
-
-                            onChange={e => handleOnChangeCell(e, '0', i)}
-                          /></td>
-                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[1] ?? ''}
-
-                            style={{
-                              "width": "90%",
-                              "padding": "6px 15px",
-                              "margin": "0px",
-                              display: "inline-block",
-                              border: "1px solid #ccc",
-                              "box-sizing": "border-box",
-                              "border-radius": "14px"
-                            }}
-                            className={`_tbls${i}`}
-                            disabled
-                            onChange={e => handleOnChangeCell(e, '1', i)}
-
-                          /></td>
-                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[2] ?? ''}
-                            style={{
-                              "width": "90%",
-                              "padding": "6px 15px",
-                              "margin": "0px",
-                              display: "inline-block",
-                              border: "1px solid #ccc",
-                              "box-sizing": "border-box",
-                              "border-radius": "14px"
-                            }}
-                            className={`_tbls${i}`}
-                            disabled
-                            onChange={e => handleOnChangeCell(e, '2', i)}
-
-                          /></td>
-                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[3] ?? ''}
-                            style={{
-                              "width": "90%",
-                              "padding": "6px 15px",
-                              "margin": "0px",
-                              display: "inline-block",
-                              border: "1px solid #ccc",
-                              "box-sizing": "border-box",
-                              "border-radius": "14px"
-                            }}
-                            className={`_tbls${i}`}
-                            disabled
-                            onChange={e => handleOnChangeCell(e, '3', i)}
-
-                          /></td>
-                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[4] ?? ''}
-
-                            style={{
-                              "width": "90%",
-                              "padding": "6px 15px",
-                              "margin": "0px",
-                              display: "inline-block",
-                              border: "1px solid #ccc",
-                              "box-sizing": "border-box",
-                              "border-radius": "14px"
-                            }}
-                            className={`_tbls${i}`}
-                            disabled
-                            onChange={e => handleOnChangeCell(e, '4', i)}
-
-                          /></td>
-                          <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[5] ?? ''}
-
-                            style={{
-                              "width": "90%",
-                              "padding": "6px 15px",
-                              "margin": "0px",
-                              display: "inline-block",
-                              border: "1px solid #ccc",
-                              "box-sizing": "border-box",
-                              "border-radius": "14px"
-                            }}
-                            className={`_tbls${i}`}
-                            disabled
-                            onChange={e => handleOnChangeCell(e, '4', i)}
-
-                          /></td>
-
-
-
-
-                          <td style={{ display: "flew", flexDirection: "row" }}>
-                            <button className="icon-btn" onClick={(e) => editRow(tbData, i)}>
-                              <i className="fa fa-pencil-square"></i>
-                            </button>
-                            <button className="icon-btn" onClick={(e) => deleteRow(tbData, i)}>
-                              <i className="fa fa-trash"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      )
-                    })
-                  }
-
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
   );
+
+
 }
