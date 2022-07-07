@@ -1,67 +1,184 @@
 import React from "react";
-import Header from "./Header";
+// import Header from "./Header";
 import { Link } from "react-router-dom";
-import studentimg from "../../assets/icons/login.png";
-import schoolimg from "../../assets/icons/school.png";
-import youthimg from "../../assets/icons/youth.png";
+
+import download from "../../assets/icons/download-icon.png";
+import schoolpreview from "../../assets/icons/new-school-preview.png";
+import schoolrec from "../../assets/images/school_rec.svg";
+import kid from "../../assets/images/kid.png";
+import computerUser from "../../assets/images/computer-user.svg";
+import youth from "../../assets/icons/youth.svg";
+// import "./Home.scss";
+
 export default function Home() {
   return (
-    <div className="container-home">
-      <div className="card">
-        <div className="card-body">
-          <h4 className="card-title">ANNOUNCEMENTS</h4>
-          <p className="card-para">
-            <a href="../../assets/pdf/exam.pdf" target="_blank">
-              SLOTS FOR EXAM
-            </a>
-            <br />
-            <a href="../../assets/pdf/mock.pdf" target="_blank">
-              SLOTS FOR DEMO
-            </a>
-          </p>
+    // <div className="container-home">
+    //   <div className="announcements-panel">
+    //     <h1>Announcements</h1>
+    //     <ul className="list">
+    //       <li>
+    //         <a href="javascript:void(0)">
+    //           <img src={download} alt="" />
+    //           <span>Slot for Exam</span>
+    //         </a>
+    //       </li>
+    //       <li>
+    //         <a href="javascript:void(0)">
+    //           <img src={download} alt="" />
+    //           <span>Slot for Demo</span>
+    //         </a>
+    //       </li>
+    //       <li>
+    //         <a href="javascript:void(0)">
+    //           <img src={download} alt="" />
+    //           <span>Account Details</span>
+    //         </a>
+    //       </li>
+    //       <li>
+    //         <a href="javascript:void(0)">
+    //           <img src={download} alt="" />
+    //           <span>Page Navigation</span>
+    //         </a>
+    //       </li>
+    //     </ul>
+    //   </div>
+    //   <div className="welcome-section">
+    //     <div className="info-content">
+    //       <h1>
+    //         Welcome to <span>Green Olympiad</span>
+    //       </h1>
+    //       <div className="login-text">
+    //         <h4>Login</h4>
+    //         <p>Welcome to Login Page</p>
+    //       </div>
+    //     </div>
+    //     <div className="kid-img">
+    //       <img src={kid} alt="" />
+    //     </div>
+    //   </div>
+    //   <div class="login-category-panel">
+    //     <div className="login-tab">
+    //       <Link to="/school-login">
+    //         <div className="tab active">
+    //           <div className="img">
+    //             <img src={schoolrec} alt="" />
+    //           </div>
+    //           <div className="info">
+    //             <h4 className="title">
+    //               School <br /> <span>Registration / Login</span>
+    //             </h4>
+    //             <p>STD 4-12</p>
+    //           </div>
+    //         </div>
+    //       </Link>
+    //       <Link to="/student-login">
+    //         <div className="tab">
+    //           <div className="img">
+    //             <img src={computerUser} alt="" />
+    //           </div>
+    //           <div className="info">
+    //             <h4 className="title">
+    //               Individual <br /> <span>Registration / Login</span>
+    //             </h4>
+    //             <p>STD 4-12</p>
+    //           </div>
+    //         </div>
+    //       </Link>
+    //       <Link to="/student-login">
+    //         <div className="tab">
+    //           <div className="img">
+    //             <img src={youth} alt="" />
+    //           </div>
+    //           <div className="info">
+    //             <h4 className="title">
+    //               Go4youth <br /> <span>Registration / Login</span>
+    //             </h4>
+    //             <p>Undergraduate / Post Graduation</p>
+    //           </div>
+    //         </div>
+    //       </Link>
+    //     </div>
+    //   </div>
+    // </div>
+    <div className="dashboard-wraper d-flex">
+      <aside className="sidebar" id="sidebar" >
+        <div className="sidenav">
+          <div className="mobileToggler d-lg-none">
+            <a className="navbar-brand" href="#"><img src="images/logo.png" alt="" /></a>
+            <button className="navbar-toggler closetogglerbtn" type="button" data-bs-toggle="collapse" data-bs-target="#announce">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
+                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+              </svg>
+            </button>
+          </div>
+          <div className="announce">
+            <div className="navtitle">Announcements</div>
+            <ul className="list-unstyled">
+              <li className="active"><a href="#"><img src={download} height="18" alt="" /> Slot for Exam</a></li>
+              <li><a href="#"><img src={download} height="18" alt="" /> Slot for Demo</a></li>
+              <li><a href="#"><img src={download} height="18" alt="" /> Account Details</a></li>
+              <li><a href="#"><img src={download} height="18" alt="" /> Page Navigation</a></li>
+            </ul>
+          </div>
+
         </div>
-      </div>
-      <div class="home-main">
-        <marquee> Welcome to Green Olympiad</marquee>
-        <div className="main-head">
-          <h4>Login</h4>
-          <h5>Welcome to Login Page</h5>
-        </div>
-        <div className="card-area">
-          <Link to="/school-login">
-            <div className="smallcards">
-              <div className="card-body">
-                <img className="card-img" src={schoolimg} />
-                <h4 className="card-text">
-                  school Registrations / Login <br />( Std 4-12 )
-                </h4>
+      </aside>
+      <main className="content">
+        <div className="container-fluid ps-md-4 ps-lg-5 pe-md-4 py-5">
+          <div className="welcomebox">
+            <div className="row align-items-center">
+              <div className="col">
+                <marquee>
+                  <h1>Welcome to <span>Green Olympiad</span></h1>
+                </marquee>
+
               </div>
+
             </div>
-          </Link>
-          <Link to="/student-login">
-            <div className="smallcards">
-              <div className="card-body">
-                <img className="card-img" src={studentimg} />
-
-                <h4 className="card-text">
-                  Individual Registrations / Login <br />( Std 4-12 )
-                </h4>
-              </div>
+          </div>
+          <div className="row gx-sm-0 dashboard-row my-4 my-lg-5 py-md-4">
+            <div className="col-md-4 item text-center">
+              <Link to="/school-login" className="box">
+                {/* <a href="#" className="box"> */}
+                <img src={schoolpreview} alt="" />
+                <h4>School</h4>
+                <h5>Registration / Login</h5>
+                <p>STD 4-12</p>
+                {/* </a> */}
+              </Link>
             </div>
-          </Link>
+            <div className="col-md-4 item text-center">
+              <Link to="/student-login" className="box">
+                {/* <a href="#" className="box"> */}
+                {/* <svg>
+                  <use xlinkHref="#computer-user"></use>
+                </svg> */}
+                <img src={computerUser} alt="" />
 
-          <div className="smallcards ">
-            <div className="card-body">
-              <img className="card-img" src={youthimg} />
+                <h4>Student</h4>
+                <h5>Registration / Login</h5>
+                <p>STD 4-12</p>
+                {/* </a> */}
+              </Link>
+            </div>
+            <div className="col-md-4 item text-center">
+              <Link to="/student-login" className="box">
+                {/* <a href="#" className="box"> */}
+                {/* <svg>
+                  <use xlinkHref="#download_certificate"></use>
+                </svg> */}
+                <img src={youth} alt="" />
 
-              <h4 className="card-text">
-                go4youth Registrations / Login <br />( Undergraduate / Post
-                Graduation )
-              </h4>
+
+                <h4>Go4youth</h4>
+                <h5>Registration / Login</h5>
+                <p>Undergraduate/ Post Graduation</p>
+                {/* </a> */}
+              </Link>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

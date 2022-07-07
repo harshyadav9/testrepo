@@ -79,7 +79,7 @@ export default function Footer() {
 
         <footer className="footer mybg-accent">
           <ul className="nav justify-content-center">
-            <li class="nav-item">
+            <li className="nav-item">
               <TermsModal show={isOpen} handleClose={handleClose} modalBody={modalText} modalHeading={modalHeading} />
               {/* <NavLink className="nav-link link-light" activeClassName="active" to="/"> */}
               <a className="nav-link link-light" onClick={aboutUs}>About us</a>
@@ -87,16 +87,16 @@ export default function Footer() {
               {/* </NavLink> */}
             </li>
 
-            <li class="nav-item">
+            <li className="nav-item">
 
               {/* <NavLink className="nav-link link-light" activeClassName="active" to="/">
                 Privacy Policy
               </NavLink> */}
-              <a className="nav-link link-light" onClick={privacy}> Privacy Policy</a>
+              <a className="nav-link link-light" onClick={privacy}>Privacy Policy</a>
 
             </li>
 
-            <li class="nav-item">
+            <li className="nav-item">
 
               {/* <NavLink className="nav-link link-light" activeClassName="active" to="/">
                 Terms and Conditions
@@ -104,12 +104,12 @@ export default function Footer() {
               <a className="nav-link link-light" onClick={terms}>Terms and Conditions</a>
             </li>
 
-            <li class="nav-item">
+            <li className="nav-item">
 
               {/* <NavLink className="nav-link link-light" activeClassName="active" to="/">
                 Refund & Cancellation Policy
               </NavLink> */}
-              <a className="nav-link link-light" onClick={refund}> Refund & Cancellation Policy</a>
+              <a className="nav-link link-light" onClick={refund}>Refund & Cancellation Policy</a>
             </li>
             {/* <li class="nav-item"><a href="#footerModal" role="button" class="nav-link link-light" data-bs-toggle="modal">Privacy Policy</a></li>
             <li class="nav-item"><a href="#footerModal" role="button" class="nav-link link-light" data-bs-toggle="modal">Terms and Conditions</a></li>

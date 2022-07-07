@@ -4,7 +4,7 @@ import axios from "axios";
 import "../../assets/css/style_new.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-import Error from './ErrorList'
+import Error from './ErrorList';
 import { API_ADMIN_URL_2, REGISTER_API, API_BASE_URL, API_END_POINTS } from "../../apis/api";
 export default function SchoolRegistration() {
   const navigate = useNavigate();
@@ -19,6 +19,12 @@ export default function SchoolRegistration() {
   const [state, setstate] = useState("");
   const [mobileverify, setmobileverify] = useState();
   const [emailverify, setemailverify] = useState();
+
+  const [mobileOTP, setmobileOTP] = useState([-1, -1, -1, -1]);
+  const [emailOTP, setemailOTP] = useState([-1, -1, -1, -1]);
+  const [error_message, setError_message] = useState('');
+  const [RegisterationClicked, setRegisterationClicked] = useState(0);
+
   const [data, setData] = useState("");
   const [countryList, setCountryList] = useState([]);
   const [stateCityName, setCityStateName] = useState('Select State');
@@ -35,6 +41,113 @@ export default function SchoolRegistration() {
   const handleChange = (a, k) => {
     setData({ ...data, [k]: a });
   };
+
+
+  const formValidate = (e) => {
+    const { key, value } = e;
+    let err = '';
+    setError_message('');
+    // mobileverify
+    // emailverify
+
+    switch (key) {
+      case "principalName":
+      case "schoolName":
+      case "country":
+      case "state":
+      case "mobile":
+        if (value.length < 1)
+          err = (errorList.find(item => item.fieldNam === key).message);
+        break;
+      case "email":
+        if (value.length === 0)
+          err = (errorList.find(item => item.fieldNam === key).message);
+        if (err === '') {
+          let item = errorList.find(item => item.fieldNam === key);
+          let regExp = RegExp(item.regex)
+          err = (regExp.test(value) ? "" : item.message2);
+        }
+        break;
+      case "pinCode":
+        if (value.length === 0)
+          err = (errorList.find(item => item.fieldNam === key).message);
+        if (err === '' && isIndain) {
+          let item = errorList.find(item => item.fieldNam === key);
+          let regExp = RegExp(item.regex)
+          err = regExp.test(value) ? "" : item.message2;
+        }
+        break;
+      default:
+        break;
+    }
+    setError_message(err)
+    return err;
+  };
+
+
+
+  const checkAllField = () => {
+    let arr = [principalName, pinCode, schoolName, mobile, email];
+    let arrKey = ['principalName', 'pinCode', 'schoolName', 'mobile', 'email'];
+    let err = '';
+    arr.forEach((value, index) => {
+      if (err === '') {
+        err = formValidate({ 'key': arrKey[index], 'value': value });
+      }
+
+    })
+    if (err === '' && !mobileverify) {
+      err = 'Please verify mobile OTP'
+      setError_message(err);
+    }
+    if (err === '' && !emailverify) {
+      err = 'Please verify Email OTP'
+      setError_message(err);
+    }
+
+    return err;
+  };
+
+
+  const mobileOTPset = (ev, index) => {
+    mobileOTP[index] = ev.target.value;
+    let res = mobileOTP.includes(-1);
+    if (!res) {
+      // match with OTP
+      if (mobileOTP.join('') === '4444') {
+        alert();
+        setmobileverify(1)
+      }
+      else
+        setmobileverify(0)
+      console.log(mobileOTP);
+    }
+    setmobileOTP(mobileOTP);
+  };
+
+
+  const emailOTPset = (ev, index) => {
+    emailOTP[index] = ev.target.value;
+    let res = emailOTP.includes(-1);
+    if (!res) {
+      // match with OTP
+      if (emailOTP.join('') === '4444') {
+        alert();
+        setemailverify(1)
+      }
+      else
+        setemailverify(0)
+      console.log(emailOTP);
+      setemailOTP(emailOTP);
+    }
+  }
+
+
+
+
+
+
+
   // console.log("Error",Error)
   const getCountry = async () => {
     //const countryList = await axios.get(`${API_BASE_URL}${API_END_POINTS.getCountry}`);
@@ -53,9 +166,13 @@ export default function SchoolRegistration() {
   }
   useEffect(() => {
     getCountry()
-  }, [])
+  }, []);
 
   const RegisterationApi = (e) => {
+    setRegisterationClicked(1);
+    let err = checkAllField();
+    if (err)
+      return err;
     const country_ = countryList.find(co => co.code === data.country) ?? { country: "India" };
     const statecityCode = cityStateList.find(state => {
       if (country_.code === "IN") {
@@ -581,7 +698,8 @@ export default function SchoolRegistration() {
 
                         onChange={(e) => {
                           handleChange(e.target.value, "country");
-                          setSecondState(e.target.value)
+                          setSecondState(e.target.value);
+                          formValidate({ 'key': 'country', 'value': e.target.value });
                         }}
                       >
                         <option value="volvo">Select Country</option>
@@ -611,6 +729,7 @@ export default function SchoolRegistration() {
                         value={data.state || ""}
                         onChange={(e) => {
                           handleChange(e.target.value, "state");
+                          formValidate({ 'key': 'state', 'value': e.target.value });
                         }}
                       >
                         <option value="volvo">Select State/City</option>
@@ -635,8 +754,10 @@ export default function SchoolRegistration() {
                         placeholder="Principal name here"
                         name="uname"
                         required
-                        onChange={(principalName) =>
-                          setprincipalName(principalName.target.value)
+                        onChange={(principalName) => {
+                          setprincipalName(principalName.target.value);
+                          formValidate({ 'key': 'principalName', 'value': principalName.target.value })
+                        }
                         }
                       />
                     </div>
@@ -650,7 +771,10 @@ export default function SchoolRegistration() {
                         placeholder="Enter Pin code"
                         name="psw"
                         required
-                        onChange={(pinCode) => setpinCode(pinCode.target.value)}
+                        onChange={(pinCode) => {
+                          setpinCode(pinCode.target.value);
+                          formValidate({ 'key': 'pinCode', 'value': pinCode.target.value })
+                        }}
                         value={pinCode}
                       />
                     </div>
@@ -659,7 +783,12 @@ export default function SchoolRegistration() {
 
                 <div className="form-wrapper">
                   <label>School Name:</label>
-                  <input type="text" placeholder="School name here" name="uname" required="" />
+                  <input type="text" placeholder="School name here" name="uname" required={true}
+                    onChange={(schoolName) => {
+                      setschoolName(schoolName.target.value);
+                      formValidate({ 'key': 'schoolName', 'value': schoolName.target.value })
+                    }}
+                  />
                 </div>
 
 
@@ -674,8 +803,11 @@ export default function SchoolRegistration() {
                           className="me-3"
                           placeholder="Mobile (Principal/Teacher)"
                           name="psw"
-                          required
-                          onChange={(mobile) => setmobile(mobile.target.value)}
+                          required={true}
+                          onChange={(mobile) => {
+                            setmobile(mobile.target.value);
+                            formValidate({ 'key': 'mobile', 'value': mobile.target.value });
+                          }}
                         />
                         <button className="otbutton flex-grow-1 btn btn-accent" style={{ whiteSpace: 'nowrap' }}>Generate OTP</button>
                       </div>
@@ -685,12 +817,12 @@ export default function SchoolRegistration() {
                     <div className="form-wrapper">
                       <label>Mobile OTP:</label>
                       <div className=" d-flex justify-content-between">
-                        <input type="otp" className="me-3" maxlength="1" placeholder="" name="psw" required="" placeholder-type="number" />
-                        <input type="otp" className="me-3" maxlength="1" placeholder="" name="psw" required="" />
-                        <input type="otp" className="me-3" maxlength="1" placeholder="" name="psw" required="" />
-                        <input type="otp" className="me-3" maxlength="1" placeholder="" name="psw" required="" />
+                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 0) }} name="psw0" placeholder-type="number" />
+                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 1) }} name="psw1" />
+                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 2) }} name="psw2" />
+                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 3) }} name="psw3" />
 
-                        <button className="otbutton btn btn-accent">Verify</button>
+                        <button className="otbutton btn btn-accent">Verify</button>{mobileverify}
                       </div>
                     </div>
                   </div>
@@ -707,7 +839,10 @@ export default function SchoolRegistration() {
                           placeholder="E-mail (Principal/Teacher)"
                           name="psw"
                           required
-                          onChange={(email) => setemail(email.target.value)}
+                          onChange={(email) => {
+                            setemail(email.target.value);
+                            formValidate({ 'key': 'email', 'value': email.target.value })
+                          }}
                         />
                         <button className="otbutton btn btn-accent" style={{ whiteSpace: 'nowrap' }}>Generate OTP</button>
                       </div>
@@ -717,11 +852,11 @@ export default function SchoolRegistration() {
                     <div className="form-wrapper">
                       <label>E-Mail OTP:</label>
                       <div className=" d-flex justify-content-between">
-                        <input type="otp" className="me-3" maxlength="1" placeholder="" name="psw" required="" placeholder-type="number" />
-                        <input type="otp" className="me-3" maxlength="1" placeholder="" name="psw" required="" />
-                        <input type="otp" className="me-3" maxlength="1" placeholder="" name="psw" required="" />
-                        <input type="otp" className="me-3" maxlength="1" placeholder="" name="psw" required="" />
-                        <button className="otbutton btn btn-accent">Verify</button>
+                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 0) }} placeholder="" name="psw_1" required="" placeholder-type="number" />
+                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 1) }} placeholder="" name="psw_2" required="" />
+                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 2) }} placeholder="" name="psw_3" required="" />
+                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 3) }} placeholder="" name="psw_4" required="" />
+                        <button className="otbutton btn btn-accent">Verify</button> {emailverify}
                       </div>
                     </div>
                   </div>
@@ -729,6 +864,9 @@ export default function SchoolRegistration() {
 
 
                 <div className="mt-4 mb-3">
+                  {RegisterationClicked === 1 && error_message && (<div className="alert alert-danger w-100" role="alert">
+                    {error_message}
+                  </div>)}
                   <div className="d-flex justify-content-center">
                     {/* <button className="btn btn-primary w-50" type="submit">Registration</button> */}
                     <button className="btn btn-primary w-50" onClick={RegisterationApi}>Registration</button>

@@ -26,7 +26,6 @@ header,
   color: white;
 }
 
-
 footer,
 .footer {
   background-color: var(--my-secondary);
@@ -65,6 +64,11 @@ h4 {
 
 img {
   max-width: 100%;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
 }
 
 .form-control {
@@ -134,10 +138,23 @@ img {
   padding: 0.5rem 0;
 }
 
-.form-wrapper input:focus {
+.form-wrapper textarea {
+  height: auto;
+  padding: 0.25rem 0;
+  resize: vertical;
+}
+
+.form-wrapper input:focus,
+.form-wrapper textarea:focus {
   outline: none;
   border-bottom: 2px solid var(--accent);
   color: black;
+}
+
+.form-wrapper input[disabled] {
+  background-color: #efefef;
+  border-bottom-color: lightgray;
+  color: gray;
 }
 
 
@@ -185,6 +202,10 @@ img {
 
 .rounded-16 {
   border-radius: 16px;
+}
+
+.rounded-10 {
+  border-radius: 10px;
 }
 
 .section-title {
@@ -248,7 +269,7 @@ img {
 }
 
 .login .loginInner .newSchool {
-  background: #0e478e;
+  background: var(--primary);
   padding: 20px 3em;
 }
 
@@ -286,6 +307,311 @@ img {
 .login .card {
   height: 100%;
 }
+
+/*dashboard */
+
+.dashboard-wraper {
+  min-height: calc(100vh - 182px);
+}
+
+.sidebar {
+  flex: 0 0 360px;
+  border-right: 1px solid #d5d5d5;
+}
+
+.sidebar .navtitle {
+  background: var(--primary);
+  padding: 15px 35px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.sidebar ul {
+  margin-top: 40px;
+}
+
+.sidebar ul li {
+  margin-left: 15px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  display: flex;
+  padding: 20px 20px;
+  color: #2c3941;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 7px;
+  align-items: center;
+}
+
+.sidebar ul li a:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  width: 8px;
+  top: 15px;
+  bottom: 15px;
+  background: transparent;
+}
+
+.sidebar ul li a:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  right: 40px;
+  height: 1px;
+  background: #b4b4b4;
+}
+
+.sidebar ul li img {
+  margin-right: 15px;
+}
+
+.sidebar ul li.active a:after,
+.sidebar ul li:hover a:after {
+  background: var(--primary)
+}
+
+.sidebar ul li.active a,
+.sidebar ul li:hover a {
+  box-shadow: 0 0 20px #e6e6e6;
+}
+
+.sidebar ul li:hover a:before,
+.sidebar ul li.active a:before {
+  background: transparent
+}
+
+.dashboard-wraper .content {
+  flex: 1;
+  background: url(../images/school_bg.png) no-repeat;
+  background-position: 100% 0;
+  background-size: 30%;
+  background-repeat-y: repeat;
+}
+
+.welcomebox {
+  background: #e6f2fe;
+  border-radius: 20px;
+  padding: 40px 50px;
+}
+
+.welcomebox h1 {
+  /*margin-left: 35px;*/
+  color: var(--gray);
+  font-weight: 700;
+  /*margin-bottom: 70px;*/
+}
+
+.welcomebox h1 span {
+  color: var(--primary);
+}
+
+.welcomebox img {
+  max-width: 150px;
+}
+
+.welcomebox h2 {
+  border-left: 15px solid var(--accent);
+  padding-left: 20px;
+  color: #707070;
+  font-weight: 600;
+}
+
+.welcomebox h2 span {
+  color: #979797;
+  font-weight: 400;
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.dashboard-row .box {
+  background: white;
+  border: 1px solid #d5d5d5;
+  padding: 20px;
+  transition: .5s;
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.dashboard-row .box svg,
+.dashboard-row .box img {
+  height: 90px;
+  width: 100%;
+  object-fit: contain;
+}
+
+.dashboard-row .box svg {
+  fill: var(--primary);
+}
+
+.dashboard-row .box h4 {
+  color: #707070;
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.dashboard-row .box h5 {
+  color: #a5a5a5;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.dashboard-row .box p {
+  margin: 0;
+  /*font-size: 13px;*/
+  color: var(--gray);
+}
+
+.dashboard-row .box:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+.dashboard-row .box:hover h4,
+.dashboard-row .box:hover h5,
+.dashboard-row .box:hover p {
+  color: #fff;
+}
+
+.dashboard-row .box:hover svg {
+  fill: white;
+}
+
+/*.back-to-top {font-size: 20px;position: fixed;display: none;width: 40px;height: 40px;line-height:40px;border-radius: 3px;right: 15px;
+bottom: 15px;background: var(--primary);color: #fff;transition: display 0.5s ease-in-out;z-index: 99999;text-align: center;
+border-radius: 50%;box-shadow: 0 0 10px #ddd;}
+.back-to-top:hover{background:#fff;color: var(--primary)}*/
+
+.upload-box {
+  border: 2px dashed var(--primary);
+  border-radius: 1.5rem;
+  color: var(--accent);
+  position: relative;
+}
+
+.upload-box img {
+  width: 4rem;
+}
+
+.upload-box label {
+  background: white;
+  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border-radius: 1.75rem;
+}
+
+.upload-box input[type="file"] {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  width: 1rem;
+  height: 1rem;
+  z-index: -1;
+}
+
+.table-accent thead {
+  background-color: var(--accent);
+  color: white;
+}
+
+.table-accent thead th {
+  border-color: var(--accent);
+}
+
+@media(max-width:991.8px) {
+  .menuOpen {
+    overflow-x: hidden;
+  }
+
+  .sidebar {
+    position: fixed;
+    z-index: 111;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    transform: translate3d(101%, 0, 0);
+    transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    justify-content: end;
+  }
+
+  .sidenav {
+    width: 300px;
+    margin-left: auto;
+    background: #fff;
+  }
+
+  .sidebar.show {
+    transform: translate3d(0, 0, 0);
+    transition-duration: 0.3s;
+    /*transition-delay: 0.2s;*/
+  }
+
+  .openmenu-toggler {
+    color: #fff;
+    border: 0;
+    margin-left: 10px;
+    box-shadow: none !important;
+  }
+
+  .openmenu-toggler svg {
+    height: 35px;
+    width: 35px;
+  }
+
+  .sidebar .navtitle {
+    padding: 10px 35px;
+    font-size: 20px;
+  }
+
+  .mobileToggler {
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mobileToggler img {
+    max-width: 160px;
+  }
+
+  .mobileToggler .closetogglerbtn {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+  }
+
+  .mobileToggler .closetogglerbtn svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--primary);
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .welcomebox {
+    padding: 20px;
+  }
+}
+
 
 /* modal design  start */
 
