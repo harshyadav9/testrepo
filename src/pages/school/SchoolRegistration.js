@@ -150,8 +150,8 @@ export default function SchoolRegistration() {
 
   // console.log("Error",Error)
   const getCountry = async () => {
-    const countryList = await axios.get(`${API_BASE_URL}${API_END_POINTS.getCountry}`);
-    //const countryList = await axios.get(`${API_END_POINTS.getCountry}`);
+    // const countryList = await axios.get(`${API_BASE_URL}${API_END_POINTS.getCountry}`);
+    const countryList = await axios.get(`${API_END_POINTS.getCountry}`);
     try {
 
       if (countryList?.status == 200 && countryList?.data?.status) {
@@ -245,7 +245,7 @@ export default function SchoolRegistration() {
         "state": cityState,
         "pincode": searchPin
       }
-      //  const data = await axios.post(`${API_BASE_URL}${API_END_POINTS.getIndainSchools}`, serverData);
+      //const data = await axios.post(`${API_BASE_URL}${API_END_POINTS.getIndainSchools}`, serverData);
       const data = await axios.post(`${API_END_POINTS.getIndainSchools}`, serverData);
       if (data.status === 200 && data.data.status) {
         setExistingSchool(data.data.list)
@@ -274,7 +274,7 @@ export default function SchoolRegistration() {
       schoolscode: schoolcode,
       isLocal: isIndain
     }
-    // const responseData = await axios.post(`${API_BASE_URL}${API_END_POINTS.getSchoolDetail}`, serverData);
+    //  const responseData = await axios.post(`${API_BASE_URL}${API_END_POINTS.getSchoolDetail}`, serverData);
     const responseData = await axios.post(`${API_END_POINTS.getSchoolDetail}`, serverData);
     if (responseData.status === 200 && responseData.data.status) {
       const schoolDetail = responseData.data.schoolDetail;

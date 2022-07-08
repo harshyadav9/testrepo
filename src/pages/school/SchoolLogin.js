@@ -52,8 +52,8 @@ export default function SchoolLogin() {
         "password": pass
       }
       axios
-        .post(`${API_BASE_URL}${API_END_POINTS?.login}`, serverData)
-        //.post(`${API_END_POINTS?.login}`, serverData)
+        // .post(`${API_BASE_URL}${API_END_POINTS?.login}`, serverData)
+        .post(`${API_END_POINTS?.login}`, serverData)
         .then((res) => {
           if (res.data) {
             const { data: {
