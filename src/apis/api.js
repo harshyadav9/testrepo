@@ -10,6 +10,7 @@ export const EDIT_SCHOOL_API = "/edit-school";
 export const API_ADMIN_URL = API_HOST_URL + API_MIDD
 export const API_ADMIN_URL_2 = API_HOST_URL + API_MIDD_2
 export const API_BASE_URL = 'http://localhost:4000/'
+export const API_BASE_JAVA_URL = 'http://localhost:8080/'
 export const API_END_POINTS = {
 	getCountry: 'api/country',
 	getIndianState: 'api/indian-state',
@@ -21,5 +22,14 @@ export const API_END_POINTS = {
 	login: "api/login",
 	updateShoolData: "api/update-info",
 	uploadStudantdata: 'api/upload',
-	getStudantData: 'api/get-studant'
+	getStudantData: 'api/get-studant',
+	payment: 'api/payment',
+
+	getTimeSlot: 'api/get-slot',
+	updatePaymentStatus: 'api/update-payment',
+	bookSlot: 'api/update-studant-slot',
+	getStudantStatus: 'api/get-studant-status',
+	getpaymentdetails: 'api/getpaymentdetails',
+	uploadApi: 'terry/olympiad/uploadData',
+
 }

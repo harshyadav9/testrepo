@@ -630,6 +630,48 @@ border-radius: 50%;box-shadow: 0 0 10px #ddd;}
   }
 }
 
+
+tr.invalid {
+  border-color: red;
+}
+
+.table .invalid {
+  animation: 3s invalid infinite;
+}
+
+.table .row.decreased {
+  animation: 1s decreased infinite;
+}
+
+@keyframes invalid {
+  0% {
+    background: initial;
+  }
+
+  50% {
+    background: rgb(227, 162, 162);
+  }
+
+  100% {
+    background: initial;
+  }
+}
+
+@keyframes decreased {
+  0% {
+    background: initial;
+  }
+
+  50% {
+    background: red;
+  }
+
+  100% {
+    background: initial;
+  }
+}
+
+
 @media screen and (max-width: 599px) {
   .welcomebox {
     padding: 20px;

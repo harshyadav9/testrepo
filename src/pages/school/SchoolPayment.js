@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
 import "../../assets/css/style_new.css";
@@ -6,35 +6,118 @@ import { Colors } from "../../assets/css/color";
 import jwt_decode from "jwt-decode";
 import "./SchoolPayment.scss";
 import Sidebar from "../main/sidebar";
+import { API_ADMIN_URL_2, REGISTER_API, API_BASE_URL, API_END_POINTS } from "../../apis/api";
+import { notify } from '../../Utills'
+import { useNavigate } from "react-router";
+
+import axios from "axios";
 
 export default function SchoolPayment() {
   let paymentData = {};
   let tMockStu = 0;
   let mockFee = 0;
   let totalThemeExamPay = 0;
-  let currency = "";
+  let currency = '';
+  let decodedSchoolData = {};
+  let mockTotal = 0;
+
+  const navigate = useNavigate();
+  const [paymentStatus, setPaymentStatus] = useState([]);
+
+
+
+
+
+
+  useEffect(() => {
+
+    const getPaymentData = async () => {
+      const paymentDetails = await axios.get(`${API_BASE_URL}${API_END_POINTS.getpaymentdetails}`);
+      try {
+        console.log("paymentDetails", paymentDetails);
+        if (paymentDetails?.status === 200 && paymentDetails?.data?.status) {
+          console.log("paymentDetails", paymentDetails)
+          setPaymentStatus(paymentDetails.data.data);
+
+
+
+        } else {
+          setPaymentStatus([]);
+
+        }
+      } catch (e) {
+        console.log("error")
+      }
+    }
+    getPaymentData();
+
+  }, []);
+
+
+
   try {
-    const userToken = localStorage.getItem("token")
-      ? localStorage.getItem("token")
-      : "";
-    let token = userToken;
-    let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
-    console.log("decodedSchoolData", decodedSchoolData)
-    currency = decodedSchoolData.country === "India" ? "INR" : "$";
-  } catch (e) {
-    console.log("e", e);
-  }
-  try {
-    paymentData = JSON.parse(localStorage.getItem("payment") ?? "[]");
-    mockFee = paymentData[0]?.mockfee;
-    tMockStu = paymentData.reduce((acc, t) => t.optMock + acc, 0);
-    totalThemeExamPay = paymentData.reduce(
-      (acc, el) => el.themefee * el.totalCount + acc,
-      0
-    );
+    // paymentData = JSON.parse(localStorage.getItem('payment') ?? '[]');
+    console.log("paymentStatus", paymentStatus)
+    mockFee = paymentStatus[0]?.mockfee;
+    tMockStu = paymentStatus.reduce((acc, t) => t.optMock + acc, 0);
+    totalThemeExamPay = paymentStatus.reduce((acc, el) => el.themefee * el.totalCount + acc, 0);
+    mockTotal = tMockStu * paymentStatus[0]['mockfee'];
 
     console.log("total mocak", +tMockStu);
-  } catch (e) { }
+
+  } catch (e) {
+
+  }
+
+  try {
+    const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
+    let token = userToken;
+    let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
+    currency = decodedSchoolData.country === 'India' ? 'INR' : "$"
+    console.log("decodedSchoolData", decodedSchoolData)
+  } catch (e) {
+    console.log('e', e)
+  }
+  try {
+    const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
+    let token = userToken;
+    decodedSchoolData = token !== "" ? jwt_decode(token) : {};
+
+  } catch (e) {
+
+  }
+
+
+
+
+
+
+
+
+
+
+  const handlePayment = async (e) => {
+    e.preventDefault();
+    let SCHOOLID = decodedSchoolData?.schoolsCode
+    let paymentStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.schoolsCode });
+    if (paymentStatus && paymentStatus.data.status) {
+      notify(`Studant payment status changed!.`, true)
+      navigate("/school-slot");
+    } else {
+      notify(`payment updation Failed!.`, false)
+
+    }
+  }
+
+
+  const makePayment = async () => {
+
+    const payment = await axios.get(`${API_BASE_URL}${API_END_POINTS.payment}`);
+
+
+    console.log("payment", payment);
+    window.open(payment.data.url, "_blank");
+  }
   return (
     <div className="row ">
       <div className="col-lg-3">
@@ -49,23 +132,64 @@ export default function SchoolPayment() {
           </div>
           <div className="shadow-lg p-4 bg-body rounded">
             <div className="table-bordered">
-              <table class="table">
+              <table className="table">
+                <tbody className="blank-tbody">
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </tbody>
+                <tbody>
+
+                  {
+                    paymentStatus?.map((theme, i) => {
+                      return (
+                        <>
+                          <tr>
+                            <td>Total candidate who opted <b>{theme?.theme}</b></td>
+                            <td>{theme?.totalCount}</td>
+                          </tr>
+                          <tr>
+                            <td>Amount</td>
+                            <td>{currency}{theme?.themefee * theme?.totalCount}</td>
+                          </tr>
+                          <tbody className="blank-tbody">
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td>&nbsp;</td>
+                            </tr>
+                          </tbody>
+                        </>
+                      )
+                    })
+                  }
+                </tbody>
+                <tbody className="blank-tbody">
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </tbody>
+
                 <tbody>
                   <tr>
-                    <td>Total candidate who opted Theme 1 </td>
-                    <td>50</td>
-                  </tr>
-                  <tr>
-                    <td>Fees of per condidate for Theme 1</td>
-                    <td>100</td>
+                    <td>Total candidate who opted <b>Mock</b></td>
+                    <td>{tMockStu}</td>
                   </tr>
                   <tr>
                     <td>Amount</td>
-                    <td>$ 5000</td>
+                    <td>{mockTotal}</td>
                   </tr>
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <td>Total Amount</td>
+                    <td>{currency} {totalThemeExamPay + tMockStu * mockFee}.</td>
+                  </tr>
+                </tfoot>
+
                 {/* BLACK SPACE ROW */}
-                <tbody className="blank-tbody">
+                {/* <tbody className="blank-tbody">
                   <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -85,10 +209,10 @@ export default function SchoolPayment() {
                     <td>Amount</td>
                     <td>$ 5000</td>
                   </tr>
-                </tbody>
+                </tbody> */}
 
                 {/* BLACK SPACE ROW */}
-                <tbody className="blank-tbody">
+                {/* <tbody className="blank-tbody">
                   <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -99,47 +223,31 @@ export default function SchoolPayment() {
                     <td>Total Amount</td>
                     <td>$ 17460.</td>
                   </tr>
-                </tfoot>
+                </tfoot> */}
               </table>
             </div>
 
             {/* Variants Use contextual classe
-          {paymentData.map((theme) => (
-            <>
-              <h6>
-                Total Candidate who opted {theme?.theme} : {theme?.totalCount}
-              </h6>
-              <h6>
-                Fee per candidate: {currency}
-                {theme?.themefee}
-              </h6>
-              <h6>
-                Total amount: {currency}
-                {theme?.themefee * theme?.totalCount}
-              </h6>
-            </>
-          ))}
+         {
+            paymentData.map(theme =>(<>
+              <h6>Total Candidate who opted {theme?.theme } : {theme?.totalCount}</h6>
+              <h6>Fee per candidate: {currency}{theme?.themefee}</h6>
+              <h6>Total amount: {currency}{theme?.themefee*theme?.totalCount}</h6>
+        
+            </>))
+          }
+           <h4>Gross Total={currency}{ totalThemeExamPay +(tMockStu * mockFee) }</h4>
           <div>
-            <h6> Total mock opt studants are:{tMockStu}</h6>
-            <h6>
-              {" "}
-              Mock fee per studants :{currency}
-              {mockFee}
-            </h6>
-            <h6>
-              {" "}
-              Total mock fee = {currency}
-              {tMockStu * mockFee}
-            </h6>
+           
           </div>
           <h4>
             Gross Total={currency}
             {totalThemeExamPay + tMockStu * mockFee}
           </h4> */}
           </div>
-          <div class="btnmain">
+          <div className="btnmain">
             <Link to="/school-slot">
-              <button className="btn btn-primary" type="submit">
+              <button className="btn btn-primary" onClick={makePayment}>
                 Make Payment
               </button>
             </Link>

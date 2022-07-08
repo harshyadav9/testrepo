@@ -4,7 +4,7 @@ import schoolimg from "../../assets/icons/school.png";
 import uploadfiles from "../../assets/icons/upload_files.svg";
 import { Colors } from "../../assets/css/color";
 import "../../assets/icons/common.svg";
-import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
+import { API_BASE_URL, API_END_POINTS, API_BASE_JAVA_URL } from "../../apis/api";
 import { ExcelDateToJSDate, notify, checkRowDuplicacy } from '../../Utills'
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -53,7 +53,8 @@ export default function SchoolUploadData() {
   const [stSection, setSection] = useState('');
   const [examTheme, setexamTheme] = useState('');
   const [demoExam, setDemoExam] = useState('');
-
+  const classesdropdown = [4, 5, 6, 7, 8, 9, 10, 11, 12, 'UG', 'PG'];
+  const examThemedropdown = ['ESD', 'ESDGREEN'];
   const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
   let token = userToken;
   let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
@@ -77,62 +78,109 @@ export default function SchoolUploadData() {
     //   "SchoolID": decodedSchoolData?.schoolsCode
     // })
 
-    let studantDataExist = await axios.post(`${API_END_POINTS.getStudantData}`, {
-      "SchoolID": decodedSchoolData?.schoolsCode
-    })
+    // let studantDataExist = await axios.post(`${API_BASE_URL}${API_END_POINTS.getStudantData}`, {
+    //   "SchoolID": decodedSchoolData?.schoolsCode
+    // })
 
-    if (studantDataExist?.data && studantDataExist?.data?.status && studantDataExist.data.data.length > 0) {
-      let serverStudant = studantDataExist.data.data;
-      let existingStud = serverStudant.map(st => [st.Name, st.DOB, st.Class, st.Section, st.ExamTheme, st.DemoExam]);
-      let newCheckUP = [...studantData, ...existingStud];
-      let hashes = {};
-      let message = []
-      newCheckUP.forEach(function (row, idx) {
+    // if (studantDataExist?.data && studantDataExist?.data?.status && studantDataExist.data.data.length > 0) {
+    //   let serverStudant = studantDataExist.data.data;
+    //   let existingStud = serverStudant.map(st => [st.Name, st.DOB, st.Class, st.Section, st.ExamTheme, st.DemoExam]);
+    //   let newCheckUP = [...studantData, ...existingStud];
+    //   let hashes = {};
+    //   let message = []
+    //   newCheckUP.forEach(function (row, idx) {
 
-        var hash = md5(row.slice(0, 2).join('~~~'));
+    //     var hash = md5(row.slice(0, 2).join('~~~'));
 
-        if (hash in hashes) {
-          hashes[hash].push(idx);
-        } else {
-          hashes[hash] = [idx];
-        }
-      })
+    //     if (hash in hashes) {
+    //       hashes[hash].push(idx);
+    //     } else {
+    //       hashes[hash] = [idx];
+    //     }
+    //   })
 
-      Object.keys(hashes).forEach(function (key, idx) {
-        var msg = '';
-        if (hashes[key].length > 1) {
-          msg = 'Rows ' + hashes[key].join(' and ') + ' are duplicate\n';
-          message.push(msg);
-          // console.log(msg);
-        }
-      });
-      if (message.length > 0) {
-        notify(`${"These studants are already in DB \'n" + message.join()}`, false);
-        return
-      }
+    //   Object.keys(hashes).forEach(function (key, idx) {
+    //     var msg = '';
+    //     if (hashes[key].length > 1) {
+    //       msg = 'Rows ' + hashes[key].join(' and ') + ' are duplicate\n';
+    //       message.push(msg);
+    //       // console.log(msg);
+    //     }
+    //   });
+    //   if (message.length > 0) {
+    //     notify(`${"These studants are already in DB \'n" + message.join()}`, false);
+    //     return
+    //   }
 
-      console.log("studantData", serverStudant, studantData, existingStud)
+    //   console.log("studantData", serverStudant, studantData, existingStud)
 
-    }
+    // }
     // return ;
 
 
 
-    let res = await uploadFile(JSON.stringify(serverData));
-    if (res?.data && res?.data?.status) {
-      localStorage.setItem('payment', JSON.stringify(res.data.data))
-      setStudanntData([])
-      navigate("/school-payment");
-      notify(`studant data uploaded.`, true)
-    } else {
-      notify(`please try again!.`, false)
-    }
+    // let res = await uploadFile(JSON.stringify(serverData));
+    uploadFile();
+    // if (res?.data && res?.data?.status) {
+    //   localStorage.setItem('payment', JSON.stringify(res.data.data))
+    //   setStudanntData([])
+    //   navigate("/school-payment");
+    //   notify(`studant data uploaded.`, true)
+    // } else {
+    //   notify(`please try again!.`, false)
+    // }
   };
 
-  const uploadFile = async file => {
-    let SCHOOLID = decodedSchoolData?.schoolsCode
+  const uploadFile = async () => {
+    // let SCHOOLID = decodedSchoolData?.schoolsCode
     // return await axios.post(`${API_BASE_URL}${UPLOAD_ENDPOINT}/${SCHOOLID}`, { fileData: file });
-    return await axios.post(`${UPLOAD_ENDPOINT}/${SCHOOLID}`, { fileData: file });
+    // return await axios.post(`${UPLOAD_ENDPOINT}/${SCHOOLID}`, { fileData: file });
+    console.log("student data", studantData);
+    let finalData = [];
+    let studantDataVal = [...studantData];
+    let errRows = [];
+    let invalidDate = false;
+    //  check the date validation
+    for (let i = 0; i < studantDataVal.length; i++) {
+      const regex = /^\d{4}-\d{2}-\d{2}$/;
+      if ((studantDataVal[i][1].match(regex) === null) || (classesdropdown.indexOf(parseInt(studantDataVal[i][2])) === -1) ||
+        (examThemedropdown.indexOf(studantDataVal[i][4]) === -1) || (['YES', 'NO'].indexOf(studantDataVal[i][5]) === -1)) {
+        invalidDate = true;
+        let arr = studantDataVal[i];
+        arr[arr.length - 1] = 'invalid';
+        studantDataVal[i] = [...arr];
+        errRows.push(i + 1);
+      } else {
+        let arr = studantDataVal[i];
+        arr[arr.length - 1] = 'valid';
+        studantDataVal[i] = [...arr];
+      }
+    }
+    setStudanntData([...studantDataVal]);
+    if (invalidDate) {
+      notify(`Please correct the respective  columns of row number ${errRows}`, false);
+      return;
+    } else {
+      for (let i = 0; i < studantData.length; i++) {
+        let resultset = {};
+        resultset['name'] = studantData[i][0];
+        resultset['dob'] = studantData[i][1];
+        resultset['className'] = studantData[i][2];
+        resultset['section'] = studantData[i][3];
+        resultset['examTheme'] = studantData[i][4];
+        resultset['demoExam'] = studantData[i][5];
+        resultset['schoolId'] = decodedSchoolData?.schoolsCode
+        finalData.push(resultset);
+      }
+      console.log("finalData", finalData);
+
+
+      return await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.uploadApi}`, finalData);
+    }
+
+
+
+
   };
   // Name  DOB  Class   Section ExamTheme MockTest
 
@@ -148,6 +196,10 @@ export default function SchoolUploadData() {
           let d = JSON.parse(contents)?.Sheet1;
           setHeaders(d.shift());
           correctData = d.map((exData, i) => [...exData.slice(0, 1), dayjs(ExcelDateToJSDate(exData[1])).format('YYYY-MM-DD'), ...exData.slice(2, 15)]);
+          console.log("correctData", correctData);
+
+          let correctDatawithErr = correctData.map((row, i) => [...row, 'valid']);
+          console.log("correctDatawithErr", correctDatawithErr);
           if (correctData.length <= MINIMUMROW) {
             notify(`this file must contain minimum ${MINIMUMROW} rows.`, false)
             return
@@ -158,7 +210,7 @@ export default function SchoolUploadData() {
           if (duplicateRows.length > 0) {
             notify(`${duplicateRows.join()}`, false)
           }
-          setStudanntData(correctData)
+          setStudanntData(correctDatawithErr);
 
         } catch (e) {
           notify(`file could not uploaded, please try again!.`, false)
@@ -203,14 +255,14 @@ export default function SchoolUploadData() {
       notify(`Please fill all fields!.`, false)
       return
     }
-    let cpyStudantData = [...studantData, [stName, stDOB, stClass, stSection, examTheme, demoExam]];
+    let cpyStudantData = [...studantData, [stName, stDOB, stClass, stSection, examTheme, demoExam, 'valid']];
 
-    setStName('');
-    setDOB('');
-    setClass('');
-    setexamTheme('');
-    setSection('');
-    setDemoExam('');
+    // setStName('');
+    // setDOB('');
+    // setClass('');
+    // setexamTheme('');
+    // setSection('');
+    // setDemoExam('');
     setStudanntData(cpyStudantData)
 
   }
@@ -773,7 +825,7 @@ export default function SchoolUploadData() {
                       {
                         studantData.map((tbData, i) => {
                           return (
-                            <tr>
+                            <tr className={tbData[6] === 'invalid' ? 'invalid' : 'valid'}>
                               <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[0] ?? ''} style={{
                                 "width": "90%",
                                 "padding": "6px 15px",
@@ -863,7 +915,7 @@ export default function SchoolUploadData() {
                                 }}
                                 className={`_tbls${i}`}
                                 disabled
-                                onChange={e => handleOnChangeCell(e, '4', i)}
+                                onChange={e => handleOnChangeCell(e, '5', i)}
 
                               /></td>
 
@@ -935,6 +987,15 @@ export default function SchoolUploadData() {
                       </tr>
                     </tbody>
                   </table>
+                </div>
+                <div>
+                  <h3>Points to keep in mind
+                    <ul>
+                      <li>Date of Exam should be in YYYY-MM-DD format</li>
+                      <li>Value of examTheme should be either ESD/ESDGREEN</li>
+                      <li>Value of mock test should be either YES/NO</li>
+                    </ul>
+                  </h3>
                 </div>
                 <div className="row my-3">
                   <button className="btn btn-primary mx-auto" style={{ width: '15rem' }} onClick={submitStudantData}>Save Student Data</button>

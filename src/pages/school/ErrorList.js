@@ -38,5 +38,37 @@ const Error = [
 		regex: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,20}$/,
 		message2: "Please enter valid email",
 	},
+	{
+		fieldNam: "coordinatingTeacherEmail",
+		message: "Please enter coordinating Teacher Email",
+		status: false,
+		regex: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,20}$/,
+		message2: "Please enter valid coordinating Teacher Email",
+	},
+	{
+		fieldNam: "phoneStd",
+		message: "Please enter phone number",
+		status: false
+	},
+	{
+		fieldNam: "postalAddress",
+		message: "Please enter postal address",
+		status: false
+	},
+	{
+		fieldNam: "district",
+		message: "Please enter district",
+		status: false
+	},
+	{
+		fieldNam: "coordinatingTeacher",
+		message: "Please enter coordinating Teacher",
+		status: false
+	},
+	{
+		fieldNam: "coordinatingTeacherMobile",
+		message: "Please enter coordinating Teacher's Mobile",
+		status: false
+	},
 ]
 export default Error

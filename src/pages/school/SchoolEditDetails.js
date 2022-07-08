@@ -8,7 +8,7 @@ import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 import Sidebar from "../main/sidebar";
-
+import Error from './ErrorList';
 
 export default function SchoolEditDetails() {
 
@@ -23,8 +23,76 @@ export default function SchoolEditDetails() {
 
   const [coordinatingTeacher, setcoordinatingTeacher] = useState("");
 
+
+
+  const [coordinatingTeacherEmail, setcoordinatingTeacherEmail] = useState("");
+  const [coordinatingTeacherMobile, setcoordinatingTeacherMobile] = useState("");
+  const [errorList, setErrorList] = useState(Error)
+  const [error_message, setError_message] = useState('');
+
+  const [RegisterationClicked, setRegisterationClicked] = useState(0);
+
+
+
+  const checkAllField = () => {
+    let arr = [postalAddress, phoneStd, district, coordinatingTeacher, coordinatingTeacherEmail, coordinatingTeacherMobile];
+    let arrKey = ['postalAddress', 'phoneStd', 'district', 'coordinatingTeacher', 'coordinatingTeacherEmail', 'coordinatingTeacherMobile'];
+    let err = '';
+    arr.forEach((value, index) => {
+      if (err === '') {
+        err = formValidate({ 'key': arrKey[index], 'value': value });
+      }
+    })
+    return err;
+  };
+
+  const formValidate = (e) => {
+    const { key, value } = e;
+    let err = '';
+    setError_message('');
+
+    switch (key) {
+      case "postalAddress":
+      case "district":
+      case "coordinatingTeacher":
+      case "coordinatingTeacherMobile":
+        if (value.length < 1)
+          err = (errorList.find(item => item.fieldNam === key).message);
+        break;
+      case "coordinatingTeacherEmail":
+        if (value.length === 0)
+          err = (errorList.find(item => item.fieldNam === key).message);
+        if (err === '') {
+          let item = errorList.find(item => item.fieldNam === key);
+          let regExp = RegExp(item.regex)
+          err = (regExp.test(value) ? "" : item.message2);
+        }
+        break;
+      case "phoneStd":
+        if (value.length === 0)
+          err = (errorList.find(item => item.fieldNam === key).message);
+        if (err === '') {
+          let item = errorList.find(item => item.fieldNam === key);
+          let regExp = RegExp(item.regex)
+          err = regExp.test(value) ? "" : item.message2;
+        }
+        break;
+      default:
+        break;
+    }
+    setError_message(err)
+    return err;
+  };
+
   const RegisterationApi = () => {
     // console.log("editschool", `${API_ADMIN_URL_2}${EDIT_SCHOOL_API}`);
+
+    setRegisterationClicked(1);
+    let err = checkAllField();
+    if (err)
+      return err;
+
+
     const editschooloption = {
       postaladdress: postalAddress,
       district: district,
@@ -328,8 +396,10 @@ export default function SchoolEditDetails() {
                   <label >Postal Address</label>
                   {/* <textarea name="address" placeholder="sample address" cols="30" rows="2"></textarea> */}
                   <textarea name="address" placeholder={decoded?.PostalAddress} cols="30" rows="2" required
-                    onChange={(postalAddress) =>
-                      setpostalAddress(postalAddress.target.value)
+                    onChange={(postalAddress) => {
+                      setpostalAddress(postalAddress.target.value);
+                      formValidate({ 'key': 'postalAddress', 'value': postalAddress.target.value });
+                    }
                     }>
 
                   </textarea>
@@ -346,7 +416,10 @@ export default function SchoolEditDetails() {
                         placeholder={decoded?.PhoneStd}
                         name="phone"
                         required
-                        onChange={(phoneStd) => setphoneStd(phoneStd.target.value)}
+                        onChange={(phoneStd) => {
+                          setphoneStd(phoneStd.target.value);
+                          formValidate({ 'key': 'phoneStd', 'value': phoneStd.target.value });
+                        }}
                       />
                     </div>
                   </div>
@@ -405,7 +478,10 @@ export default function SchoolEditDetails() {
                         placeholder={decoded?.district}
                         name="phone"
                         required
-                        onChange={(district) => setdistrict(district.target.value)}
+                        onChange={(district) => {
+                          setdistrict(district.target.value);
+                          formValidate({ 'key': 'district', 'value': district.target.value });
+                        }}
                       />
                     </div>
                   </div>
@@ -418,9 +494,10 @@ export default function SchoolEditDetails() {
                         placeholder={decoded?.coordinating_teacher}
                         name="uname"
                         required
-                        onChange={(coordinatingTeacher) =>
+                        onChange={(coordinatingTeacher) => {
                           setcoordinatingTeacher(coordinatingTeacher.target.value)
-                        }
+                          formValidate({ 'key': 'coordinatingTeacher', 'value': coordinatingTeacher.target.value })
+                        }}
                       />
                     </div>
                   </div>
@@ -429,16 +506,31 @@ export default function SchoolEditDetails() {
                 <div className="row">
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label >Email of the Coordinate Teacher</label><input type="email" name="coemail" placeholder="email@techer.in" required />
+                      <label >Email of the Coordinate Teacher</label>
+                      <input type="email" name="coemail" placeholder="email@techer.in"
+                        onChange={(coordinatingTeacherEmail) => {
+                          setcoordinatingTeacherEmail(coordinatingTeacherEmail.target.value);
+                          formValidate({ 'key': 'coordinatingTeacherEmail', 'value': coordinatingTeacherEmail.target.value })
+                        }}
+                        required />
                     </div>
                   </div>
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label >Mobile of the Coordinate Teacher</label><input type="text" name="comobile" placeholder="9xxxxxxxxx" required />
+                      <label >Mobile of the Coordinate Teacher</label>
+                      <input type="text" name="comobile" placeholder="9xxxxxxxxx"
+                        onChange={(coordinatingTeacherMobile) => {
+                          setcoordinatingTeacherMobile(coordinatingTeacherMobile.target.value);
+                          formValidate({ 'key': 'coordinatingTeacherMobile', 'value': coordinatingTeacherMobile.target.value });
+                        }}
+                        required />
                     </div>
                   </div>
                 </div>
                 <div className="row my-3">
+                  {RegisterationClicked === 1 && error_message && (<div className="alert alert-danger w-100" role="alert">
+                    {error_message}
+                  </div>)}
                   <div className="text-center">
                     <button className="btn btn-primary mx-auto" style={{ width: '15rem' }} onClick={RegisterationApi}>Save &amp; Proceed</button>
                   </div>
