@@ -73,7 +73,11 @@ export default function SchoolUploadData() {
     }
 
 
-    let studantDataExist = await axios.post(`${API_BASE_URL}${API_END_POINTS.getStudantData}`, {
+    // let studantDataExist = await axios.post(`${API_BASE_URL}${API_END_POINTS.getStudantData}`, {
+    //   "SchoolID": decodedSchoolData?.schoolsCode
+    // })
+
+    let studantDataExist = await axios.post(`${API_END_POINTS.getStudantData}`, {
       "SchoolID": decodedSchoolData?.schoolsCode
     })
 
@@ -127,7 +131,8 @@ export default function SchoolUploadData() {
 
   const uploadFile = async file => {
     let SCHOOLID = decodedSchoolData?.schoolsCode
-    return await axios.post(`${API_BASE_URL}${UPLOAD_ENDPOINT}/${SCHOOLID}`, { fileData: file });
+    // return await axios.post(`${API_BASE_URL}${UPLOAD_ENDPOINT}/${SCHOOLID}`, { fileData: file });
+    return await axios.post(`${UPLOAD_ENDPOINT}/${SCHOOLID}`, { fileData: file });
   };
   // Name  DOB  Class   Section ExamTheme MockTest
 

@@ -33,7 +33,7 @@ export default function SchoolEditDetails() {
       code: decoded?.schoolsCode
     };
     axios
-      //.post(`${API_BASE_URL}${API_END_POINTS?.updateShoolData}`, editschooloption)
+      // .post(`${API_BASE_URL}${API_END_POINTS?.updateShoolData}`, editschooloption)
       .post(`${API_END_POINTS?.updateShoolData}`, editschooloption)
       .then((res) => {
         console.log("hhhhhhh", res.data);

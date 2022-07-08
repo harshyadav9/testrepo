@@ -102,6 +102,7 @@ export default function SchoolPayment() {
                 </tfoot>
               </table>
             </div>
+
             {/* Variants Use contextual classe
           {paymentData.map((theme) => (
             <>
@@ -146,5 +147,6 @@ export default function SchoolPayment() {
         </div>
       </div>
     </div>
+
   );
 }
