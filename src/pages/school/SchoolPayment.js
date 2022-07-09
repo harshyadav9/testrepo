@@ -34,7 +34,10 @@ export default function SchoolPayment() {
   useEffect(() => {
 
     const getPaymentData = async () => {
-      const paymentDetails = await axios.post(`${API_BASE_URL}${API_END_POINTS.getpaymentdetails}`, {
+      // const paymentDetails = await axios.post(`${API_BASE_URL}${API_END_POINTS.getpaymentdetails}`, {
+      //   school_code: state.school_code
+      // }
+      const paymentDetails = await axios.post(`${API_END_POINTS.getpaymentdetails}`, {
         school_code: state.school_code
       }
       );
@@ -107,7 +110,8 @@ export default function SchoolPayment() {
   const handlePayment = async (e) => {
     e.preventDefault();
     let SCHOOLID = decodedSchoolData?.school_code
-    let paymentStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.school_code });
+    // let paymentStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.school_code });
+    let paymentStatus = await axios.post(`${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.school_code });
     if (paymentStatus && paymentStatus.data.status) {
       notify(`Studant payment status changed!.`, true)
       navigate("/school-slot");

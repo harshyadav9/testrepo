@@ -177,7 +177,8 @@ export default function SchoolSlot() {
         ],
 
       }
-      let response = await axios.post(`${API_BASE_URL}${API_END_POINTS.bookSlot}`, payload);
+      // let response = await axios.post(`${API_BASE_URL}${API_END_POINTS.bookSlot}`, payload);
+      let response = await axios.post(`${API_END_POINTS.bookSlot}`, payload);
       console.log('test', response)
       if (response && response?.data && response?.data?.status) {
         notify('Slot booked successfully', true)
