@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
 import uploadfiles from "../../assets/icons/upload_files.svg";
@@ -11,6 +11,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router";
 import Sidebar from "../main/sidebar";
+import { StudentDataContext } from "../context/datacontext";
 var md5 = require('md5');
 
 const MINIMUMROW = 4;
@@ -41,6 +42,7 @@ function to_json(workbook) {
 
 
 export default function SchoolUploadData() {
+  const { state, dispatch } = useContext(StudentDataContext);
   const [file, setFile] = useState(null);
   const [studantData, setStudanntData] = useState([]);
   const [duplicateRows, setDuplicateRows] = useState([]);
@@ -57,7 +59,9 @@ export default function SchoolUploadData() {
   const examThemedropdown = ['ESD', 'ESDGREEN'];
   const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
   let token = userToken;
-  let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
+  // let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
+
+  let decodedSchoolData = { ...state };
 
 
   const submitStudantData = async e => {
@@ -947,44 +951,8 @@ export default function SchoolUploadData() {
                         })
                       }
 
-                      <tr>
-                        <td>Priya</td>
-                        <td>25-05-2012</td>
-                        <td>IV</td>
-                        <td>A</td>
-                        <td>Demo</td>
-                        <td>Dummy</td>
-                        <td>
-                          <div className="btn-group btn-group-sm" role="group">
-                            <button type="button" className="btn btn-link"><svg className="icon">
-                              <use xlinkHref="#edit"></use>
-                            </svg></button>
-                            <div className="vr"></div>
-                            <button type="button" className="btn btn-link"><svg className="icon">
-                              <use xlinkHref="#delete"></use>
-                            </svg></button>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Prakash</td>
-                        <td>15-02-2011</td>
-                        <td>IV</td>
-                        <td>B</td>
-                        <td>Demo</td>
-                        <td>Dummy</td>
-                        <td>
-                          <div className="btn-group btn-group-sm" role="group">
-                            <button type="button" className="btn btn-link"><svg className="icon">
-                              <use xlinkHref="#edit"></use>
-                            </svg></button>
-                            <div className="vr"></div>
-                            <button type="button" className="btn btn-link"><svg className="icon">
-                              <use xlinkHref="#delete"></use>
-                            </svg></button>
-                          </div>
-                        </td>
-                      </tr>
+
+
                     </tbody>
                   </table>
                 </div>
@@ -994,6 +962,7 @@ export default function SchoolUploadData() {
                       <li>Date of Exam should be in YYYY-MM-DD format</li>
                       <li>Value of examTheme should be either ESD/ESDGREEN</li>
                       <li>Value of mock test should be either YES/NO</li>
+                      <li>Value of class  should be btween 4,5,6,7,8,9,10,11,12,UG,PG</li>
                     </ul>
                   </h3>
                 </div>

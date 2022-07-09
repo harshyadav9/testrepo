@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Header from "../main/Header";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
 import { useNavigate } from "react-router";
 import "../../assets/css/style_new.css";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
+import { StudentDataContext } from "../context/datacontext";
 
 
 export default function SchoolLogin() {
+  const { state, dispatch } = useContext(StudentDataContext);
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
   const navigate = useNavigate();
@@ -51,9 +54,10 @@ export default function SchoolLogin() {
         "username": user,
         "password": pass
       }
+      console.log("serverData", serverData)
       axios
-        // .post(`${API_BASE_URL}${API_END_POINTS?.login}`, serverData)
-        .post(`${API_END_POINTS?.login}`, serverData)
+        .post(`${API_BASE_URL}${API_END_POINTS?.login}`, serverData)
+        // .post(`${API_END_POINTS?.login}`, serverData)
         .then((res) => {
           if (res.data) {
             const { data: {
@@ -69,8 +73,25 @@ export default function SchoolLogin() {
             navigate("/school-edit-details");
             alert("login successfull!");
             // history.push()
-            localStorage.removeItem("token");
-            localStorage.setItem("token", res?.data?.token);
+            // localStorage.removeItem("token");
+            // localStorage.setItem("token", res?.data?.token);
+            // let token = res?.data?.token;
+            // let decoded = token !== "" ? jwt_decode(token) : {};
+            dispatch({
+              type: 'ADDINFO',
+              school_code: serverData.username,
+              schoolname: res.data.data.schoolname,
+              country: res.data.data.country,
+              state: res.data.data.state,
+              pincode: res.data.data.pincode,
+              postal_address: res.data.data.PostalAddress,
+              phonestd: res.data.data.PhoneStd,
+              mobile: res.data.data.mobile,
+              principal_name: res.data.data.principalname,
+              email: res.data.data.email,
+              district: res.data.data.district,
+              coordinating_teacher: res.data.data.coordinating_teacher
+            });
 
           } else {
             alert("something is rong");

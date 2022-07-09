@@ -31,5 +31,9 @@ export const API_END_POINTS = {
 	getStudantStatus: 'api/get-studant-status',
 	getpaymentdetails: 'api/getpaymentdetails',
 	uploadApi: 'terry/olympiad/uploadData',
+	// slotting api endpoints
+	getslots: 'terry/olympiad/getSlotsData',
+	submitslot: 'terry/olympiad/updateSchoolAndSlotDetail',
+
 
 }

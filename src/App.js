@@ -28,110 +28,113 @@ import StudentChangePassword from "./pages/student/StudentChangePassword";
 import StudentForget from "./pages/student/StudentForget";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import StudentDataProvider from "./pages/context/datacontext";
 function App() {
   return (
     <>
       <BrowserRouter basename="/">
-        <Header />
-        <Routes>
-          {/* School */}
-          <Route path="/" element={<Home />} exact />
-          <Route path="/school-login" element={<SchoolLogin />} exact />
-          <Route
-            path="/school-registration"
-            element={<SchoolRegistration />}
-            exact
-          />
-          <Route
-            path="/school-edit-details"
-            element={<SchoolEditDetails />}
-            exact
-          />
-          <Route
-            path="/school-upload-data"
-            element={<SchoolUploadData />}
-            exact
-          />
-          <Route path="/school-payment" element={<SchoolPayment />} exact />
-          <Route path="/school-slot" element={<SchoolSlot />} exact />
-          <Route
-            path="/school-application-status"
-            element={<SchoolApplicationStatus />}
-            exact
-          />
-          <Route
-            path="/school-helpdesk-ticket"
-            element={<SchoolHelpdeskTicket />}
-            exact
-          />
-          <Route
-            path="/school-view-helpdesk-ticket"
-            element={<SchoolViewHelpdeskTicket />}
-            exact
-          />
-          <Route
-            path="/school-certificate"
-            element={<SchoolCertificate />}
-            exact
-          />
-          <Route
-            path="/school-change-password"
-            element={<SchoolChangePassword />}
-            exact
-          />
-          <Route path="/school-forget" element={<SchoolForget />} exact />
+        <StudentDataProvider>
+          <Header />
+          <Routes>
+            {/* School */}
+            <Route path="/" element={<Home />} exact />
+            <Route path="/school-login" element={<SchoolLogin />} exact />
+            <Route
+              path="/school-registration"
+              element={<SchoolRegistration />}
+              exact
+            />
+            <Route
+              path="/school-edit-details"
+              element={<SchoolEditDetails />}
+              exact
+            />
+            <Route
+              path="/school-upload-data"
+              element={<SchoolUploadData />}
+              exact
+            />
+            <Route path="/school-payment" element={<SchoolPayment />} exact />
+            <Route path="/school-slot" element={<SchoolSlot />} exact />
+            <Route
+              path="/school-application-status"
+              element={<SchoolApplicationStatus />}
+              exact
+            />
+            <Route
+              path="/school-helpdesk-ticket"
+              element={<SchoolHelpdeskTicket />}
+              exact
+            />
+            <Route
+              path="/school-view-helpdesk-ticket"
+              element={<SchoolViewHelpdeskTicket />}
+              exact
+            />
+            <Route
+              path="/school-certificate"
+              element={<SchoolCertificate />}
+              exact
+            />
+            <Route
+              path="/school-change-password"
+              element={<SchoolChangePassword />}
+              exact
+            />
+            <Route path="/school-forget" element={<SchoolForget />} exact />
 
 
-          {/* Student */}
-          <Route path="/" element={<Home />} exact />
-          <Route path="/student-login" element={<StudentLogin />} exact />
-          <Route
-            path="/student-registration"
-            element={<StudentRegistration />}
-            exact
-          />
-          <Route
-            path="/student-edit-details"
-            element={<StudentEditDetails />}
-            exact
-          />
-          <Route
-            path="/student-upload-data"
-            element={<StudentUploadData />}
-            exact
-          />
-          <Route path="/student-payment" element={<StudentPayment />} exact />
-          <Route path="/student-slot" element={<StudentSlot />} exact />
-          <Route
-            path="/student-application-status"
-            element={<StudentApplicationStatus />}
-            exact
-          />
-          <Route
-            path="/student-helpdesk-ticket"
-            element={<StudentHelpdeskTicket />}
-            exact
-          />
-          <Route
-            path="/student-view-helpdesk-ticket"
-            element={<StudentViewHelpdeskTicket />}
-            exact
-          />
-          <Route
-            path="/student-certificate"
-            element={<StudentCertificate />}
-            exact
-          />
-           <Route
-            path="/student-change-password"
-            element={<StudentChangePassword />}
-            exact
-          />
-          <Route path="/student-forget" element={<StudentForget />} exact />
+            {/* Student */}
+            <Route path="/" element={<Home />} exact />
+            <Route path="/student-login" element={<StudentLogin />} exact />
+            <Route
+              path="/student-registration"
+              element={<StudentRegistration />}
+              exact
+            />
+            <Route
+              path="/student-edit-details"
+              element={<StudentEditDetails />}
+              exact
+            />
+            <Route
+              path="/student-upload-data"
+              element={<StudentUploadData />}
+              exact
+            />
+            <Route path="/student-payment" element={<StudentPayment />} exact />
+            <Route path="/student-slot" element={<StudentSlot />} exact />
+            <Route
+              path="/student-application-status"
+              element={<StudentApplicationStatus />}
+              exact
+            />
+            <Route
+              path="/student-helpdesk-ticket"
+              element={<StudentHelpdeskTicket />}
+              exact
+            />
+            <Route
+              path="/student-view-helpdesk-ticket"
+              element={<StudentViewHelpdeskTicket />}
+              exact
+            />
+            <Route
+              path="/student-certificate"
+              element={<StudentCertificate />}
+              exact
+            />
+            <Route
+              path="/student-change-password"
+              element={<StudentChangePassword />}
+              exact
+            />
+            <Route path="/student-forget" element={<StudentForget />} exact />
 
-          
-        </Routes>
-        <Footer />
+
+          </Routes>
+          <Footer />
+        </StudentDataProvider>
       </BrowserRouter>
     </>
   );

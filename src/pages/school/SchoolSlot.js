@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
 import { Colors } from "../../assets/css/color";
-import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
+import { API_BASE_URL, API_END_POINTS, API_BASE_JAVA_URL } from "../../apis/api";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
@@ -18,13 +18,23 @@ export default function SchoolSlot() {
   const [availableSlots, setavailableSlots] = useState([]);
   const [studantWithSlot, setstudantWithSlot] = useState([]);
   const [serverPayLoad, setPayload] = useState([])
+
+  const [serverPayloadData, setServerPayloadData] = useState([]);
   const navigation = useNavigate()
 
   let decodedSchoolData = {}
   const getSlots = async () => {
-    let response = await axios.post(`${API_BASE_URL}${API_END_POINTS.getTimeSlot}`);
-    if (response?.data && response.data?.status) {
-      setSlot(response.data.list)
+    // let response = await axios.post(`${API_BASE_URL}${API_END_POINTS.getTimeSlot}`);
+    let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
+      params: {
+        schoolId: 'GOAE030002',
+        mode: 'ONLINE'
+      }
+    });
+
+    if (response?.data && response.status) {
+      // setSlot(response.data.list)
+      setSlot(response.data);
     }
   }
 
@@ -64,12 +74,57 @@ export default function SchoolSlot() {
       console.log("Error")
     }
   }
+
+  //  logic for choose slot 
+
+  const chooseSlot = (test, value) => {
+    // setServerPayloadData
+    let currentSlectedSlot = [];
+    let servercopy = [];
+    let xfilter = slots.filter(s => s.examTheme === test)
+    if (xfilter && xfilter.length > 0) {
+      //  current id slot chosen
+      currentSlectedSlot = xfilter.filter(t => t.slotId === +value)[0];
+    }
+    if (serverPayloadData.filter(v => v.examTheme === test).length > 0) {
+      let indexVal = serverPayloadData.findIndex((item) => item.examTheme === test);
+      servercopy = [...serverPayloadData];
+      servercopy.splice(indexVal, 1);
+      servercopy.push(currentSlectedSlot);
+      setServerPayloadData(servercopy);
+    } else {
+      setServerPayloadData(serverPayloadData.concat(currentSlectedSlot));
+    }
+
+
+
+
+  }
+  //  submit slots
+
+  const submitSlots = async () => {
+
+    let response = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.submitslot}`, serverPayloadData);
+    console.log('submit', response)
+    if (response && response?.data && response?.status) {
+      notify('Slot booked successfully', true);
+      // navigation('/school-application-status')
+    }
+    else {
+      notify('Please select ESD OR EADGREEN ')
+    }
+    return;
+  }
+
+
+
+
   const setTestSlot = (test, value) => {
     let currentSlectedSlot = [];
 
-    let xfilter = slots.filter(s => s.Examtheme === test)
+    let xfilter = slots.filter(s => s.examTheme === test)
     if (xfilter && xfilter.length > 0) {
-      currentSlectedSlot = xfilter.filter(t => t.SlotID === +value)
+      currentSlectedSlot = xfilter.filter(t => t.slotId === +value)
     }
     console.log('currentSlectedSlot', currentSlectedSlot, value)
 
@@ -78,7 +133,7 @@ export default function SchoolSlot() {
       let Sfilter = studantWithSlot.filter(avs => avs.theme === test)
       console.log("Sfilter", Sfilter)
 
-      if (Sfilter.length > 0 && currentSlectedSlot[0].SeatAvailable > Sfilter[0].totalStudant) {
+      if (Sfilter.length > 0 && currentSlectedSlot[0].seatAvailable > Sfilter[0].totalStudant) {
         let tim = {
           theme: Sfilter[0]?.theme,
           time: `${dayjs(currentSlectedSlot[0].DateofExam).format('DD-MM-YYYY')} | ${currentSlectedSlot[0]?.Slotdatetime}`,
@@ -342,84 +397,83 @@ export default function SchoolSlot() {
               <div className="shadow bg-white rounded-16">
                 <div className="p-4 ">
                   <div className="row">
-                    <div className="col-sm">
-                      <div className="form-wrapper">
-                        <label>Slot for Examination Test 1st</label>
 
-                        {/* <select name="">
-                          <option value="">item-1</option>
-                          <option value="">item-2</option>
-                          <option value="">item-3</option>
-                        </select> */}
+                    {
+                      slots.filter(s => s.examTheme === "ESD").length !== 0 &&
+                      (
+                        <div className="col-sm">
+                          <div className="form-wrapper">
+                            <label>Slot for Examination Test 1st</label>
 
 
-                        <select onChange={e => setTestSlot('ESD', e.target.value)}>
-                          <option value="volvo">Select Slot</option>
-                          {
-                            slots && Array.isArray(slots) ? slots.filter(s => s.Examtheme === "ESD").map(slot => (
-                              <option value={slot.SlotID}>{dayjs(slot?.DateofExam).format('DD-MM-YYYY')}/{slot?.Slotdatetime}</option>
-                            )) : null
-                          }
+                            <select onChange={e => chooseSlot('ESD', e.target.value)}>
+                              <option value="volvo" >Select Slot</option>
+                              {
+                                slots && Array.isArray(slots) ? slots.filter(s => s.examTheme === "ESD").map(slot => (
+                                  // <option value={slot.slotId}>{dayjs(slot?.dateOfExam).format('DD-MM-YYYY')}/{slot?.slotDatetime}</option>
+                                  <option value={slot.slotId}>{dayjs(slot?.dateOfExam).format('DD-MM-YYYY')}/{slot?.slotDatetime}</option>
+                                )) : null
+                              }
 
 
-                        </select>
+                            </select>
 
 
-
-                        {/* <a href="#" className="check-slot d-inline-block mt-2 font-bold" onClick={showModal}><svg className="icon align-middle">
-                          <use xlinkHref="#check-slot"></use>
-                        </svg> <span className="align-middle">Check Slot</span></a> */}
-
-                        <a href="javascript:void(0)" className="check-slot d-inline-block mt-2 font-bold" data-toggle="modal" data-target="#myModalexam"
-                          onClick={_ => togglePop(slots.filter(s => s.Examtheme === "ESD"))}
-                        ><svg className="icon align-middle">
-                            <use xlinkHref="#check-slot"></use>
-                          </svg> <span className="align-middle">Check Slot</span></a>
+                            <a href="javascript:void(0)" className="check-slot d-inline-block mt-2 font-bold" data-toggle="modal" data-target="#myModalexam"
+                              onClick={_ => togglePop(slots.filter(s => s.examTheme === "ESD"))}
+                            ><svg className="icon align-middle">
+                                <use xlinkHref="#check-slot"></use>
+                              </svg> <span className="align-middle">Check Slot</span></a>
 
 
-                      </div>
-                    </div>
-                    <div className="col-sm">
-                      <div className="form-wrapper">
-                        <div className="form-wrapper">
-                          <label>Slot for Examination Test 2nd</label>
-
-                          {/* <select name="">
-                            <option value="">item-1</option>
-                            <option value="">item-2</option>
-                            <option value="">item-3</option>
-                          </select> */}
-
-                          <select class="dropdown-school" id="cars" onChange={e => setTestSlot('ESDGREEN', e.target.value)}>
-                            <option value="volvo">Select Slot</option>
-
-                            {
-                              slots && Array.isArray(slots) ? slots.filter(s => s.Examtheme === "ESDGREEN").map(slot => (
-                                <option value={slot.SlotID}>{dayjs(slot?.DateofExam).format('DD-MM-YYYY')} / {slot?.Slotdatetime}</option>
-                              )) : null
-                            }
-                          </select>
-
-
-                          {/* <a href="#" className="check-slot d-inline-block mt-2 font-bold" onClick={showModal}><svg className="icon align-middle">
-                            <use xlinkHref="#check-slot"></use>
-                          </svg> <span className="align-middle">Check Slot</span></a> */}
-
-
-                          <a href="javascript:void(0)" className="check-slot d-inline-block mt-2 font-bold" data-toggle="modal" data-target="#myModalexam" onClick={_ => togglePop(slots.filter(s => s.Examtheme === "ESDGREEN"))}>
-                            <svg className="icon align-middle">
-                              <use xlinkHref="#check-slot"></use>
-                            </svg> <span className="align-middle">Check Slot</span>
-                          </a>
-
-
-
+                          </div>
                         </div>
-                      </div>
-                    </div>
+                      )
+
+                    }
+
+
+
+                    {
+                      slots.filter(s => s.examTheme === "ESDGREEN").length !== 0 &&
+                      (
+                        <div className="col-sm">
+                          <div className="form-wrapper">
+                            <div className="form-wrapper">
+                              <label>Slot for Examination Test 2nd</label>
+
+                              <select class="dropdown-school" id="cars" onChange={e => chooseSlot('ESDGREEN', e.target.value)}>
+                                <option value="volvo" >Select Slot</option>
+
+                                {
+                                  slots && Array.isArray(slots) ? slots.filter(s => s.examTheme === "ESDGREEN").map(slot => (
+                                    <option value={slot.slotId}>{dayjs(slot?.dateOfExam).format('DD-MM-YYYY')} / {slot?.slotDatetime}</option>
+                                  )) : null
+                                }
+                              </select>
+
+
+
+
+
+                              <a href="javascript:void(0)" className="check-slot d-inline-block mt-2 font-bold" data-toggle="modal" data-target="#myModalexam" onClick={_ => togglePop(slots.filter(s => s.examTheme === "ESDGREEN"))}>
+                                <svg className="icon align-middle">
+                                  <use xlinkHref="#check-slot"></use>
+                                </svg> <span className="align-middle">Check Slot</span>
+                              </a>
+
+
+
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    }
+
+
                   </div>
                   <div className="row">
-                    <div className="col-sm-6">
+                    <div className="col-sm">
                       <div className="form-wrapper">
                         <label>Slot of Mock Test</label>
                         {/* <select name="">
@@ -428,12 +482,12 @@ export default function SchoolSlot() {
                           <option value="">item-3</option>
                         </select> */}
 
-                        <select class="dropdown-school" id="cars" onChange={e => setTestSlot('MOCK', e.target.value)}>
-                          <option value="volvo">Select Slot</option>
+                        <select class="dropdown-school" id="cars" onChange={e => chooseSlot('MOCK', e.target.value)}>
+                          <option value="volvo" >Select Slot</option>
 
                           {
-                            slots && Array.isArray(slots) ? slots.filter(s => s.Examtheme === "MOCK").map(slot => (
-                              <option value={slot.SlotID}>{dayjs(slot?.DateofExam).format('DD-MM-YYYY')} / {slot?.Slotdatetime}</option>
+                            slots && Array.isArray(slots) ? slots.filter(s => s.examTheme === "MOCK").map(slot => (
+                              <option value={slot.slotId}>{dayjs(slot?.dateOfExam).format('DD-MM-YYYY')} / {slot?.slotDatetime}</option>
                             )) : null
                           }
                         </select>
@@ -443,7 +497,7 @@ export default function SchoolSlot() {
                           <use xlinkHref="#check-slot"></use>
                         </svg> <span className="align-middle">Check Slot</span></a> */}
 
-                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModalmock" onClick={_ => togglePop(slots.filter(s => s.Examtheme === "MOCK"))}>
+                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModalmock" onClick={_ => togglePop(slots.filter(s => s.examTheme === "MOCK"))}>
                           <svg className="icon align-middle">
                             <use xlinkHref="#check-slot"></use>
                           </svg> <span className="align-middle">Check Slot</span>
@@ -455,7 +509,7 @@ export default function SchoolSlot() {
                   </div>
                   <div className="row my-3">
                     <div className="text-center">
-                      <button className="btn btn-primary mx-auto">Book slot for exam and mock test</button>
+                      <button className="btn btn-primary mx-auto" onClick={submitSlots}>Book slot for exam and mock test</button>
                     </div>
                   </div>
                   {/* <Slotmodal show={show} /> */}
@@ -484,9 +538,9 @@ export default function SchoolSlot() {
                                 {
                                   availableSlots && Array.isArray(availableSlots) ? availableSlots.map(slot => (
                                     <tr>
-                                      <td>{dayjs(slot.DateofExam).format('DD-MM-YYYY')}</td>
-                                      <td>{slot?.Slotdatetime}</td>
-                                      <td>{slot?.SeatAvailable}</td>
+                                      <td>{dayjs(slot.dateOfExam).format('DD-MM-YYYY')}</td>
+                                      <td>{slot?.slotDatetime}</td>
+                                      <td>{slot?.seatAvailable}</td>
                                     </tr>
                                   )) : null
                                 }

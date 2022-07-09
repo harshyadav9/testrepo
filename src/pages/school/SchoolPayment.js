@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
 import "../../assets/css/style_new.css";
@@ -11,6 +11,7 @@ import { notify } from '../../Utills'
 import { useNavigate } from "react-router";
 
 import axios from "axios";
+import { StudentDataContext } from "../context/datacontext";
 
 export default function SchoolPayment() {
   let paymentData = {};
@@ -23,6 +24,7 @@ export default function SchoolPayment() {
 
   const navigate = useNavigate();
   const [paymentStatus, setPaymentStatus] = useState([]);
+  const { state, dispatch } = useContext(StudentDataContext);
 
 
 
@@ -32,7 +34,10 @@ export default function SchoolPayment() {
   useEffect(() => {
 
     const getPaymentData = async () => {
-      const paymentDetails = await axios.get(`${API_BASE_URL}${API_END_POINTS.getpaymentdetails}`);
+      const paymentDetails = await axios.post(`${API_BASE_URL}${API_END_POINTS.getpaymentdetails}`, {
+        school_code: state.school_code
+      }
+      );
       try {
         console.log("paymentDetails", paymentDetails);
         if (paymentDetails?.status === 200 && paymentDetails?.data?.status) {
@@ -70,22 +75,25 @@ export default function SchoolPayment() {
   }
 
   try {
-    const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
-    let token = userToken;
-    let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
+    // const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
+    // let token = userToken;
+    // let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
+
+    let decodedSchoolData = { ...state };
+
     currency = decodedSchoolData.country === 'India' ? 'INR' : "$"
     console.log("decodedSchoolData", decodedSchoolData)
   } catch (e) {
     console.log('e', e)
   }
-  try {
-    const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
-    let token = userToken;
-    decodedSchoolData = token !== "" ? jwt_decode(token) : {};
+  // try {
+  //   const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
+  //   let token = userToken;
+  //   decodedSchoolData = token !== "" ? jwt_decode(token) : {};
 
-  } catch (e) {
+  // } catch (e) {
 
-  }
+  // }
 
 
 
@@ -98,8 +106,8 @@ export default function SchoolPayment() {
 
   const handlePayment = async (e) => {
     e.preventDefault();
-    let SCHOOLID = decodedSchoolData?.schoolsCode
-    let paymentStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.schoolsCode });
+    let SCHOOLID = decodedSchoolData?.school_code
+    let paymentStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.school_code });
     if (paymentStatus && paymentStatus.data.status) {
       notify(`Studant payment status changed!.`, true)
       navigate("/school-slot");

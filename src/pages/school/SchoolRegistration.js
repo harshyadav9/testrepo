@@ -150,8 +150,8 @@ export default function SchoolRegistration() {
 
   // console.log("Error",Error)
   const getCountry = async () => {
-    // const countryList = await axios.get(`${API_BASE_URL}${API_END_POINTS.getCountry}`);
-    const countryList = await axios.get(`${API_END_POINTS.getCountry}`);
+    const countryList = await axios.get(`${API_BASE_URL}${API_END_POINTS.getCountry}`);
+    //const countryList = await axios.get(`${API_END_POINTS.getCountry}`);
     try {
 
       if (countryList?.status == 200 && countryList?.data?.status) {
@@ -197,8 +197,8 @@ export default function SchoolRegistration() {
       countryCode: data.country
     };
     axios
-      // .post(`${API_BASE_URL}${API_END_POINTS?.saveNewSchool}`, RegisterationOptions)
-      .post(`${API_END_POINTS?.saveNewSchool}`, RegisterationOptions)
+      .post(`${API_BASE_URL}${API_END_POINTS?.saveNewSchool}`, RegisterationOptions)
+      //.post(`${API_END_POINTS?.saveNewSchool}`, RegisterationOptions)
       .then((res) => {
 
         if (res.data) {
@@ -217,8 +217,8 @@ export default function SchoolRegistration() {
   };
   const getCityState = async (countryCode) => {
     const endPoint = countryCode === 'IN' ? API_END_POINTS.getIndianState : API_END_POINTS.getInternationalCities + `'${countryCode}'`
-    // const cityStateList = await axios.get(`${API_BASE_URL}${endPoint}`);
-    const cityStateList = await axios.get(`${endPoint}`);
+    const cityStateList = await axios.get(`${API_BASE_URL}${endPoint}`);
+    //const cityStateList = await axios.get(`${endPoint}`);
     if (cityStateList.status === 200 && cityStateList.data.status) {
       setCityStateList(cityStateList.data.list)
     } else {
@@ -245,8 +245,8 @@ export default function SchoolRegistration() {
         "state": cityState,
         "pincode": searchPin
       }
-      //const data = await axios.post(`${API_BASE_URL}${API_END_POINTS.getIndainSchools}`, serverData);
-      const data = await axios.post(`${API_END_POINTS.getIndainSchools}`, serverData);
+      const data = await axios.post(`${API_BASE_URL}${API_END_POINTS.getIndainSchools}`, serverData);
+      //const data = await axios.post(`${API_END_POINTS.getIndainSchools}`, serverData);
       if (data.status === 200 && data.data.status) {
         setExistingSchool(data.data.list)
       } else {
@@ -257,8 +257,8 @@ export default function SchoolRegistration() {
         "city": cityState,
         "pincode": searchPin
       }
-      // const data = await axios.post(`${API_BASE_URL}${API_END_POINTS.getInternationalSchools}`, serverData);
-      const data = await axios.post(`${API_END_POINTS.getInternationalSchools}`, serverData);
+      const data = await axios.post(`${API_BASE_URL}${API_END_POINTS.getInternationalSchools}`, serverData);
+      //const data = await axios.post(`${API_END_POINTS.getInternationalSchools}`, serverData);
       if (data.status === 200 && data.data.status) {
         setExistingSchool(data.data.list)
       } else {
@@ -274,8 +274,8 @@ export default function SchoolRegistration() {
       schoolscode: schoolcode,
       isLocal: isIndain
     }
-    //  const responseData = await axios.post(`${API_BASE_URL}${API_END_POINTS.getSchoolDetail}`, serverData);
-    const responseData = await axios.post(`${API_END_POINTS.getSchoolDetail}`, serverData);
+    const responseData = await axios.post(`${API_BASE_URL}${API_END_POINTS.getSchoolDetail}`, serverData);
+    //const responseData = await axios.post(`${API_END_POINTS.getSchoolDetail}`, serverData);
     if (responseData.status === 200 && responseData.data.status) {
       const schoolDetail = responseData.data.schoolDetail;
 
@@ -817,10 +817,10 @@ export default function SchoolRegistration() {
                     <div className="form-wrapper">
                       <label>Mobile OTP:</label>
                       <div className=" d-flex justify-content-between">
-                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 0) }} name="psw0" placeholder-type="number" />
-                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 1) }} name="psw1" />
-                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 2) }} name="psw2" />
-                        <input type="text" className="me-3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 3) }} name="psw3" />
+                        <input type="text" className="me-3 pw1" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 0) }} name="psw0" placeholder-type="number" />
+                        <input type="text" className="me-3 pw2" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 1) }} name="psw1" />
+                        <input type="text" className="me-3 pw3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 2) }} name="psw2" />
+                        <input type="text" className="me-3 pw4" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 3) }} name="psw3" />
 
                         <button className="otbutton btn btn-accent">Verify</button>{mobileverify}
                       </div>
