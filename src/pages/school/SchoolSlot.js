@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
 import { Colors } from "../../assets/css/color";
@@ -10,9 +10,11 @@ import { useNavigate } from "react-router";
 
 import { notify } from '../../Utills'
 import Sidebar from "../main/sidebar";
+import { StudentDataContext } from "../context/datacontext";
 const dayjs = require('dayjs');
 
 export default function SchoolSlot() {
+  const { state, dispatch } = useContext(StudentDataContext);
   const [slots, setSlot] = useState([]);
   const [isFade, setFade] = useState(true)
   const [availableSlots, setavailableSlots] = useState([]);
@@ -24,10 +26,10 @@ export default function SchoolSlot() {
 
   let decodedSchoolData = {}
   const getSlots = async () => {
-    // let response = await axios.post(`${API_BASE_URL}${API_END_POINTS.getTimeSlot}`);
     let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
+      //let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
       params: {
-        schoolId: 'GOAE030002',
+        schoolId: `'${state.school_code}'`,
         mode: 'ONLINE'
       }
     });
@@ -177,8 +179,8 @@ export default function SchoolSlot() {
         ],
 
       }
-      // let response = await axios.post(`${API_BASE_URL}${API_END_POINTS.bookSlot}`, payload);
-      let response = await axios.post(`${API_END_POINTS.bookSlot}`, payload);
+      let response = await axios.post(`${API_BASE_URL}${API_END_POINTS.bookSlot}`, payload);
+      //let response = await axios.post(`${API_END_POINTS.bookSlot}`, payload);
       console.log('test', response)
       if (response && response?.data && response?.data?.status) {
         notify('Slot booked successfully', true)

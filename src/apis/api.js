@@ -9,7 +9,7 @@ export const EDIT_SCHOOL_API = "/edit-school";
 
 export const API_ADMIN_URL = API_HOST_URL + API_MIDD
 export const API_ADMIN_URL_2 = API_HOST_URL + API_MIDD_2
-export const API_BASE_URL = 'http://localhost:4000/'
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 export const API_BASE_JAVA_URL = 'http://localhost:8080/'
 export const API_END_POINTS = {
 	getCountry: 'api/country',

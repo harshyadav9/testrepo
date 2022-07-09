@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "dayjs": "^1.11.3",
+    "env-cmd": "^10.1.0",
     "i": "^0.3.7",
     "jwt-decode": "^3.1.2",
     "md5": "^2.3.0",
@@ -25,7 +26,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start:development": "env-cmd -f ./environments/.env.development react-scripts start",
+    "build": "env-cmd -f ./environments/.env.production react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

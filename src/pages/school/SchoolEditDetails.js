@@ -128,8 +128,8 @@ export default function SchoolEditDetails() {
 
 
     axios
-      // .post(`${API_BASE_URL}${API_END_POINTS?.updateShoolData}`, editschooloption)
-      .post(`${API_END_POINTS?.updateShoolData}`, editschooloption)
+      .post(`${API_BASE_URL}${API_END_POINTS?.updateShoolData}`, editschooloption)
+      // .post(`${API_END_POINTS?.updateShoolData}`, editschooloption)
       .then((res) => {
         console.log("hhhhhhh", res.data);
         if (res.data) {

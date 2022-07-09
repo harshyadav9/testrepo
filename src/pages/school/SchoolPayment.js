@@ -34,13 +34,13 @@ export default function SchoolPayment() {
   useEffect(() => {
 
     const getPaymentData = async () => {
-      // const paymentDetails = await axios.post(`${API_BASE_URL}${API_END_POINTS.getpaymentdetails}`, {
+      const paymentDetails = await axios.post(`${API_BASE_URL}${API_END_POINTS.getpaymentdetails}`, {
+        school_code: state.school_code
+      });
+      // const paymentDetails = await axios.post(`${API_END_POINTS.getpaymentdetails}`, {
       //   school_code: state.school_code
       // }
-      const paymentDetails = await axios.post(`${API_END_POINTS.getpaymentdetails}`, {
-        school_code: state.school_code
-      }
-      );
+      // );
       try {
         console.log("paymentDetails", paymentDetails);
         if (paymentDetails?.status === 200 && paymentDetails?.data?.status) {
@@ -110,8 +110,8 @@ export default function SchoolPayment() {
   const handlePayment = async (e) => {
     e.preventDefault();
     let SCHOOLID = decodedSchoolData?.school_code
-    // let paymentStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.school_code });
-    let paymentStatus = await axios.post(`${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.school_code });
+    let paymentStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.school_code });
+    //let paymentStatus = await axios.post(`${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.school_code });
     if (paymentStatus && paymentStatus.data.status) {
       notify(`Studant payment status changed!.`, true)
       navigate("/school-slot");
@@ -124,8 +124,8 @@ export default function SchoolPayment() {
 
   const makePayment = async () => {
 
-    // const payment = await axios.get(`${API_BASE_URL}${API_END_POINTS.payment}`);
-    const payment = await axios.get(`${API_END_POINTS.payment}`);
+    const payment = await axios.get(`${API_BASE_URL}${API_END_POINTS.payment}`);
+    //const payment = await axios.get(`${API_END_POINTS.payment}`);
 
     console.log("payment", payment);
     window.open(payment.data.url, "_blank");

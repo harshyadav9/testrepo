@@ -174,6 +174,7 @@ export default function SchoolUploadData() {
         resultset['examTheme'] = studantData[i][4];
         resultset['demoExam'] = studantData[i][5];
         resultset['schoolId'] = decodedSchoolData?.schoolsCode
+        resultset['schoolId'] = state.school_code;
         finalData.push(resultset);
       }
       console.log("finalData", finalData);
@@ -208,12 +209,12 @@ export default function SchoolUploadData() {
             notify(`this file must contain minimum ${MINIMUMROW} rows.`, false)
             return
           }
-          let duplicateRows = checkRowDuplicacy(correctData);
-          // console.log("=tetst",duplicateRows)
-          // setDuplicateRows(duplicateRows)
-          if (duplicateRows.length > 0) {
-            notify(`${duplicateRows.join()}`, false)
-          }
+          // let duplicateRows = checkRowDuplicacy(correctData);
+          // // console.log("=tetst",duplicateRows)
+          // // setDuplicateRows(duplicateRows)
+          // if (duplicateRows.length > 0) {
+          //   notify(`${duplicateRows.join()}`, false)
+          // }
           setStudanntData(correctDatawithErr);
 
         } catch (e) {
