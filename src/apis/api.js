@@ -30,10 +30,10 @@ export const API_END_POINTS = {
 	bookSlot: 'api/update-studant-slot',
 	getStudantStatus: 'api/get-studant-status',
 	getpaymentdetails: 'api/getpaymentdetails',
-	uploadApi: 'terry/olympiad/uploadData',
+	uploadApi: 'terry/uploadData',
 	// slotting api endpoints
-	getslots: 'terry/olympiad/getSlotsData',
-	submitslot: 'terry/olympiad/updateSchoolAndSlotDetail',
+	getslots: 'terry/getSlotsData',
+	submitslot: 'terry/updateSchoolAndSlotDetail',
 
 
 }
