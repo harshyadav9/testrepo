@@ -29,7 +29,7 @@ export default function SchoolSlot() {
     let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
       //let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
       params: {
-        schoolId: `'${state.school_code}'`,
+        schoolId: `${state.school_code}`,
         mode: 'ONLINE'
       }
     });
@@ -110,6 +110,7 @@ export default function SchoolSlot() {
     console.log('submit', response)
     if (response && response?.data && response?.status) {
       notify('Slot booked successfully', true);
+      getSlots();
       // navigation('/school-application-status')
     }
     else {
@@ -476,39 +477,43 @@ export default function SchoolSlot() {
 
                   </div>
                   <div className="row">
-                    <div className="col-sm">
-                      <div className="form-wrapper">
-                        <label>Slot of Mock Test</label>
-                        {/* <select name="">
-                          <option value="">item-1</option>
-                          <option value="">item-2</option>
-                          <option value="">item-3</option>
-                        </select> */}
 
-                        <select class="dropdown-school" id="cars" onChange={e => chooseSlot('MOCK', e.target.value)}>
-                          <option value="volvo" >Select Slot</option>
-
-                          {
-                            slots && Array.isArray(slots) ? slots.filter(s => s.examTheme === "MOCK").map(slot => (
-                              <option value={slot.slotId}>{dayjs(slot?.dateOfExam).format('DD-MM-YYYY')} / {slot?.slotDatetime}</option>
-                            )) : null
-                          }
-                        </select>
+                    {
+                      slots.filter(s => s.examTheme === "MOCK").length !== 0 &&
 
 
-                        {/* <a href="#" className="check-slot d-inline-block mt-2 font-bold" onClick={showModal}><svg className="icon align-middle">
-                          <use xlinkHref="#check-slot"></use>
-                        </svg> <span className="align-middle">Check Slot</span></a> */}
 
-                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModalmock" onClick={_ => togglePop(slots.filter(s => s.examTheme === "MOCK"))}>
-                          <svg className="icon align-middle">
-                            <use xlinkHref="#check-slot"></use>
-                          </svg> <span className="align-middle">Check Slot</span>
-                        </a>
+                      (
+                        <div className="col-sm">
+                          <div className="form-wrapper">
+                            <label>Slot of Mock Test</label>
+
+                            <select class="dropdown-school" id="cars" onChange={e => chooseSlot('MOCK', e.target.value)}>
+                              <option value="volvo" >Select Slot</option>
+
+                              {
+                                slots && Array.isArray(slots) ? slots.filter(s => s.examTheme === "MOCK").map(slot => (
+                                  <option value={slot.slotId}>{dayjs(slot?.dateOfExam).format('DD-MM-YYYY')} / {slot?.slotDatetime}</option>
+                                )) : null
+                              }
+                            </select>
 
 
-                      </div>
-                    </div>
+
+
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModalmock" onClick={_ => togglePop(slots.filter(s => s.examTheme === "MOCK"))}>
+                              <svg className="icon align-middle">
+                                <use xlinkHref="#check-slot"></use>
+                              </svg> <span className="align-middle">Check Slot</span>
+                            </a>
+
+
+                          </div>
+                        </div>
+                      )
+
+                    }
+
                   </div>
                   <div className="row my-3">
                     <div className="text-center">
