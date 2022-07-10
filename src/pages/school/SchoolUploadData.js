@@ -55,6 +55,7 @@ export default function SchoolUploadData() {
   const [stSection, setSection] = useState('');
   const [examTheme, setexamTheme] = useState('');
   const [demoExam, setDemoExam] = useState('');
+  const [idCount, setIdCount] = useState(0);
   const classesdropdown = [4, 5, 6, 7, 8, 9, 10, 11, 12, 'UG', 'PG'];
   const examThemedropdown = ['ESD', 'ESDGREEN'];
   const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
@@ -71,11 +72,11 @@ export default function SchoolUploadData() {
       notify(`Studant record minmum of ${MINIMUMROW} rows. Duplicate data in files`, false)
       return
     }
-    let messge = checkRowDuplicacy(serverData)
-    if (messge.length > 0) {
-      notify(`${messge.join()}`, false);
-      return
-    }
+    // let messge = checkRowDuplicacy(serverData)
+    // if (messge.length > 0) {
+    //   notify(`${messge.join()}`, false);
+    //   return
+    // }
 
 
     // let studantDataExist = await axios.post(`${API_BASE_URL}${API_END_POINTS.getStudantData}`, {
@@ -124,7 +125,8 @@ export default function SchoolUploadData() {
 
 
     // let res = await uploadFile(JSON.stringify(serverData));
-    uploadFile();
+    let studentuploaddone = await uploadFile();
+
     // if (res?.data && res?.data?.status) {
     //   localStorage.setItem('payment', JSON.stringify(res.data.data))
     //   setStudanntData([])
@@ -147,41 +149,33 @@ export default function SchoolUploadData() {
     //  check the date validation
     for (let i = 0; i < studantDataVal.length; i++) {
       const regex = /^\d{4}-\d{2}-\d{2}$/;
-      if ((studantDataVal[i][1].match(regex) === null) || (classesdropdown.indexOf(parseInt(studantDataVal[i][2])) === -1) ||
-        (examThemedropdown.indexOf(studantDataVal[i][4]) === -1) || (['YES', 'NO'].indexOf(studantDataVal[i][5]) === -1)) {
+      if ((studantDataVal[i]['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(studantDataVal[i]['className'])) === -1) ||
+        (examThemedropdown.indexOf(studantDataVal[i]['examTheme']) === -1) || (['YES', 'NO'].indexOf(studantDataVal[i]['demoExam']) === -1)) {
         invalidDate = true;
-        let arr = studantDataVal[i];
-        arr[arr.length - 1] = 'invalid';
-        studantDataVal[i] = [...arr];
+        studantDataVal[i]['error'] = 'invalid';
         errRows.push(i + 1);
       } else {
-        let arr = studantDataVal[i];
-        arr[arr.length - 1] = 'valid';
-        studantDataVal[i] = [...arr];
+        studantDataVal[i]['error'] = 'valid';
       }
+
     }
     setStudanntData([...studantDataVal]);
     if (invalidDate) {
       notify(`Please correct the respective  columns of row number ${errRows}`, false);
       return;
-    } else {
-      for (let i = 0; i < studantData.length; i++) {
-        let resultset = {};
-        resultset['name'] = studantData[i][0];
-        resultset['dob'] = studantData[i][1];
-        resultset['className'] = studantData[i][2];
-        resultset['section'] = studantData[i][3];
-        resultset['examTheme'] = studantData[i][4];
-        resultset['demoExam'] = studantData[i][5];
-        resultset['schoolId'] = decodedSchoolData?.schoolsCode
-        resultset['schoolId'] = state.school_code;
-        finalData.push(resultset);
-      }
-      console.log("finalData", finalData);
-
-
-      return await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.uploadApi}`, finalData);
     }
+    // else {
+    finalData = [...studantData];
+    for (let i = 0; i < finalData.length; i++) {
+      delete finalData[i]['id'];
+      delete finalData[i]['error'];
+    }
+    //   console.log("finalData", finalData);
+
+
+    await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.uploadApi}`, finalData);
+    notify(`Students successfully uploaded!.`, true);
+    // }
 
 
 
@@ -215,7 +209,25 @@ export default function SchoolUploadData() {
           // if (duplicateRows.length > 0) {
           //   notify(`${duplicateRows.join()}`, false)
           // }
-          setStudanntData(correctDatawithErr);
+          let finalArr = [];
+          let idVal = 0;
+          for (let i = 0; i < correctData.length; i++) {
+            let resultset = {};
+            resultset['id'] = idVal++;
+            resultset['name'] = correctData[i][0];
+            resultset['dob'] = correctData[i][1];
+            resultset['className'] = correctData[i][2];
+            resultset['section'] = correctData[i][3];
+            resultset['examTheme'] = correctData[i][4];
+            resultset['demoExam'] = correctData[i][5];
+            resultset['schoolId'] = state.school_code;
+            resultset['error'] = 'valid';
+            finalArr.push(resultset);
+          };
+          setIdCount(prevCount => prevCount + idVal);
+          console.log("idCount", idCount);
+          // setStudanntData(correctDatawithErr);
+          setStudanntData([...finalArr]);
 
         } catch (e) {
           notify(`file could not uploaded, please try again!.`, false)
@@ -231,7 +243,15 @@ export default function SchoolUploadData() {
   };
   const deleteRow = (data, i) => {
     // console.log("0900899x",studantData.filter((d,index) => i !== index ))
-    setStudanntData(studantData.filter((d, index) => i !== index))
+    // setStudanntData(studantData.filter((d, index) => i !== index));
+    // let deletarray = [...studantData];
+    // deletarray.splice(i, 1);
+    // setStudanntData([deletarray]);
+    // studantData.splice(i, 1);
+
+    // let newval =;
+    // console.log("newval", newval);  
+    setStudanntData([...studantData.filter((d, index) => { return index !== i })]);
   }
   const editRow = (data, i) => {
     let inDom = document.querySelectorAll(`._tbls${i}`);
@@ -240,16 +260,27 @@ export default function SchoolUploadData() {
       // Do whatever you want with the node object.
     });
   }
-  const handleOnChangeCell = (e, cell, i) => {
+  const handleOnChangeCell = (e, columnName, i) => {
 
     let cellValue = e.target.value
     let perData = [...studantData];
-    let updatedate = perData.map((sd, ii) => {
-      if (ii == i) {
-        sd[+cell] = cellValue
-        return sd;
-      } else { return sd }
+    let updatedate = perData.map((value, index) => {
+      if (index === i) {
+        value[columnName] = cellValue;
+        return value;
+      } else { return value }
     })
+
+
+
+    // let cellValue = e.target.value
+    // let perData = [...studantData];
+    // let updatedate = perData.map((sd, ii) => {
+    //   if (ii == i) {
+    //     sd[+cell] = cellValue
+    //     return sd;
+    //   } else { return sd }
+    // })
 
     setStudanntData(updatedate)
   }
@@ -260,7 +291,37 @@ export default function SchoolUploadData() {
       notify(`Please fill all fields!.`, false)
       return
     }
-    let cpyStudantData = [...studantData, [stName, stDOB, stClass, stSection, examTheme, demoExam, 'valid']];
+    console.log("idCount", idCount);
+
+    let runningId = JSON.parse(JSON.stringify(idCount));
+    let exceldataset = [...studantData];
+    let resultset = {};
+    resultset['id'] = runningId++;
+    resultset['name'] = stName;
+    resultset['dob'] = stDOB;
+    resultset['className'] = stClass;
+    resultset['section'] = stSection;
+    resultset['examTheme'] = examTheme;
+    resultset['demoExam'] = demoExam;
+    resultset['schoolId'] = state.school_code;
+    resultset['error'] = 'valid';
+
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    let invalidDate = false;
+    let errRows = [];
+    if ((resultset['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(resultset['dob']['className'])) === -1) ||
+      (examThemedropdown.indexOf(resultset['dob']['examTheme']) === -1) || (['YES', 'NO'].indexOf(resultset['dob']['demoExam']) === -1)) {
+      resultset['error'] = 'invalid';
+
+      errRows.push(exceldataset.length + 1);
+    }
+
+    notify(`Please correct the respective  columns of row number ${errRows}`, false);
+    exceldataset.push(resultset);
+
+    setStudanntData([...exceldataset]);
+    setIdCount(runningId);
+    // let cpyStudantData = [...studantData, [stName, stDOB, stClass, stSection, examTheme, demoExam, 'valid']];
 
     // setStName('');
     // setDOB('');
@@ -268,7 +329,7 @@ export default function SchoolUploadData() {
     // setexamTheme('');
     // setSection('');
     // setDemoExam('');
-    setStudanntData(cpyStudantData)
+    // setStudanntData(cpyStudantData)
 
   }
   return (
@@ -666,12 +727,12 @@ export default function SchoolUploadData() {
                   <table className="table table-bordered table-accent">
                     <thead>
                       <tr>
-                        <th>Name</th>
+                        <th>NAME</th>
                         <th>DOB</th>
-                        <th>Class</th>
-                        <th>Section</th>
-                        <th>Exam Theme</th>
-                        <th>Mock Test</th>
+                        <th>CLASS</th>
+                        <th>SECTION</th>
+                        <th>EXAM THEME</th>
+                        <th>MOCK TEST</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -817,21 +878,25 @@ export default function SchoolUploadData() {
                   <table className="table table-bordered table-accent">
                     <thead>
                       <tr>
-                        <th>Name</th>
+                        <th>NAME</th>
                         <th>DOB</th>
-                        <th>Class</th>
-                        <th>Section</th>
-                        <th>Exam Theme</th>
-                        <th>Mock Test</th>
-                        <th>Action</th>
+                        <th>CLASS</th>
+                        <th>SECTION</th>
+                        <th>EXAM THEME</th>
+                        <th>MOCK TEST</th>
+                        <th>ACTION</th>
                       </tr>
                     </thead>
                     <tbody>
+
+                    </tbody>
+                    <tbody>
                       {
                         studantData.map((tbData, i) => {
+                          console.log("tbData", tbData);
                           return (
-                            <tr className={tbData[6] === 'invalid' ? 'invalid' : 'valid'}>
-                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[0] ?? ''} style={{
+                            <tr key={tbData.id} className={tbData['error'] === 'invalid' ? 'invalid' : 'valid'}>
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['name'] ?? ''} style={{
                                 "width": "90%",
                                 "padding": "6px 15px",
                                 "margin": "0px",
@@ -843,9 +908,9 @@ export default function SchoolUploadData() {
                                 className={`_tbls${i}`}
                                 disabled
 
-                                onChange={e => handleOnChangeCell(e, '0', i)}
+                                onChange={e => handleOnChangeCell(e, 'name', i)}
                               /></td>
-                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[1] ?? ''}
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['dob'] ?? ''}
 
                                 style={{
                                   "width": "90%",
@@ -858,10 +923,10 @@ export default function SchoolUploadData() {
                                 }}
                                 className={`_tbls${i}`}
                                 disabled
-                                onChange={e => handleOnChangeCell(e, '1', i)}
+                                onChange={e => handleOnChangeCell(e, 'dob', i)}
 
                               /></td>
-                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[2] ?? ''}
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['className'] ?? ''}
                                 style={{
                                   "width": "90%",
                                   "padding": "6px 15px",
@@ -873,10 +938,10 @@ export default function SchoolUploadData() {
                                 }}
                                 className={`_tbls${i}`}
                                 disabled
-                                onChange={e => handleOnChangeCell(e, '2', i)}
+                                onChange={e => handleOnChangeCell(e, 'className', i)}
 
                               /></td>
-                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[3] ?? ''}
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['section'] ?? ''}
                                 style={{
                                   "width": "90%",
                                   "padding": "6px 15px",
@@ -888,26 +953,10 @@ export default function SchoolUploadData() {
                                 }}
                                 className={`_tbls${i}`}
                                 disabled
-                                onChange={e => handleOnChangeCell(e, '3', i)}
+                                onChange={e => handleOnChangeCell(e, 'section', i)}
 
                               /></td>
-                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[4] ?? ''}
-
-                                style={{
-                                  "width": "90%",
-                                  "padding": "6px 15px",
-                                  "margin": "0px",
-                                  display: "inline-block",
-                                  border: "1px solid #ccc",
-                                  "box-sizing": "border-box",
-                                  "border-radius": "14px"
-                                }}
-                                className={`_tbls${i}`}
-                                disabled
-                                onChange={e => handleOnChangeCell(e, '4', i)}
-
-                              /></td>
-                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData[5] ?? ''}
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['examTheme'] ?? ''}
 
                                 style={{
                                   "width": "90%",
@@ -920,7 +969,23 @@ export default function SchoolUploadData() {
                                 }}
                                 className={`_tbls${i}`}
                                 disabled
-                                onChange={e => handleOnChangeCell(e, '5', i)}
+                                onChange={e => handleOnChangeCell(e, 'examTheme', i)}
+
+                              /></td>
+                              <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['demoExam'] ?? ''}
+
+                                style={{
+                                  "width": "90%",
+                                  "padding": "6px 15px",
+                                  "margin": "0px",
+                                  display: "inline-block",
+                                  border: "1px solid #ccc",
+                                  "box-sizing": "border-box",
+                                  "border-radius": "14px"
+                                }}
+                                className={`_tbls${i}`}
+                                disabled
+                                onChange={e => handleOnChangeCell(e, 'demoExam', i)}
 
                               /></td>
 
@@ -960,7 +1025,7 @@ export default function SchoolUploadData() {
                 <div>
                   <h3>Points to keep in mind
                     <ul>
-                      <li>Date of Exam should be in YYYY-MM-DD format</li>
+                      <li>Date of Birth should be in YYYY-MM-DD format</li>
                       <li>Value of examTheme should be either ESD/ESDGREEN</li>
                       <li>Value of mock test should be either YES/NO</li>
                       <li>Value of class  should be btween 4,5,6,7,8,9,10,11,12,UG,PG</li>
