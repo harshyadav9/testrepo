@@ -69,15 +69,15 @@ export default function SchoolEditDetails() {
       case "postalAddress":
       case "district":
       case "coordinatingTeacher":
-        if ((value === undefined) || (value.length < 1))
+        if ((value === undefined) || (value === null) || (value.length < 1))
           err = (errorList.find(item => item.fieldNam === key).message);
         break;
       case "coordinatingTeacherMobile":
-        if ((value === undefined) || (value.length < 1))
+        if ((value === undefined) || (value === null) || (value.length < 1))
           err = (errorList.find(item => item.fieldNam === key).message);
         break;
       case "coordinatingTeacherEmail":
-        if ((value === undefined) || (value.length < 1))
+        if ((value === undefined) || (value === null) || (value.length < 1))
           err = (errorList.find(item => item.fieldNam === key).message);
         if (err === '') {
           let item = errorList.find(item => item.fieldNam === key);
