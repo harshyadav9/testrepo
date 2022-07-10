@@ -86,7 +86,7 @@ export default function SchoolEditDetails() {
         }
         break;
       case "phoneStd":
-        if ((value === undefined) || (value.length < 1))
+        if ((value === undefined) || (value === null) || (value.length < 1))
           err = (errorList.find(item => item.fieldNam === key).message);
         if (err === '') {
           let item = errorList.find(item => item.fieldNam === key);
