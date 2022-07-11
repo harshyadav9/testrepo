@@ -8,6 +8,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
 import { StudentDataContext } from "../context/datacontext";
+import { notify } from "../../Utills";
 
 
 export default function SchoolLogin() {
@@ -71,7 +72,8 @@ export default function SchoolLogin() {
               email
             } } = res.data
             navigate("/school-edit-details");
-            alert("login successfull!");
+            // alert("login successfull!");
+            notify(`login successfull!!.`, true);
             // history.push()
             // localStorage.removeItem("token");
             // localStorage.setItem("token", res?.data?.token);
@@ -91,6 +93,8 @@ export default function SchoolLogin() {
               email: res.data.data.email,
               district: res.data.data.district
             });
+
+
 
           } else {
             alert("something is rong");

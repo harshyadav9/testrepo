@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.48c5a119.css",
-    "main.js": "/static/js/main.b2fcdd1f.js",
+    "main.css": "/static/css/main.c1e6395e.css",
+    "main.js": "/static/js/main.d81c5344.js",
     "static/js/787.5aa6d655.chunk.js": "/static/js/787.5aa6d655.chunk.js",
     "static/media/paper-education-information-university-text.jpg": "/static/media/paper-education-information-university-text.d7e32afa8a9827d544e1.jpg",
     "static/media/school_bg.png": "/static/media/school_bg.85a7f62aa59f50e71922.png",
@@ -13,12 +13,12 @@
     "static/media/upload_files.svg": "/static/media/upload_files.63d9cf1ab2edfe99d428ffceb0da9ed2.svg",
     "static/media/computer-user.svg": "/static/media/computer-user.29aaf62b5ec2ac6f9ce0a0fc04a775e0.svg",
     "index.html": "/index.html",
-    "main.48c5a119.css.map": "/static/css/main.48c5a119.css.map",
-    "main.b2fcdd1f.js.map": "/static/js/main.b2fcdd1f.js.map",
+    "main.c1e6395e.css.map": "/static/css/main.c1e6395e.css.map",
+    "main.d81c5344.js.map": "/static/js/main.d81c5344.js.map",
     "787.5aa6d655.chunk.js.map": "/static/js/787.5aa6d655.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.48c5a119.css",
-    "static/js/main.b2fcdd1f.js"
+    "static/css/main.c1e6395e.css",
+    "static/js/main.d81c5344.js"
   ]
 }

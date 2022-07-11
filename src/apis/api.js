@@ -36,5 +36,8 @@ export const API_END_POINTS = {
 	getslots: 'terry/getSlotsData',
 	submitslot: 'terry/updateSchoolAndSlotDetail',
 
+	//  application status
+	applicationStatus: 'api/applicationStatus'
+
 
 }

@@ -6,6 +6,7 @@ import "../../assets/css/style_new.css";
 import terilogo from "../../icons/terilogo.png";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
@@ -35,7 +36,13 @@ export default function Header() {
       <header className="header ">
         <nav className="navbar fixed-top navbar-expand-lg navbar-dark shadow" style={{ backgroundColor: '#186dd7' }}>
           <div className="container-fluid">
-            <a className="navbar-brand" href="#"><img src={terilogo} width="150" alt="logo" /></a>
+            {/* <a className="navbar-brand" href="#"><img src={terilogo} width="150" alt="logo" /></a> */}
+            <Link to="/" className="navbar-brand">
+              <img src={terilogo} width="150" alt="logo" />
+
+              {/* <li ><a href="#"><svg className="icon"><use xlinkHref="#upload-data-to-cloud"></use></svg> Upload Students Data</a></li> */}
+            </Link>
+
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>

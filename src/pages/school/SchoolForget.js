@@ -5,6 +5,11 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 
 export default function SchoolForget() {
+
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpass, setConfirmpass] = useState("");
+  const [errordisp, setErrordisp] = useState("");
   return (
     // <div className="container-login">
     //   <marquee> Welcome to Green Olympiad</marquee>
@@ -76,20 +81,26 @@ export default function SchoolForget() {
               <div class="p-4">
 
                 <div class="form-wrapper">
-                  <label>Old Password</label>
-                  <input type="password" name="oldpass" id="" />
+                  <label>Email id </label>
+                  <input type="password" name="oldpass" value="password" onChange={(password) =>
+                    setPassword(password.target.value)
+                  } id="" />
                 </div>
                 <div class="row">
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>New Password</label>
-                      <input type="password" name="newpass" id="" />
+                      <input type="password" name="newpass" id="" value="password" onChange={(password) =>
+                        setConfirmpass(password.target.value)
+                      } />
                     </div>
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Confirm Password</label>
-                      <input type="password" name="confirmpass" id="" />
+                      <input type="password" name="confirmpass" id="" value="setConfirmpass" onChange={(confirmpass) =>
+                        setConfirmpass(confirmpass.target.value)
+                      } />
                     </div>
                   </div>
                 </div>

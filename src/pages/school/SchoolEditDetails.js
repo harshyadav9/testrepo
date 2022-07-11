@@ -10,6 +10,7 @@ import jwt_decode from "jwt-decode";
 import Sidebar from "../main/sidebar";
 import Error from './ErrorList';
 import { StudentDataContext } from "../context/datacontext";
+import { notify } from "../../Utills";
 
 export default function SchoolEditDetails() {
 
@@ -133,7 +134,8 @@ export default function SchoolEditDetails() {
       .then((res) => {
         console.log("hhhhhhh", res.data);
         if (res.data) {
-          alert("data updated");
+          // alert("data updated");
+          notify(`data updated successfull!!.`, true);
           navigate("/school-upload-data");
         } else {
           alert("something is rong");

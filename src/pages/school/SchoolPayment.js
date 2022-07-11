@@ -14,6 +14,7 @@ import axios from "axios";
 import { StudentDataContext } from "../context/datacontext";
 
 export default function SchoolPayment() {
+
   let paymentData = {};
   let tMockStu = 0;
   let mockFee = 0;
@@ -25,7 +26,7 @@ export default function SchoolPayment() {
   const navigate = useNavigate();
   const [paymentStatus, setPaymentStatus] = useState([]);
   const { state, dispatch } = useContext(StudentDataContext);
-
+  const [err, setErr] = useState("");
 
 
 
@@ -114,7 +115,7 @@ export default function SchoolPayment() {
     //let paymentStatus = await axios.post(`${API_END_POINTS.updatePaymentStatus}`, { SchoolID: decodedSchoolData?.school_code });
     if (paymentStatus && paymentStatus.data.status) {
       notify(`Studant payment status changed!.`, true)
-      navigate("/school-slot");
+      // navigate("/school-slot");
     } else {
       notify(`payment updation Failed!.`, false)
 
@@ -124,11 +125,19 @@ export default function SchoolPayment() {
 
   const makePayment = async () => {
 
-    const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, { amount: totalThemeExamPay + tMockStu * mockFee });
+    const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, {
+      amount: totalThemeExamPay + tMockStu * mockFee,
+      email: state.email, phone: state.mobile, name: state.schoolname, productinfo: "schoolInfo"
+    });
     //const payment = await axios.get(`${API_END_POINTS.payment}`);
 
-    console.log("payment", payment);
-    window.open(payment.data.url, "_blank");
+    if (payment?.data?.status === 200) {
+      console.log("payment", payment);
+      window.open(payment.data.url, "_blank");
+    } else {
+      setErr(payment?.data?.data?.data);
+    }
+
   }
   return (
     <div className="row ">
@@ -237,6 +246,9 @@ export default function SchoolPayment() {
                   </tr>
                 </tfoot> */}
               </table>
+              <div>
+                <h3 style={{ textAlign: 'center', color: 'red' }}>{err}</h3>
+              </div>
             </div>
 
             {/* Variants Use contextual classe
@@ -258,11 +270,11 @@ export default function SchoolPayment() {
           </h4> */}
           </div>
           <div className="btnmain">
-            <Link to="/school-slot">
-              <button className="btn btn-primary" onClick={makePayment}>
-                Make Payment
-              </button>
-            </Link>
+            <a> <button className="btn btn-primary" onClick={makePayment}>
+              Make Payment
+            </button></a>
+
+
           </div>
         </div>
       </div>

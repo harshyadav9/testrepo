@@ -698,6 +698,14 @@ tr.invalid {
   background: rgba(0, 0, 0, 0.6);
 }
 
+td.paid {
+  color: green !important;
+}
+
+td.unpaid {
+  color: red !important;
+}
+
 /* modal design  end */
 
 

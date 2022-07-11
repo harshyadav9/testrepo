@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "../../assets/css/style_new.css";
@@ -6,17 +6,19 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import Error from './ErrorList';
 import { API_ADMIN_URL_2, REGISTER_API, API_BASE_URL, API_END_POINTS } from "../../apis/api";
+import { StudentDataContext } from "../context/datacontext";
+import { notify } from "../../Utills";
 export default function SchoolRegistration() {
   const navigate = useNavigate();
 
-
+  const { state, dispatch } = useContext(StudentDataContext);
   const [principalName, setprincipalName] = useState("");
   const [schoolName, setschoolName] = useState("");
   const [pinCode, setpinCode] = useState("");
   const [mobile, setmobile] = useState("");
   const [country, setcountry] = useState("");
   const [email, setemail] = useState("");
-  const [state, setstate] = useState("");
+  // const [state, setstate] = useState("");
   const [mobileverify, setmobileverify] = useState();
   const [emailverify, setemailverify] = useState();
 
@@ -39,7 +41,7 @@ export default function SchoolRegistration() {
   const [errorList, setErrorList] = useState(Error)
   const countryRef = useRef(null);
   const handleChange = (a, k) => {
-    setData({ ...data, [k]: a });
+    setData((prevvalue) => { return { ...prevvalue, [k]: a } });
   };
 
 
@@ -70,12 +72,12 @@ export default function SchoolRegistration() {
         break;
       case "pinCode":
         if (value.length === 0)
-          err = (errorList.find(item => item.fieldNam === key).message);
-        if (err === '' && isIndain) {
-          let item = errorList.find(item => item.fieldNam === key);
-          let regExp = RegExp(item.regex)
-          err = regExp.test(value) ? "" : item.message2;
-        }
+          // err = (errorList.find(item => item.fieldNam === key).message);
+          if (isIndain) {
+            let item = errorList.find(item => item.fieldNam === key);
+            let regExp = RegExp(item.regex)
+            err = regExp.test(value) ? "" : item.message2;
+          }
         break;
       default:
         break;
@@ -147,6 +149,19 @@ export default function SchoolRegistration() {
 
 
 
+  const sortList = (list) => {
+
+    return list.sort(function (a, b) {
+
+      if (a.country < b.country) {
+        return -1;
+      }
+      if (a.last_nom > b.last_nom) {
+        return 1;
+      }
+      return 0;
+    });
+  }
 
   // console.log("Error",Error)
   const getCountry = async () => {
@@ -155,7 +170,8 @@ export default function SchoolRegistration() {
     try {
 
       if (countryList?.status == 200 && countryList?.data?.status) {
-        setCountryList(countryList.data.list);
+        let list = sortList(countryList.data.list);
+        setCountryList(list);
       } else {
         setCountryList([]);
 
@@ -170,6 +186,14 @@ export default function SchoolRegistration() {
 
   const RegisterationApi = (e) => {
     setRegisterationClicked(1);
+    if ((data.country === undefined) || (data.country === 'volvo')) {
+      setError_message('Please fill Country');
+      return;
+    }
+    if ((data.state === undefined) || (data.state === 'volvo') || (data.state === "")) {
+      setError_message('Please fill State');
+      return;
+    }
     let err = checkAllField();
     if (err)
       return err;
@@ -198,12 +222,29 @@ export default function SchoolRegistration() {
     };
     axios
       .post(`${API_BASE_URL}${API_END_POINTS?.saveNewSchool}`, RegisterationOptions)
+      // console.log("RegisterationOptions",)
       //.post(`${API_END_POINTS?.saveNewSchool}`, RegisterationOptions)
       .then((res) => {
 
         if (res.data) {
-          alert("Account is created please login");
-          navigate("/school-login");
+          dispatch({
+            type: 'ADDINFO_REGISTER',
+            school_code: res.data.data,
+            schoolname: RegisterationOptions.schoolname,
+            country: RegisterationOptions.country,
+            state: RegisterationOptions.state,
+            pincode: RegisterationOptions.pincode,
+            postal_address: '',
+            phonestd: '',
+            mobile: RegisterationOptions.mobile,
+            principal_name: RegisterationOptions.principalname,
+            email: RegisterationOptions.email,
+            district: ''
+          });
+          notify(`School has been registered successfully!.`, true);
+          navigate("/school-edit-details");
+
+
           // localStorage.setItem("PrincipalName", principalName);
           // localStorage.setItem("PrincipalMobile", mobile);
           // localStorage.setItem("PrincipalEmail", email);
@@ -220,7 +261,9 @@ export default function SchoolRegistration() {
     const cityStateList = await axios.get(`${API_BASE_URL}${endPoint}`);
     //const cityStateList = await axios.get(`${endPoint}`);
     if (cityStateList.status === 200 && cityStateList.data.status) {
-      setCityStateList(cityStateList.data.list)
+      let list = sortList(cityStateList.data.list);
+      setCityStateList(list);
+      // handleChange('', 'state');
     } else {
       setCityStateList([])
 
@@ -248,7 +291,8 @@ export default function SchoolRegistration() {
       const data = await axios.post(`${API_BASE_URL}${API_END_POINTS.getIndainSchools}`, serverData);
       //const data = await axios.post(`${API_END_POINTS.getIndainSchools}`, serverData);
       if (data.status === 200 && data.data.status) {
-        setExistingSchool(data.data.list)
+        let list = sortList(data.data.list);
+        setExistingSchool(list);
       } else {
         setExistingSchool([])
       }
@@ -697,7 +741,8 @@ export default function SchoolRegistration() {
                         selected={data.country}
 
                         onChange={(e) => {
-                          handleChange(e.target.value, "country");
+                          setData((prevalue) => { return { "country": e.target.value, "state": "" } });
+                          // handleChange(e.target.value, "country");
                           setSecondState(e.target.value);
                           formValidate({ 'key': 'country', 'value': e.target.value });
                         }}
@@ -800,6 +845,7 @@ export default function SchoolRegistration() {
                         {/* <input type="text" className="me-3" placeholder="Mobile (Principal/Teacher)" name="psw" required="" /> */}
                         <input
                           type="text"
+                          maxLength={10}
                           className="me-3"
                           placeholder="Mobile (Principal/Teacher)"
                           name="psw"

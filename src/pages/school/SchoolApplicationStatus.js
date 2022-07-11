@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
 import { Colors } from "../../assets/css/color";
 import Sidebar from "../main/sidebar";
+import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
 import "./SchoolApplicationStatus.scss";
+import axios from "axios";
+import { StudentDataContext } from "../context/datacontext";
 
 export default function SchoolApplicationStatus() {
+
+  const { state, dispatch } = useContext(StudentDataContext);
+  const [appStatus, setAppStatus] = useState([]);
+  const getAppStatus = async () => {
+    const appStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.applicationStatus}`, {
+      school_code: state.school_code
+    });
+
+    if (appStatus?.status && appStatus?.data) {
+      setAppStatus(appStatus?.data.data);
+    }
+    console.log("appStatus", appStatus);
+
+
+
+  }
+
+
+  useEffect(() => {
+    getAppStatus();
+  }, [])
+
+
   return (
     <div className="row ">
       <div className="col-lg-3">
@@ -26,133 +52,35 @@ export default function SchoolApplicationStatus() {
                   <th>DOB</th>
                   <th>Class</th>
                   <th>Section</th>
-                  <th>Level</th>
+                  {/* <th>Level</th> */}
                   <th>Exam</th>
                   <th>Mock Test</th>
                   <th>Fees</th>
-                  <th>Slot</th>
+                  {/* <th>Slot</th> */}
                   <th>Roll no.</th>
                   <th>Fees Status</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Emil</td>
-                  <td>Tobias</td>
-                  <td>Linus</td>
-                  <td>Linus</td>
-                  <td>Linus</td>
-                  <td>Linus</td>
-                  <td>Linus</td>
-                  <td>Linus</td>
-                  <td>Linus</td>
-                  <td>Linus</td>
-                  <td style={{ color: "green" }}>paid</td>
-                </tr>
-                <tr>
-                  <td>Maya</td>
-                  <td>14</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td style={{ color: "green" }}>paid</td>
-                </tr>
-                <tr>
-                  <td>Maya</td>
-                  <td>14</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td style={{ color: "green" }}>paid</td>
-                </tr>
-                <tr>
-                  <td>Maya</td>
-                  <td>14</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td style={{ color: "red" }}>unpaid</td>
-                </tr>
-                <tr>
-                  <td>Maya</td>
-                  <td>14</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td style={{ color: "green" }}>paid</td>
-                </tr>
-                <tr>
-                  <td>Maya</td>
-                  <td>14</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td style={{ color: "red" }}>unpaid</td>
-                </tr>
-                <tr>
-                  <td>Maya</td>
-                  <td>14</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td style={{ color: "red" }}>unpaid</td>
-                </tr>
-                <tr>
-                  <td>Maya</td>
-                  <td>14</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td style={{ color: "green" }}>paid</td>
-                </tr>
-                <tr>
-                  <td>Maya</td>
-                  <td>14</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td>10</td>
-                  <td style={{ color: "green" }}>paid</td>
-                </tr>
+                {
+                  appStatus.map((status, i) => {
+                    console.log("status", status);
+                    return (
+                      <tr>
+                        <td>{status.Name}</td>
+                        <td>{status.DOB}</td>
+                        <td>{status.Class}</td>
+                        <td>{status.Section}</td>
+                        <td>{status.ExamTheme}</td>
+                        <td>{status.DemoExam}</td>
+                        <td>{status.Fee}</td>
+                        <td>{status.Rollno === 0 && 0}</td>
+                        <td className={status.PaymentStatus === 1 ? 'paid' : 'unpaid'}>{status.PaymentStatus === 1 ? 'PAID' : 'UNPAID'}</td>
+                      </tr>
+                    )
+                  })
+                }
+
               </tbody>
             </table>
           </div>
