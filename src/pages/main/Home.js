@@ -153,7 +153,7 @@ export default function Home() {
                 {/* <svg>
                   <use xlinkHref="#computer-user"></use>
                 </svg> */}
-                <img src={computerUser} alt="" />
+                <img src={schoolpreview} alt="" />
 
                 <h4>Student</h4>
                 <h5>Registration / Login</h5>
@@ -164,7 +164,7 @@ export default function Home() {
             <div className="col-md-4 item text-center">
               <Link to="/student-login" className="box">
 
-                <img src={youth} alt="" />
+                <img src={schoolpreview} alt="" />
 
 
                 <h4>Go4youth</h4>
