@@ -163,10 +163,7 @@ export default function Home() {
             </div>
             <div className="col-md-4 item text-center">
               <Link to="/student-login" className="box">
-                {/* <a href="#" className="box"> */}
-                {/* <svg>
-                  <use xlinkHref="#download_certificate"></use>
-                </svg> */}
+
                 <img src={youth} alt="" />
 
 
