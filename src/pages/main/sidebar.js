@@ -105,7 +105,8 @@ function Sidebar() {
                     {/* <li className="active"><a href="#"><img src="images/download-icon.png" height="18" alt="" /> School Details</a></li> */}
                     <li className="active">
                         <Link to="/school-edit-details">
-                            <img src={downloadIcon} height="18" alt="" />
+                            {/* <img src={downloadIcon} height="18" alt="" /> */}
+                            <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
                             School Details
                         </Link>
                         <Link to="/school-upload-data">
