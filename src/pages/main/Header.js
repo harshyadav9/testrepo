@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 // import "../../assets/css/style.css";
 import "../../assets/css/style_new.css";
 // import img from "../../assets/icons/terilogo.png";
+// import terilogo from "../../assets/icons/terilogo.png";
 import terilogo from "../../assets/icons/terilogo.png";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
