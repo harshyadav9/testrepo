@@ -346,6 +346,7 @@ img {
   font-weight: 600;
   border-radius: 7px;
   align-items: center;
+  position: relative;
 }
 
 .sidebar ul li a:after {

@@ -32,6 +32,7 @@ export const API_END_POINTS = {
 	getpaymentdetails: 'api/getpaymentdetails',
 	uploadApi: 'terry/uploadData',
 	// slotting api endpoints
+	isSlottingAllowed: 'api/isSlottingAllowed',
 	getslots: 'terry/getSlotsData',
 	submitslot: 'terry/updateSchoolAndSlotDetail',
 

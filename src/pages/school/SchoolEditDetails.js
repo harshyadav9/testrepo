@@ -475,7 +475,7 @@ export default function SchoolEditDetails() {
                         type="text"
                         style={{ backgroundColor: "#dfdbdb" }}
                         disabled
-                        placeholder={decoded?.principalname}
+                        placeholder={decoded?.principal_name}
                         name="uname"
                         required
                       />

@@ -35,7 +35,7 @@ const Error = [
 		fieldNam: "email",
 		message: "Please enter email",
 		status: false,
-		regex: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,20}$/,
+		regex: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
 		message2: "Please enter valid email",
 	},
 	{

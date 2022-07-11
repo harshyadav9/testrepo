@@ -19,25 +19,39 @@ export default function SchoolSlot() {
   const [isFade, setFade] = useState(true)
   const [availableSlots, setavailableSlots] = useState([]);
   const [studantWithSlot, setstudantWithSlot] = useState([]);
-  const [serverPayLoad, setPayload] = useState([])
+  const [serverPayLoad, setPayload] = useState([]);
+  const [slotErrmsg, setSlotErrmsg] = useState("");
 
   const [serverPayloadData, setServerPayloadData] = useState([]);
   const navigation = useNavigate()
 
   let decodedSchoolData = {}
   const getSlots = async () => {
-    let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
-      //let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
-      params: {
-        schoolId: `${state.school_code}`,
-        mode: 'ONLINE'
-      }
-    });
 
-    if (response?.data && response.status) {
-      // setSlot(response.data.list)
-      setSlot(response.data);
+    let isSlotAllowedRes = await axios.post(`${API_BASE_URL}${API_END_POINTS.isSlottingAllowed}`, { schoolCode: state.school_code });
+
+    if (isSlotAllowedRes?.data && isSlotAllowedRes.status) {
+      if (!isSlotAllowedRes?.data?.data.isSlottingAllowed) {
+        setSlotErrmsg(isSlotAllowedRes.data.message);
+      } else {
+        let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
+          //let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
+          params: {
+            schoolId: `${state.school_code}`,
+            mode: 'ONLINE'
+          }
+        });
+
+        console.log("response", response);
+
+        if (response?.data && response.status) {
+          // setSlot(response.data.list)
+          setSlot(response.data);
+        }
+      }
     }
+
+
   }
 
   useEffect(() => {
@@ -399,7 +413,8 @@ export default function SchoolSlot() {
                 <p>Slot selection for exam</p>
               </div>
               <div className="shadow bg-white rounded-16">
-                <div className="p-4 ">
+                <div className="p-4 " >
+                  <p><h2>{slotErrmsg}</h2></p>
                   <div className="row">
 
                     {

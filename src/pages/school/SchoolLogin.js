@@ -89,8 +89,7 @@ export default function SchoolLogin() {
               mobile: res.data.data.mobile,
               principal_name: res.data.data.principalname,
               email: res.data.data.email,
-              district: res.data.data.district,
-              coordinating_teacher: res.data.data.coordinating_teacher
+              district: res.data.data.district
             });
 
           } else {
