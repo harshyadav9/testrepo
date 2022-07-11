@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 import download from "../../assets/icons/download-icon.png";
 import schoolpreview from "../../assets/icons/new-school-preview.png";
-import schoolrec from "../../assets/images/school_rec.svg";
-import kid from "../../assets/images/kid.png";
+// import schoolrec from "../../assets/images/school_rec.svg";
+// import kid from "../../assets/images/kid.png";
 import computerUser from "../../assets/images/computer-user.svg";
 import youth from "../../assets/icons/youth.svg";
 // import "./Home.scss";
