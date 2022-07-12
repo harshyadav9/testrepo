@@ -146,11 +146,11 @@ function Sidebar() {
                             View helpdesk Ticket
                         </Link>
 
-                        <Link to="/school-certificate">
-                            {/* <img src="images/download-icon.png" height="18" alt="" /> */}
+                        {/* <Link to="/school-certificate">
+                          
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Download Certificate
-                        </Link>
+                        </Link> */}
 
                         <Link to="/school-change-password">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}

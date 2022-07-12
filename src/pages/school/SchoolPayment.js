@@ -35,6 +35,19 @@ export default function SchoolPayment() {
   useEffect(() => {
 
     const getPaymentData = async () => {
+
+      const isPaymentAllowed = await axios.post(`${API_BASE_URL}${API_END_POINTS.ispaymentallowed}`, {
+        schoolCode: state.school_code
+      });
+
+
+      console.log("isPaymentAllowed", isPaymentAllowed);
+      if (!isPaymentAllowed?.data?.status) {
+        setErr(isPaymentAllowed?.data?.message);
+        return;
+      }
+
+
       const paymentDetails = await axios.post(`${API_BASE_URL}${API_END_POINTS.getpaymentdetails}`, {
         school_code: state.school_code
       });
@@ -132,6 +145,7 @@ export default function SchoolPayment() {
     //const payment = await axios.get(`${API_END_POINTS.payment}`);
 
     if (payment?.data?.status === 200) {
+      navigate("/school-slot");
       console.log("payment", payment);
       window.open(payment.data.url, "_blank");
     } else {
@@ -146,7 +160,7 @@ export default function SchoolPayment() {
       </div>
 
       <div className="col-lg-9 ">
-        <div className="make-payment p-5">
+        <div className={`make-payment p-5 ${err.length > 0 ? 'hidepayment' : 'showpayment'}`}>
           <div className="page-heading">
             <h4>Make Payment</h4>
             <p>Check Payment details</p>
@@ -209,42 +223,7 @@ export default function SchoolPayment() {
                   </tr>
                 </tfoot>
 
-                {/* BLACK SPACE ROW */}
-                {/* <tbody className="blank-tbody">
-                  <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                  </tr>
-                </tbody>
 
-                <tbody>
-                  <tr>
-                    <td>Total candidate who opted Theme 1 </td>
-                    <td>50</td>
-                  </tr>
-                  <tr>
-                    <td>Fees of per condidate for Theme 1</td>
-                    <td>100</td>
-                  </tr>
-                  <tr>
-                    <td>Amount</td>
-                    <td>$ 5000</td>
-                  </tr>
-                </tbody> */}
-
-                {/* BLACK SPACE ROW */}
-                {/* <tbody className="blank-tbody">
-                  <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td>Total Amount</td>
-                    <td>$ 17460.</td>
-                  </tr>
-                </tfoot> */}
               </table>
               <div>
                 <h3 style={{ textAlign: 'center', color: 'red' }}>{err}</h3>
@@ -276,6 +255,10 @@ export default function SchoolPayment() {
 
 
           </div>
+        </div>
+
+        <div className="paymentErr">
+          <h2 style={{ textAlign: 'center', color: 'red' }}>{err}</h2>
         </div>
       </div>
     </div>

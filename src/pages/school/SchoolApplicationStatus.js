@@ -54,10 +54,12 @@ export default function SchoolApplicationStatus() {
                   <th>Section</th>
                   {/* <th>Level</th> */}
                   <th>Exam</th>
+                  <th>ExamSlot</th>
                   <th>Mock Test</th>
-                  <th>Fees</th>
-                  {/* <th>Slot</th> */}
+                  <th>MockSlot</th>
+
                   <th>Roll no.</th>
+                  <th>Fees</th>
                   <th>Fees Status</th>
                 </tr>
               </thead>
@@ -72,9 +74,12 @@ export default function SchoolApplicationStatus() {
                         <td>{status.Class}</td>
                         <td>{status.Section}</td>
                         <td>{status.ExamTheme}</td>
+                        <td>{status.ExamSlotDateTime}</td>
                         <td>{status.DemoExam}</td>
-                        <td>{status.Fee}</td>
+                        <td>{status.DemoSlotDateTime}</td>
+
                         <td>{status.Rollno === 0 && 0}</td>
+                        <td>{status.Fee}</td>
                         <td className={status.PaymentStatus === 1 ? 'paid' : 'unpaid'}>{status.PaymentStatus === 1 ? 'PAID' : 'UNPAID'}</td>
                       </tr>
                     )

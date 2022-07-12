@@ -37,7 +37,11 @@ export const API_END_POINTS = {
 	submitslot: 'terry/updateSchoolAndSlotDetail',
 
 	//  application status
-	applicationStatus: 'api/applicationStatus'
+	applicationStatus: 'api/applicationStatus',
+
+
+	// payment api
+	ispaymentallowed: 'api/ispaymentallowed'
 
 
 }

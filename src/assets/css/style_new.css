@@ -706,6 +706,21 @@ td.unpaid {
   color: red !important;
 }
 
+.hidepayment {
+  display: none;
+}
+
+.showpayment {
+  display: block;
+}
+
+.paymentErr {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 45%;
+}
+
 /* modal design  end */
 
 

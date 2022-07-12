@@ -60,6 +60,11 @@ export default function SchoolRegistration() {
       case "mobile":
         if (value.length < 1)
           err = (errorList.find(item => item.fieldNam === key).message);
+        if (err === "") {
+          let item = errorList.find(item => item.fieldNam === key);
+          let regExp = RegExp(item.regex)
+          err = (regExp.test(value) ? "" : item.message2);
+        }
         break;
       case "email":
         if (value.length === 0)
@@ -117,7 +122,7 @@ export default function SchoolRegistration() {
     if (!res) {
       // match with OTP
       if (mobileOTP.join('') === '4444') {
-        alert();
+        // alert();
         setmobileverify(1)
       }
       else
@@ -134,7 +139,7 @@ export default function SchoolRegistration() {
     if (!res) {
       // match with OTP
       if (emailOTP.join('') === '4444') {
-        alert();
+        // alert();
         setemailverify(1)
       }
       else
@@ -724,7 +729,7 @@ export default function SchoolRegistration() {
                 <div className="row">
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>Country:</label>
+                      <label>Country:<span style={{ color: 'red' }}>*</span></label>
                       {/* <select className="dropdown" id="cars">
                         <option value="volvo">Country</option>
                         <option value="volvo">India</option>
@@ -760,7 +765,7 @@ export default function SchoolRegistration() {
                   </div>
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>State:</label>
+                      <label>State:<span style={{ color: 'red' }}>*</span></label>
                       {/* <select className="dropdown" id="cars">
                         <option value="volvo">State</option>
                         <option value="volvo">Uttar Pradesh</option>
@@ -792,7 +797,7 @@ export default function SchoolRegistration() {
                 <div className="row">
                   <div className=" col-sm">
                     <div className="form-wrapper">
-                      <label>Principal Name:</label>
+                      <label>Principal Name:<span style={{ color: 'red' }}>*</span></label>
                       {/* <input type="text" placeholder="Principal name here" name="uname" required="" /> */}
                       <input
                         type="text"
@@ -809,7 +814,7 @@ export default function SchoolRegistration() {
                   </div>
                   <div className=" col-sm">
                     <div className="form-wrapper">
-                      <label>Pin code:</label>
+                      <label>Pin code:<span style={{ color: 'red' }}>*</span></label>
                       {/* <input type="text" placeholder="Enter Pin code" name="psw" required="" /> */}
                       <input
                         type="text"
@@ -827,7 +832,7 @@ export default function SchoolRegistration() {
                 </div>
 
                 <div className="form-wrapper">
-                  <label>School Name:</label>
+                  <label>School Name:<span style={{ color: 'red' }}>*</span></label>
                   <input type="text" placeholder="School name here" name="uname" required={true}
                     onChange={(schoolName) => {
                       setschoolName(schoolName.target.value);
@@ -840,7 +845,7 @@ export default function SchoolRegistration() {
                 <div className="row">
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>Mobile:</label>
+                      <label>Mobile:<span style={{ color: 'red' }}>*</span></label>
                       <div className="d-flex">
                         {/* <input type="text" className="me-3" placeholder="Mobile (Principal/Teacher)" name="psw" required="" /> */}
                         <input
@@ -861,14 +866,14 @@ export default function SchoolRegistration() {
                   </div>
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>Mobile OTP:</label>
+                      <label>Mobile OTP:<span style={{ color: 'red' }}>*</span></label>
                       <div className=" d-flex justify-content-between">
                         <input type="text" className="me-3 pw1" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 0) }} name="psw0" placeholder-type="number" />
                         <input type="text" className="me-3 pw2" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 1) }} name="psw1" />
                         <input type="text" className="me-3 pw3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 2) }} name="psw2" />
                         <input type="text" className="me-3 pw4" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 3) }} name="psw3" />
 
-                        <button className="otbutton btn btn-accent">Verify</button>{mobileverify}
+                        <button className="otbutton btn btn-accent">Verify</button>
                       </div>
                     </div>
                   </div>
@@ -877,7 +882,7 @@ export default function SchoolRegistration() {
                 <div className="row">
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>E-Mail:</label>
+                      <label>E-Mail:<span style={{ color: 'red' }}>*</span></label>
                       <div className="d-flex">
                         {/* <input type="text" className="me-3" placeholder="Mobile (Principal/Teacher)" name="psw" required="" /> */}
                         <input
@@ -896,13 +901,13 @@ export default function SchoolRegistration() {
                   </div>
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>E-Mail OTP:</label>
+                      <label>E-Mail OTP:<span style={{ color: 'red' }}>*</span></label>
                       <div className=" d-flex justify-content-between">
                         <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 0) }} placeholder="" name="psw_1" required="" placeholder-type="number" />
                         <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 1) }} placeholder="" name="psw_2" required="" />
                         <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 2) }} placeholder="" name="psw_3" required="" />
                         <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 3) }} placeholder="" name="psw_4" required="" />
-                        <button className="otbutton btn btn-accent">Verify</button> {emailverify}
+                        <button className="otbutton btn btn-accent">Verify</button>
                       </div>
                     </div>
                   </div>
@@ -913,6 +918,7 @@ export default function SchoolRegistration() {
                   {RegisterationClicked === 1 && error_message && (<div className="alert alert-danger w-100" role="alert">
                     {error_message}
                   </div>)}
+                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are madantory!!!</h3>
                   <div className="d-flex justify-content-center">
                     {/* <button className="btn btn-primary w-50" type="submit">Registration</button> */}
                     <button className="btn btn-primary w-50" onClick={RegisterationApi}>Registration</button>

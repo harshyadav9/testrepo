@@ -24,12 +24,14 @@ const Error = [
 		message: "Please enter pinCode",
 		status: false,
 		regex: /^.{6,}$/,
-		message2: "Please enter valid pin of length 6"
+		message2: "Please enter valid pin code"
 	},
 	{
 		fieldNam: "mobile",
+		regex: /^\w{10}$/,
 		message: "Please enter mobile",
-		status: false
+		status: false,
+		message2: "mobile length should be 10"
 	},
 	{
 		fieldNam: "email",
