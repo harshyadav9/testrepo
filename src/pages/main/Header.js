@@ -34,7 +34,7 @@ export default function Header() {
 
 
       <header className="header ">
-        <nav className="navbar fixed-top navbar-expand-lg navbar-dark shadow" style={{ backgroundColor: '#186dd7' }}>
+        <nav className="navbar fixed-top navbar-expand-lg navbar-dark shadow" style={{ backgroundColor: '#228B22' }}>
           <div className="container-fluid">
             {/* <a className="navbar-brand" href="#"><img src={terilogo} width="150" alt="logo" /></a> */}
             <Link to="/" className="navbar-brand">

@@ -91,7 +91,10 @@ export default function SchoolLogin() {
               mobile: res.data.data.mobile,
               principal_name: res.data.data.principalname,
               email: res.data.data.email,
-              district: res.data.data.district
+              district: res.data.data.district,
+              coordinating_teacher: res.data.data.coordinating_teacher,
+              email_coordinator: res.data.data.email_coordinator,
+              mobile_coordinator: res.data.data.mobile_coordinator
             });
 
 

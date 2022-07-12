@@ -1,15 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap');
 
 :root {
-  --primary: #0f478e;
+  /* --primary: #0f478e; */
+  --primary: #228B22;
   --primary-light: #e6f2fe;
   --primary-dark: #0e4080;
   /*--my-secondary: #FFE7BF;
     --my-secondary-light: #fffaf2;
     --my-secondary-dark: #E6D0AC;*/
-  --accent: #186dd7;
+  /* --accent: #186dd7; */
+  --accent: #228B22;
+
   --accent-light: #468adf;
-  --accent-dark: #1662c2;
+  /* --accent-dark: #1662c2; */
+  --accent-dark: #228B22;
   --gray: #6e6e6e;
 }
 

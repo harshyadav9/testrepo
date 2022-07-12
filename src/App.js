@@ -29,6 +29,7 @@ import StudentForget from "./pages/student/StudentForget";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import StudentDataProvider from "./pages/context/datacontext";
+import Instructions from "./pages/main/instructions";
 function App() {
   return (
     <>
@@ -39,6 +40,8 @@ function App() {
             {/* School */}
             <Route path="/" element={<Home />} exact />
             <Route path="/school-login" element={<SchoolLogin />} exact />
+            <Route path="/Instructions" element={<Instructions />} exact />
+
             <Route
               path="/school-registration"
               element={<SchoolRegistration />}

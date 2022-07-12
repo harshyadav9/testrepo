@@ -7,7 +7,9 @@ export const Colors = {
     TRANSPARENT: 'transparent',
     BUTTON_COLOR: '#23adba',
     STATUS_BAR: '#ffffff',
-    MAINCOLOR: "#1560bd",
+    // MAINCOLOR: "#1560bd",
+    MAINCOLOR: "#228B22",
+
     GRADIENT1: "#FD3A2D",
     GRADIENT2: "#FF872C",
     PRIMARY: "#FF872C",

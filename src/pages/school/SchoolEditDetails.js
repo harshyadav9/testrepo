@@ -48,6 +48,18 @@ export default function SchoolEditDetails() {
     setpostalAddress(state.postal_address);
     setdistrict(state.district);
     setcoordinatingTeacher(state.coordinating_teacher);
+    if (state.email_coordinator === "undefined") {
+      setcoordinatingTeacherEmail("");
+    } else {
+      setcoordinatingTeacherEmail(state.email_coordinator);
+    }
+
+    if (state.mobile_coordinator === "undefined") {
+      setcoordinatingTeacherMobile("");
+    } else {
+      setcoordinatingTeacherMobile(state.mobile_coordinator);
+    }
+
   }, []);
   const checkAllField = () => {
     let arr = [postalAddress, phoneStd, district, coordinatingTeacher, coordinatingTeacherEmail, coordinatingTeacherMobile];
@@ -117,14 +129,18 @@ export default function SchoolEditDetails() {
       coordinatingteacher: coordinatingTeacher,
       phoneStd: phoneStd,
       // code: decoded?.schoolsCode
-      code: state?.school_code
+      code: state?.school_code,
+      email_coordinator: coordinatingTeacherEmail,
+      mobile_coordinator: coordinatingTeacherMobile
     };
     dispatch({
       type: 'SAVEINFO',
       postal_address: postalAddress,
       phonestd: phoneStd,
       district: district,
-      coordinating_teacher: coordinatingTeacher
+      coordinating_teacher: coordinatingTeacher,
+      email_coordinator: coordinatingTeacherEmail,
+      mobile_coordinator: coordinatingTeacherMobile
     });
 
 
@@ -539,7 +555,7 @@ export default function SchoolEditDetails() {
                   <div className="col-sm">
                     <div className="form-wrapper">
                       <label >Email of the Coordinate Teacher</label>
-                      <input type="email" name="coemail" placeholder="email@techer.in"
+                      <input type="email" name="coemail" value={coordinatingTeacherEmail} placeholder="email@techer.in"
                         onChange={(coordinatingTeacherEmail) => {
                           setcoordinatingTeacherEmail(coordinatingTeacherEmail.target.value);
                           formValidate({ 'key': 'coordinatingTeacherEmail', 'value': coordinatingTeacherEmail.target.value })
@@ -550,7 +566,7 @@ export default function SchoolEditDetails() {
                   <div className="col-sm">
                     <div className="form-wrapper">
                       <label >Mobile of the Coordinate Teacher</label>
-                      <input type="text" name="comobile" placeholder="9xxxxxxxxx"
+                      <input type="text" name="comobile" value={coordinatingTeacherMobile} placeholder="9xxxxxxxxx"
                         onChange={(coordinatingTeacherMobile) => {
                           setcoordinatingTeacherMobile(coordinatingTeacherMobile.target.value);
                           formValidate({ 'key': 'coordinatingTeacherMobile', 'value': coordinatingTeacherMobile.target.value });

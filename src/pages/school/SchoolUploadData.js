@@ -193,8 +193,16 @@ export default function SchoolUploadData() {
         var contents = processExcel(e.target.result);
         try {
           let d = JSON.parse(contents)?.Sheet1;
-          setHeaders(d.shift());
-          correctData = d.map((exData, i) => [...exData.slice(0, 1), dayjs(ExcelDateToJSDate(exData[1])).format('YYYY-MM-DD'), ...exData.slice(2, 15)]);
+          let arr = [];
+          for (let i = 0; i < d.length; i++) {
+            if (d[i].length === 0) {
+              continue;
+            } else {
+              arr.push(d[i]);
+            }
+          }
+          setHeaders(arr.shift());
+          correctData = arr.map((exData, i) => [...exData.slice(0, 1), dayjs(ExcelDateToJSDate(exData[1])).format('YYYY-MM-DD'), ...exData.slice(2, 15)]);
           console.log("correctData", correctData);
 
           let correctDatawithErr = correctData.map((row, i) => [...row, 'valid']);

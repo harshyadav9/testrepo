@@ -14,6 +14,7 @@ export default function SchoolRegistration() {
   const { state, dispatch } = useContext(StudentDataContext);
   const [principalName, setprincipalName] = useState("");
   const [schoolName, setschoolName] = useState("");
+  const [schoolcode, setSchoolcode] = useState("");
   const [pinCode, setpinCode] = useState("");
   const [mobile, setmobile] = useState("");
   const [country, setcountry] = useState("");
@@ -21,6 +22,9 @@ export default function SchoolRegistration() {
   // const [state, setstate] = useState("");
   const [mobileverify, setmobileverify] = useState();
   const [emailverify, setemailverify] = useState();
+
+  const [mobileVerMsg, setMobileVerMsg] = useState("");
+  const [emailVerMsg, setEmailVerMsg] = useState("");
 
   const [mobileOTP, setmobileOTP] = useState([-1, -1, -1, -1]);
   const [emailOTP, setemailOTP] = useState([-1, -1, -1, -1]);
@@ -116,19 +120,46 @@ export default function SchoolRegistration() {
   };
 
 
+  const otpMobileverifcation = () => {
+
+    console.log("emailOTP", emailOTP);
+    if (mobileOTP.join('') === '4444') {
+      setMobileVerMsg('Your mobile has been verified');
+      setmobileverify(1);
+    } else {
+      setMobileVerMsg('Your mobile has not been verified');
+      setmobileverify(0);
+    }
+  }
+
+
+
+  const otpEmailverifcation = () => {
+
+    console.log("mobileOTP", mobileOTP);
+    if (emailOTP.join('') === '4444') {
+      setEmailVerMsg('Your email has been verified');
+      setemailverify(1);
+    } else {
+      setEmailVerMsg('Your email has not been verified');
+      setemailverify(0);
+    }
+  }
+
+
   const mobileOTPset = (ev, index) => {
     mobileOTP[index] = ev.target.value;
-    let res = mobileOTP.includes(-1);
-    if (!res) {
-      // match with OTP
-      if (mobileOTP.join('') === '4444') {
-        // alert();
-        setmobileverify(1)
-      }
-      else
-        setmobileverify(0)
-      console.log(mobileOTP);
-    }
+    // let res = mobileOTP.includes(-1);
+    // if (!res) {
+    //   // match with OTP
+    //   if (mobileOTP.join('') === '4444') {
+    //     // alert();
+    //     setmobileverify(1);
+    //   }
+    //   else
+    //     setmobileverify(0)
+    //   console.log(mobileOTP);
+    // }
     setmobileOTP(mobileOTP);
   };
 
@@ -140,7 +171,7 @@ export default function SchoolRegistration() {
       // match with OTP
       if (emailOTP.join('') === '4444') {
         // alert();
-        setemailverify(1)
+        setemailverify(1);
       }
       else
         setemailverify(0)
@@ -149,19 +180,45 @@ export default function SchoolRegistration() {
     }
   }
 
+  const sortStateList = (list) => {
+
+    return list.sort(function (a, b) {
+
+      if (a.statename < b.statename) {
+        return -1;
+      }
+      if (a.statename > b.statename) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+
+
+  const sortSchoolList = (list) => {
+
+    return list.sort(function (a, b) {
+
+      if (a.schoolName < b.schoolName) {
+        return -1;
+      }
+      if (a.schoolName > b.schoolName) {
+        return 1;
+      }
+      return 0;
+    });
+  }
 
 
 
-
-
-  const sortList = (list) => {
+  const sortCountryList = (list) => {
 
     return list.sort(function (a, b) {
 
       if (a.country < b.country) {
         return -1;
       }
-      if (a.last_nom > b.last_nom) {
+      if (a.country > b.country) {
         return 1;
       }
       return 0;
@@ -175,7 +232,7 @@ export default function SchoolRegistration() {
     try {
 
       if (countryList?.status == 200 && countryList?.data?.status) {
-        let list = sortList(countryList.data.list);
+        let list = sortCountryList(countryList.data.list);
         setCountryList(list);
       } else {
         setCountryList([]);
@@ -232,6 +289,7 @@ export default function SchoolRegistration() {
       .then((res) => {
 
         if (res.data) {
+          setSchoolcode(res.data.data);
           dispatch({
             type: 'ADDINFO_REGISTER',
             school_code: res.data.data,
@@ -246,8 +304,15 @@ export default function SchoolRegistration() {
             email: RegisterationOptions.email,
             district: ''
           });
-          notify(`School has been registered successfully!.`, true);
-          navigate("/school-edit-details");
+
+          document.getElementsByClassName('modal')[0].style.display = 'block';
+          setTimeout(() => {
+            navigate("/school-edit-details");
+          }, 2000);
+
+
+          // notify(`School has been registered successfully!.`, true);
+
 
 
           // localStorage.setItem("PrincipalName", principalName);
@@ -266,7 +331,7 @@ export default function SchoolRegistration() {
     const cityStateList = await axios.get(`${API_BASE_URL}${endPoint}`);
     //const cityStateList = await axios.get(`${endPoint}`);
     if (cityStateList.status === 200 && cityStateList.data.status) {
-      let list = sortList(cityStateList.data.list);
+      let list = sortStateList(cityStateList.data.list);
       setCityStateList(list);
       // handleChange('', 'state');
     } else {
@@ -296,7 +361,7 @@ export default function SchoolRegistration() {
       const data = await axios.post(`${API_BASE_URL}${API_END_POINTS.getIndainSchools}`, serverData);
       //const data = await axios.post(`${API_END_POINTS.getIndainSchools}`, serverData);
       if (data.status === 200 && data.data.status) {
-        let list = sortList(data.data.list);
+        let list = sortSchoolList(data.data.list);
         setExistingSchool(list);
       } else {
         setExistingSchool([])
@@ -637,7 +702,7 @@ export default function SchoolRegistration() {
                     <div className="form-wrapper ">
 
                       <select required onChange={changeCityState}>
-                        <option value="volvo" >Select Country</option>
+                        <option value="volvo" id="country_id">Select Country</option>
                         {
                           countryList.map(co => {
                             return (
@@ -873,7 +938,10 @@ export default function SchoolRegistration() {
                         <input type="text" className="me-3 pw3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 2) }} name="psw2" />
                         <input type="text" className="me-3 pw4" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 3) }} name="psw3" />
 
-                        <button className="otbutton btn btn-accent">Verify</button>
+                        <button className="otbutton btn btn-accent" onClick={otpMobileverifcation}>Verify</button>
+                      </div>
+                      <div>
+                        <h5>{mobileVerMsg}</h5>
                       </div>
                     </div>
                   </div>
@@ -897,6 +965,7 @@ export default function SchoolRegistration() {
                         />
                         <button className="otbutton btn btn-accent" style={{ whiteSpace: 'nowrap' }}>Generate OTP</button>
                       </div>
+
                     </div>
                   </div>
                   <div className="col-sm">
@@ -907,7 +976,10 @@ export default function SchoolRegistration() {
                         <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 1) }} placeholder="" name="psw_2" required="" />
                         <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 2) }} placeholder="" name="psw_3" required="" />
                         <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 3) }} placeholder="" name="psw_4" required="" />
-                        <button className="otbutton btn btn-accent">Verify</button>
+                        <button className="otbutton btn btn-accent" onClick={otpEmailverifcation}>Verify</button>
+                      </div>
+                      <div>
+                        <h5>{emailVerMsg}</h5>
                       </div>
                     </div>
                   </div>
@@ -925,6 +997,23 @@ export default function SchoolRegistration() {
                     {/* <!-- <button class="btn btn-secondary" type="reset">Cancel</button> --> */}
                   </div>
                   {/* <!-- <a href="./uploadstudentdata.html"> --> */}
+                </div>
+
+                <div className="modal" id="myModalexam">
+                  <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                      {/* <div className="modal-header">
+                        <h5 className="modal-title">Slots for Examination</h5>
+                        <button type="button" className="btn-close" data-dismiss="modal">wqwqwq</button>
+                      </div> */}
+                      <div className="modal-body">
+                        <div className="table-responsive ">
+                          <h3>Registration number is {schoolcode} and password is {mobile}</h3>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
 
               </div>

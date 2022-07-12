@@ -11,6 +11,11 @@ import youth from "../../assets/icons/youth.svg";
 // import "./Home.scss";
 
 export default function Home() {
+
+
+  const openins = () => {
+    window.open('/Instructions');
+  }
   return (
     // <div className="container-home">
     //   <div className="announcements-panel">
@@ -114,10 +119,10 @@ export default function Home() {
           <div className="announce">
             <div className="navtitle">Announcements</div>
             <ul className="list-unstyled">
-              <li className="active"><a href="#"><img src={download} height="18" alt="" /> Slot for Exam</a></li>
-              <li><a href="#"><img src={download} height="18" alt="" /> Slot for Demo</a></li>
+              <li className="active"><a href="#" onClick={openins}><img src={download} height="18" alt="" />Instructions</a></li>
+              {/* <li><a href="#"><img src={download} height="18" alt="" /> Slot for Demo</a></li>
               <li><a href="#"><img src={download} height="18" alt="" /> Account Details</a></li>
-              <li><a href="#"><img src={download} height="18" alt="" /> Page Navigation</a></li>
+              <li><a href="#"><img src={download} height="18" alt="" /> Page Navigation</a></li> */}
             </ul>
           </div>
 
@@ -141,6 +146,7 @@ export default function Home() {
               <Link to="/school-login" className="box">
                 {/* <a href="#" className="box"> */}
                 <img src={schoolpreview} alt="" />
+                <h4>GREEN Olympiad </h4>
                 <h4>School</h4>
                 <h5>Registration / Login</h5>
                 <p>STD 4-12</p>
@@ -154,7 +160,7 @@ export default function Home() {
                   <use xlinkHref="#computer-user"></use>
                 </svg> */}
                 <img src={schoolpreview} alt="" />
-
+                <h4>GREEN Olympiad </h4>
                 <h4>Student</h4>
                 <h5>Registration / Login</h5>
                 <p>STD 4-12</p>
