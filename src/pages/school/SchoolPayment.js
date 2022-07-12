@@ -6,7 +6,7 @@ import { Colors } from "../../assets/css/color";
 import jwt_decode from "jwt-decode";
 import "./SchoolPayment.scss";
 import Sidebar from "../main/sidebar";
-import { API_ADMIN_URL_2, REGISTER_API, API_BASE_URL, API_END_POINTS } from "../../apis/api";
+import { API_ADMIN_URL_2, REGISTER_API, API_BASE_URL, API_END_POINTS, API_BASE_JAVA_URL } from "../../apis/api";
 import { notify } from '../../Utills'
 import { useNavigate } from "react-router";
 
@@ -41,7 +41,7 @@ export default function SchoolPayment() {
       });
 
 
-      console.log("isPaymentAllowed", isPaymentAllowed);
+
       if (!isPaymentAllowed?.data?.status) {
         setErr(isPaymentAllowed?.data?.message);
         return;
@@ -61,10 +61,9 @@ export default function SchoolPayment() {
           console.log("paymentDetails", paymentDetails)
           setPaymentStatus(paymentDetails.data.data);
 
-
-
         } else {
           setPaymentStatus([]);
+          setErr("something wnet wrong");
 
         }
       } catch (e) {
@@ -140,14 +139,26 @@ export default function SchoolPayment() {
 
     const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, {
       amount: totalThemeExamPay + tMockStu * mockFee,
-      email: state.email, phone: state.mobile, name: state.schoolname, productinfo: "schoolInfo"
+      email: state.email, phone: state.mobile, name: state.schoolname, productinfo: state.school_code
     });
     //const payment = await axios.get(`${API_END_POINTS.payment}`);
 
     if (payment?.data?.status === 200) {
-      navigate("/school-slot");
-      console.log("payment", payment);
+      // navigate("/school-slot");
+      // console.log("payment", payment);
       window.open(payment.data.url, "_blank");
+      let paymentinsertrecordsObj = {
+        schoolcode_Rollno: state?.school_code, mode: "ONLINE",
+        subscriberType: "SCHOOL", paymentId: "", paymentReceivedStatus: "pending", createdBy: state?.school_code,
+        modifyBy: state?.school_code,
+        ...payment.data.data
+      };
+
+      const paymentinsertrecords = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.updatePaymentDetails}`, paymentinsertrecordsObj);
+
+      console.log("paymentinsertrecords", paymentinsertrecords);
+
+
     } else {
       setErr(payment?.data?.data?.data);
     }

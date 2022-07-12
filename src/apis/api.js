@@ -41,7 +41,8 @@ export const API_END_POINTS = {
 
 
 	// payment api
-	ispaymentallowed: 'api/ispaymentallowed'
+	ispaymentallowed: 'api/ispaymentallowed',
+	updatePaymentDetails: 'terry/updatePaymentDetails'
 
 
 }
