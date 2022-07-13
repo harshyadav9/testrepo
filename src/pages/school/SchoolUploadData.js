@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
-import uploadfiles from "../../assets/icons/upload_files.svg";
+import uploadfiles from "../../assets/icons/upload_file_green.svg";
 import { Colors } from "../../assets/css/color";
 import "../../assets/icons/common.svg";
 import { API_BASE_URL, API_END_POINTS, API_BASE_JAVA_URL } from "../../apis/api";
@@ -14,7 +14,7 @@ import Sidebar from "../main/sidebar";
 import { StudentDataContext } from "../context/datacontext";
 var md5 = require('md5');
 
-const MINIMUMROW = 4;
+const MINIMUMROW = 20;
 const XLSX = require("xlsx");
 const dayjs = require('dayjs')
 
@@ -58,6 +58,7 @@ export default function SchoolUploadData() {
   const [idCount, setIdCount] = useState(0);
   const classesdropdown = [4, 5, 6, 7, 8, 9, 10, 11, 12, 'UG', 'PG'];
   const examThemedropdown = ['ESD', 'ESDGREEN'];
+  const [filename, setFilename] = useState("");
   const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
   let token = userToken;
   // let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
@@ -148,7 +149,7 @@ export default function SchoolUploadData() {
     let invalidDate = false;
     //  check the date validation
     for (let i = 0; i < studantDataVal.length; i++) {
-      const regex = /^\d{4}-\d{2}-\d{2}$/;
+      const regex = /^\d{2}-\d{2}-\d{4}$/;
       if ((studantDataVal[i]['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(studantDataVal[i]['className'])) === -1) ||
         (examThemedropdown.indexOf(studantDataVal[i]['examTheme']) === -1) || (['YES', 'NO'].indexOf(studantDataVal[i]['demoExam']) === -1)) {
         invalidDate = true;
@@ -188,6 +189,7 @@ export default function SchoolUploadData() {
     let correctData = []
     const f = e.target.files[0];
     if (f) {
+      setFilename(f?.name);
       var r = new FileReader();
       r.onload = e => {
         var contents = processExcel(e.target.result);
@@ -202,7 +204,7 @@ export default function SchoolUploadData() {
             }
           }
           setHeaders(arr.shift());
-          correctData = arr.map((exData, i) => [...exData.slice(0, 1), dayjs(ExcelDateToJSDate(exData[1])).format('YYYY-MM-DD'), ...exData.slice(2, 15)]);
+          correctData = arr.map((exData, i) => [...exData.slice(0, 1), dayjs(ExcelDateToJSDate(exData[1])).format('DD-MM-YYYY'), ...exData.slice(2, 15)]);
           console.log("correctData", correctData);
 
           let correctDatawithErr = correctData.map((row, i) => [...row, 'valid']);
@@ -314,7 +316,7 @@ export default function SchoolUploadData() {
     resultset['schoolId'] = state.school_code;
     resultset['error'] = 'valid';
 
-    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    const regex = /^\d{2}-\d{2}-\d{4}$/;
     let invalidDate = false;
     let errRows = [];
     if ((resultset['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(resultset['dob']['className'])) === -1) ||
@@ -717,18 +719,56 @@ export default function SchoolUploadData() {
                 <p>Upload Student Data from Excel</p>
               </div>
 
+
+
+
+
+
+              <div className="shadow bg-white mb-5 rounded-16">
+                <div className="p-4">
+                  <div className="row">
+                    <div className="col-sm-7 mb-5 mb-sm-0">
+                      <div className="upload-box text-center h-100">
+                        <label>
+                          {/* <input type="file" name="upload" accept=".xlsx" /> */}
+                          <input
+                            className="upload"
+                            type="file"
+                            placeholder="Name"
+                            name="uname"
+                            required
+                            onChange={handleOnChange}
+                          />
+                          <img src={uploadfiles} alt="" />
+                          <br />
+                          <strong>Choose excel</strong>
+                          <h5>{filename}</h5>
+                        </label>
+
+                      </div>
+                    </div>
+
+                    <div className="col-sm-5">
+                      <div className="d-flex h-100 flex-column justify-content-around">
+                        <button className="btn btn-primary mb-4 mb-sm-0 w-100">Download Excel Format</button>
+                        {/* <button className="btn btn-primary w-100 ">Upload Student Data</button> */}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="section-title mb-4 text-muted">
                 <div className="d-flex">
-                  <div className="me-auto">
+                  <div className="me-auto" style={{ visibility: "hidden" }}>
                     <h6 className="font-bold ">Add Student Data</h6>
                     <p>Add Student Data from Add button</p>
                   </div>
                   <button className="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#newStudentRow"><svg className="icon align-middle me-1">
                     <use xlinkHref="#add-plus"></use>
-                  </svg> <span className="align-middle">Add Data</span></button>
+                  </svg> <span className="align-middle">Create Row</span></button>
                 </div>
               </div>
-
 
               <div id="newStudentRow" className="collapse">
                 <div className="table-responsive ">
@@ -837,38 +877,8 @@ export default function SchoolUploadData() {
                 </div>
               </div>
 
-              <div className="shadow bg-white mb-5 rounded-16">
-                <div className="p-4">
-                  <div className="row">
-                    <div className="col-sm-7 mb-5 mb-sm-0">
-                      <div className="upload-box text-center h-100">
-                        <label>
-                          {/* <input type="file" name="upload" accept=".xlsx" /> */}
-                          <input
-                            className="upload"
-                            type="file"
-                            placeholder="Name"
-                            name="uname"
-                            required
-                            onChange={handleOnChange}
-                          />
-                          <img src={uploadfiles} alt="" />
-                          <br />
-                          <strong>browse excel</strong>
-                        </label>
 
-                      </div>
-                    </div>
 
-                    <div className="col-sm-5">
-                      <div className="d-flex h-100 flex-column justify-content-around">
-                        <button className="btn btn-primary mb-4 mb-sm-0 w-100">Download Excel Format</button>
-                        <button className="btn btn-primary w-100 ">Upload Student Data</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div className="section-title mb-4 text-muted">
                 <div className="d-flex">
                   <div className="me-auto">
@@ -877,7 +887,7 @@ export default function SchoolUploadData() {
                   </div>
                   <button className="btn btn-outline-secondary"><svg className="icon align-middle me-1">
                     <use xlinkHref="#add-plus"></use>
-                  </svg> <span className="align-middle" onClick={addNewRow}>Add Data</span></button>
+                  </svg> <span className="align-middle" onClick={addNewRow}>Insert Row</span></button>
                 </div>
               </div>
 
@@ -921,7 +931,7 @@ export default function SchoolUploadData() {
                               <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['dob'] ?? ''}
 
                                 style={{
-                                  "width": "90%",
+                                  "width": "100%",
                                   "padding": "6px 15px",
                                   "margin": "0px",
                                   display: "inline-block",
@@ -1033,7 +1043,7 @@ export default function SchoolUploadData() {
                 <div>
                   <h3>Points to keep in mind
                     <ul>
-                      <li>Date of Birth should be in YYYY-MM-DD format</li>
+                      <li>Date of Birth should be in DD-MM-YYYY format</li>
                       <li>Value of examTheme should be either ESD/ESDGREEN</li>
                       <li>Value of mock test should be either YES/NO</li>
                       <li>Value of class  should be btween 4,5,6,7,8,9,10,11,12,UG,PG</li>
