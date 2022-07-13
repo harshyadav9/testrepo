@@ -17,6 +17,12 @@
   --gray: #6e6e6e;
 }
 
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #228B22 !important;
+}
+
 body {
   padding-top: 74px;
   background-color: white;
@@ -262,7 +268,8 @@ img {
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgb(24 109 215 / 80%);
+  /* background: rgb(24 109 215 / 80%); */
+  background: #228B22
 }
 
 .login .loginInner {

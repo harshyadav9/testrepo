@@ -296,7 +296,7 @@ export default function SchoolUploadData() {
   const addNewRow = (e) => {
     e.preventDefault();
     if (!(stName && stDOB && stClass && stSection && examTheme && demoExam)) {
-      notify(`Please fill all fields!.`, false)
+      // notify(`Please fill all fields!.`, false)
       return
     }
     console.log("idCount", idCount);

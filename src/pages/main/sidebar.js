@@ -116,17 +116,20 @@ function Sidebar() {
 
                             {/* <li ><a href="#"><svg className="icon"><use xlinkHref="#upload-data-to-cloud"></use></svg> Upload Students Data</a></li> */}
                         </Link>
-                        <Link to="/school-payment">
-                            {/* <img src="images/download-icon.png" height="18" alt="" /> */}
-                            <svg className="icon"><use xlinkHref="#online-payment-method"></use></svg>
-                            Payment
-                        </Link>
 
                         <Link to="/school-slot">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
                             Select Slot Details
                         </Link>
+
+                        <Link to="/school-payment">
+                            {/* <img src="images/download-icon.png" height="18" alt="" /> */}
+                            <svg className="icon"><use xlinkHref="#online-payment-method"></use></svg>
+                            Payment
+                        </Link>
+
+
 
                         <Link to="/school-application-status">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}

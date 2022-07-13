@@ -151,7 +151,7 @@ export default function SchoolEditDetails() {
         console.log("hhhhhhh", res.data);
         if (res.data) {
           // alert("data updated");
-          notify(`data updated successfull!!.`, true);
+          // notify(`data updated successfull!!.`, true);
           navigate("/school-upload-data");
         } else {
           alert("something is rong");
@@ -438,7 +438,7 @@ export default function SchoolEditDetails() {
                   </div>
                 </div>
                 <div className="form-wrapper">
-                  <label >Postal Address</label>
+                  <label >Postal Address<span style={{ color: 'red' }}>*</span></label>
                   {/* <textarea name="address" placeholder="sample address" cols="30" rows="2"></textarea> */}
                   <textarea name="postalAddress" placeholder="postal address" value={postalAddress} cols="30" rows="2" required
                     onChange={(e, postalAddress) => {
@@ -454,7 +454,7 @@ export default function SchoolEditDetails() {
                 <div className="row">
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>Phone No. (with STD code) </label>
+                      <label>Phone No. (with STD code) <span style={{ color: 'red' }}>*</span></label>
                       {/* <input type="text" placeholder="011-4xxxxxxx" name="stdcode" required="" /> */}
                       <input
                         type="text"
@@ -517,7 +517,7 @@ export default function SchoolEditDetails() {
                 <div className="row">
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>District</label>
+                      <label>District<span style={{ color: 'red' }}>*</span></label>
                       {/* <input type="text" placeholder="District" name="district" required="" /> */}
                       <input
                         type="text"
@@ -534,7 +534,7 @@ export default function SchoolEditDetails() {
                   </div>
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>Name of the Coordinate Teacher</label>
+                      <label>Name of the Coordinate Teacher<span style={{ color: 'red' }}>*</span></label>
                       {/* <input type="text" placeholder="Coordinating Teacher Name" name="coname" required="" /> */}
                       <input
                         type="text"
@@ -554,7 +554,7 @@ export default function SchoolEditDetails() {
                 <div className="row">
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label >Email of the Coordinate Teacher</label>
+                      <label >Email of the Coordinate Teacher<span style={{ color: 'red' }}>*</span></label>
                       <input type="email" name="coemail" value={coordinatingTeacherEmail} placeholder="email@techer.in"
                         onChange={(coordinatingTeacherEmail) => {
                           setcoordinatingTeacherEmail(coordinatingTeacherEmail.target.value);
@@ -565,7 +565,7 @@ export default function SchoolEditDetails() {
                   </div>
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label >Mobile of the Coordinate Teacher</label>
+                      <label >Mobile of the Coordinate Teacher<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="comobile" value={coordinatingTeacherMobile} placeholder="9xxxxxxxxx"
                         onChange={(coordinatingTeacherMobile) => {
                           setcoordinatingTeacherMobile(coordinatingTeacherMobile.target.value);
@@ -582,6 +582,9 @@ export default function SchoolEditDetails() {
                   <div className="text-center">
                     <button className="btn btn-primary mx-auto" style={{ width: '15rem' }} onClick={RegisterationApi}>Save &amp; Proceed</button>
                   </div>
+                </div>
+                <div>
+                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory!!!</h3>
                 </div>
               </div>
             </div>

@@ -414,7 +414,8 @@ export default function SchoolRegistration() {
     //const responseData = await axios.post(`${API_END_POINTS.getSchoolDetail}`, serverData);
     if (responseData.status === 200 && responseData.data.status) {
       const schoolDetail = responseData.data.schoolDetail;
-
+      // getCityState(event.target.value)
+      await getCityState("IN");
       setSchoolDetail(responseData.data.schoolDetail);
       if (isIndain) {
         let perData = data;
@@ -1012,7 +1013,7 @@ export default function SchoolRegistration() {
                   {RegisterationClicked === 1 && error_message && (<div className="alert alert-danger w-100" role="alert">
                     {error_message}
                   </div>)}
-                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are madantory!!!</h3>
+                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory!!!</h3>
                   <div className="d-flex justify-content-center">
                     {/* <button className="btn btn-primary w-50" type="submit">Registration</button> */}
                     <button className="btn btn-primary w-50" onClick={RegisterationApi}>Registration</button>

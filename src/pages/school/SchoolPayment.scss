@@ -16,7 +16,9 @@
                 color: var(--text);
 
                 &:first-child {
-                    background: var(--primary2);
+                    // background: var(--primary2);
+                    background: var(--primary);
+
                     color: var(--white);
                     text-align: left;
                 }
