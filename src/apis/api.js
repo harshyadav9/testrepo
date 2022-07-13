@@ -42,7 +42,10 @@ export const API_END_POINTS = {
 
 	// payment api
 	ispaymentallowed: 'api/ispaymentallowed',
-	updatePaymentDetails: 'terry/updatePaymentDetails'
+	updatePaymentDetails: 'terry/updatePaymentDetails',
+
+	// otp:
+	generateOtp: 'api/generateOtp'
 
 
 }

@@ -27,6 +27,8 @@ export default function SchoolRegistration() {
   const [emailVerMsg, setEmailVerMsg] = useState("");
 
   const [mobileOTP, setmobileOTP] = useState([-1, -1, -1, -1]);
+
+  const [mobileOTPValue, setMobileOTPValue] = useState("");
   const [emailOTP, setemailOTP] = useState([-1, -1, -1, -1]);
   const [error_message, setError_message] = useState('');
   const [RegisterationClicked, setRegisterationClicked] = useState(0);
@@ -122,8 +124,10 @@ export default function SchoolRegistration() {
 
   const otpMobileverifcation = () => {
 
+
+
     console.log("emailOTP", emailOTP);
-    if (mobileOTP.join('') === '4444') {
+    if (mobileOTP.join('') === mobileOTPValue) {
       setMobileVerMsg('Your mobile has been verified');
       setmobileverify(1);
     } else {
@@ -225,6 +229,16 @@ export default function SchoolRegistration() {
     });
   }
 
+
+  const generateOtp = async () => {
+    const otp = await axios.post(`${API_BASE_URL}${API_END_POINTS.generateOtp}`, { mobile: mobile });
+    if (otp?.data.status) {
+      setMobileOTPValue(otp.data.otp);
+    } else {
+      //  error in generating otp
+    }
+  }
+
   // console.log("Error",Error)
   const getCountry = async () => {
     const countryList = await axios.get(`${API_BASE_URL}${API_END_POINTS.getCountry}`);
@@ -306,9 +320,9 @@ export default function SchoolRegistration() {
           });
 
           document.getElementsByClassName('modal')[0].style.display = 'block';
-          setTimeout(() => {
-            navigate("/school-edit-details");
-          }, 2000);
+          // setTimeout(() => {
+          //   navigate("/school-edit-details");
+          // }, 2000);
 
 
           // notify(`School has been registered successfully!.`, true);
@@ -341,6 +355,14 @@ export default function SchoolRegistration() {
 
 
   }
+
+
+  const movetonext = () => {
+    navigate("/school-edit-details");
+    document.getElementsByClassName('modal')[0].style.display = 'none';
+  }
+
+
   const changeCityState = (event) => {
     if (event.target.value !== "IN") {
       setIsIndain(false)
@@ -925,7 +947,7 @@ export default function SchoolRegistration() {
                             formValidate({ 'key': 'mobile', 'value': mobile.target.value });
                           }}
                         />
-                        <button className="otbutton flex-grow-1 btn btn-accent" style={{ whiteSpace: 'nowrap' }}>Generate OTP</button>
+                        <button className="otbutton flex-grow-1 btn btn-accent" style={{ whiteSpace: 'nowrap' }} onClick={generateOtp}>Generate OTP</button>
                       </div>
                     </div>
                   </div>
@@ -963,7 +985,7 @@ export default function SchoolRegistration() {
                             formValidate({ 'key': 'email', 'value': email.target.value })
                           }}
                         />
-                        <button className="otbutton btn btn-accent" style={{ whiteSpace: 'nowrap' }}>Generate OTP</button>
+                        <button className="otbutton btn btn-accent" style={{ whiteSpace: 'nowrap' }} >Generate OTP</button>
                       </div>
 
                     </div>
@@ -1010,6 +1032,9 @@ export default function SchoolRegistration() {
                         <div className="table-responsive ">
                           <h3>Registration number is {schoolcode} and password is {mobile}</h3>
                         </div>
+                      </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-primary" onClick={movetonext}>Ok</button>
                       </div>
 
                     </div>
