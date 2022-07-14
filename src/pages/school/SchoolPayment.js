@@ -138,6 +138,7 @@ export default function SchoolPayment() {
   const makePayment = async () => {
 
     const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, {
+      type: 'SCHOOL',
       amount: totalThemeExamPay + tMockStu * mockFee,
       email: state.email, phone: state.mobile, name: state.schoolname, productinfo: state.school_code
     });

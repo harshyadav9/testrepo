@@ -1,144 +1,155 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import studentimg from "../../assets/icons/login.png";
 import { Colors } from "../../assets/css/color";
+import SidebarStudent from "../main/sidebarStudent";
+import axios from "axios";
+import { API_BASE_JAVA_URL, API_BASE_URL, API_END_POINTS } from "../../apis/api";
+import { StudentDataContext } from "../context/datacontext";
 
 export default function StudentPayment() {
+
+  useEffect(() => {
+    getPaymentDetails();
+  }, []);
+  const [err, setErr] = useState("");
+  const { state, dispatch } = useContext(StudentDataContext);
+  const [paymentData, setPaymentData] = useState({});
+
+
+  const makePayment = async () => {
+
+    const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, {
+      amount: paymentData?.totalFees,
+      type: 'INDV',
+      email: state?.student.Email, phone: state?.student.Mobile, name: state?.student.Name, productinfo: state?.student.RollNo
+    });
+    //const payment = await axios.get(`${API_END_POINTS.payment}`);
+
+    if (payment?.data?.status === 200) {
+      // navigate("/school-slot");
+      // console.log("payment", payment);
+      window.open(payment.data.url, "_blank");
+      let paymentinsertrecordsObj = {
+        schoolcode_Rollno: state?.student.RollNo, mode: "ONLINE",
+        subscriberType: "INDV", paymentId: "", paymentReceivedStatus: "pending", createdBy: state?.student.RollNo,
+        modifyBy: state?.student.RollNo,
+        ...payment.data.data
+      };
+
+
+      console.log("paymentinsertrecordsObj", paymentinsertrecordsObj);
+
+      const paymentinsertrecords = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.insertPaymentDetails}`, paymentinsertrecordsObj);
+
+      console.log("paymentinsertrecords", paymentinsertrecords);
+
+
+    } else {
+      setErr(payment?.data?.data?.data);
+    }
+
+  }
+
+
+
+  const getPaymentDetails = async () => {
+
+    const getpayment = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getPaymentDetailsForIndividualStudent}`, {
+      params: {
+        rollNumber: state?.student?.RollNo
+      }
+    });
+
+    if (getpayment?.status === 200) {
+      setPaymentData(getpayment.data);
+    }
+
+    console.log("getpayment", getpayment);
+
+  }
+
   return (
-    <div className="container-home">
-      <div className="card">
-        <div className="card-body">
-          <h6 class="card-title">
-            <span>
-              <img class="card-img-top" src={studentimg} alt="Card image" />
-            </span>
-            SCHOOL DESK
-          </h6>
-          <ul class="sidebar">
-            <Link to="">
-              <p class="side-text">SCHOOL DETAILS</p>
-            </Link>
-            <br />
-            <Link to="">
-              <p
-                class="side-text"
-                style={{ backgroundColor: Colors.MAINCOLOR, color: "#fff" }}
-              >
-                MAKE PAYMENT
-              </p>
-            </Link>
-            <br />
-            <Link to="">
-              <p class="side-text">SELECT SLOT DETAILS</p>
-            </Link>
-            <br />
-            <Link to="">
-              <p class="side-text">APPLICATION STATUS</p>
-            </Link>
-            <br />
-            <Link to="/student-helpdesk-ticket">
-              <p class="side-text">SUBMIT HELPDESK TICKET</p>
-            </Link>
-            <br />
-            <Link to="/student-view-helpdesk-ticket">
-              <p class="side-text">VIEW HELPDESK TICKET</p>
-            </Link>
-            <br />
-            <Link to="/student-certificate">
-              <p class="side-text">DOWNLOAD CERTIFICATE</p>
-            </Link>
-            <br />
-            <Link to="/student-change-password">
-              <p class="side-text">CHANGE PASSWORD</p>
-            </Link>
-            <br />
-            <Link to="/">
-              <p class="side-text">LOGOUT</p>
-            </Link>
-            <br />
-          </ul>
+    <div className="container-fluid">
+      <div className="row ">
+        <div className="col-lg-3">
+          {/* side bar will come here */}
+          <SidebarStudent />
+
         </div>
-      </div>
+        <div className="col-lg-9 ">
+          <div class="container-fluid ps-md-4 ps-lg-5 pe-md-4 py-5">
 
-      <div className="main-head">
-        <div className="main">
-          <marquee> Welcome to Green Olympiad</marquee>
-        </div>
-        <div className="form-card-second">
-          <div className="imgcontainer">
-            <h2>Make Payment</h2>
-          </div>
 
-          <div class="">
-            <label className="form-label">Roll No:</label>
-            <input
-              type="text"
-              style={{ backgroundColor: "#dfdbdb" }}
-              disabled
-              placeholder="1876754"
-              name="uname"
-              required
-            />
-            <br />
-            <label className="form-label">Name of Candidate:</label>
-            <input
-              type="text"
-              style={{ backgroundColor: "#dfdbdb" }}
-              disabled
-              placeholder="Jyoti Patel"
-              name="uname"
-              required
-            />
-            <br />
-            <label className="form-label">Level of Exam:</label>
-            <input
-              type="text"
-              style={{ backgroundColor: "#dfdbdb" }}
-              disabled
-              placeholder="Level-3"
-              name="uname"
-              required
-            />
-            <br />
-            <label className="form-label">Topic of Exam:</label>
-            <input
-              type="text"
-              style={{ backgroundColor: "#dfdbdb" }}
-              disabled
-              placeholder="ABCD"
-              name="uname"
-              required
-            />
-            <br />
-            <label className="form-label">Demo Exam Status:</label>
-            <input
-              type="text"
-              style={{ backgroundColor: "#dfdbdb" }}
-              disabled
-              placeholder="yes"
-              name="uname"
-              required
-            />
-            <br />
-            <label className="form-label">Total Fees to be paid:</label>
-            <input
-              type="text"
-              style={{ backgroundColor: "#dfdbdb" }}
-              disabled
-              placeholder="Rs. 1669"
-              name="uname"
-              required
-            />
-            <br />
-           
-
-            <div class="d-flex justify-content-end btnmain">
-              <Link to="/student-slot">
-                <button className="main-btn" type="submit">
-                  Make Payment
-                </button>
-              </Link>
+            <div class="section-title mb-4 text-muted">
+              <h6 class="font-bold ">Make Payment</h6>
+              <p>Pay after click make payment button</p>
             </div>
+
+            <div class="shadow bg-white rounded-16">
+              <div class="p-4 ">
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="form-wrapper">
+                      <label>Roll No</label>
+                      <input type="text" placeholder="New Delhi" value={paymentData?.rollNo} disabled name="city" required="" />
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm">
+                    <div class="form-wrapper">
+                      <label>Name Of Candidate</label>
+                      <input type="text" placeholder="New Delhi" value={paymentData?.name} disabled name="city" required="" />
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="form-wrapper">
+                      <label>Level Of Exam</label>
+                      <input type="text" placeholder="New Delhi" value={paymentData?.examLevel} disabled name="city" required="" />
+                    </div>
+                  </div>
+
+                  <div class="col-sm">
+                    <div class="form-wrapper">
+                      <label>Topic of exam</label>
+                      <input type="text" placeholder="New Delhi" value={paymentData?.examTheme} disabled name="city" required="" />
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="form-wrapper">
+                      <label>Demo of exam status</label>
+                      <input type="text" placeholder="New Delhi" value={paymentData?.demoExam} disabled name="city" required="" />
+                    </div>
+                  </div>
+
+                  <div class="col-sm">
+                    <div class="form-wrapper">
+                      <label>Total fees to be paid</label>
+                      <input type="text" placeholder="New Delhi" value={paymentData?.totalFees} disabled name="city" required="" />
+                    </div>
+                  </div>
+                </div>
+                <div className="row my-3">
+                  <div className="text-center">
+                    <button className="btn btn-primary mx-auto" onClick={makePayment}>Make Payment</button>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+
           </div>
         </div>
       </div>

@@ -111,13 +111,13 @@ function SidebarStudent() {
                         </Link>
 
 
-                        <Link to="/school-slot">
+                        <Link to="/student-slot">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
                             Select Slot Details
                         </Link>
 
-                        <Link to="/school-payment">
+                        <Link to="/student-payment">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#online-payment-method"></use></svg>
                             Payment

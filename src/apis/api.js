@@ -44,14 +44,22 @@ export const API_END_POINTS = {
 	ispaymentallowed: 'api/ispaymentallowed',
 	updatePaymentDetails: 'terry/updatePaymentDetails',
 
+	insertPaymentDetails: 'terry/insertPaymentDetails',
+
 	// otp:
 	generateOtp: 'api/generateOtp',
 
-	// register student
+	// register student.  for teri
 
 	registerStudent: 'terry/registerStudent',
 	studentLogin: 'api/studentLogin',
 	viewIndividualStudentDetails: 'terry/viewIndividualStudentDetails',
-	updateIndividualStudentDetails: 'terry/updateIndividualStudentDetails'
+	updateIndividualStudentDetails: 'terry/updateIndividualStudentDetails',
+	getSlotsDataForIndividualStudent: 'terry/getSlotsDataForIndividualStudent',
+	updateSlotsDataForIndividualStudent: 'terry/updateSlotsDataForIndividualStudent',
+	// updateSchoolAndSlotDetail: 'terry/updateSchoolAndSlotDetail',
+	sendEmailToCandidate: 'api/sendEmailToCandidate',
+	getPaymentDetailsForIndividualStudent: 'terry/getPaymentDetailsForIndividualStudent',
+
 
 }

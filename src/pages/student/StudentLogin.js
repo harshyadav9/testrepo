@@ -69,10 +69,8 @@ export default function SchoolLogin() {
 
             navigate("/student-edit-details");
             dispatch({
-              type: 'ADD_STUDENT_INFO',
-              student: {
-                ...obj
-              }
+              type: 'ADD_ROLL_NO',
+              roll_no: user
             });
           } else {
             console.log("wrong credentials");

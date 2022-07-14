@@ -6,10 +6,14 @@ import { API_ADMIN_URL_2, REGISTER_API, API_BASE_URL, API_END_POINTS, API_BASE_J
 export default function StudentRegistration() {
 
   const [mobileOTP, setmobileOTP] = useState([-1, -1, -1, -1]);
+  const [emailOTP, setemailOTP] = useState([-1, -1, -1, -1]);
   const [mobileOTPValue, setMobileOTPValue] = useState("");
+  const [emailOTPValue, setEmailOTPValue] = useState("");
   const [error_message, setError_message] = useState('');
   const [errorList, setErrorList] = useState(Error);
   const [countryList, setCountryList] = useState([]);
+
+
 
 
 
@@ -25,44 +29,31 @@ export default function StudentRegistration() {
   const [isIndain, setIsIndain] = useState(true);
   const [cityStateList, setCityStateList] = useState([]);
   const [data, setData] = useState("");
+
+  const [mobileverify, setmobileverify] = useState(0);
+  const [mobileVerMsg, setMobileVerMsg] = useState("");
+
+  const [emailverify, setemailverify] = useState(0);
+  const [emilVerMsg, setEmailVerMsg] = useState("");
+
+
+  const [isFade, setIsfade] = useState(true);
+
+  const [msgText, setMsgText] = useState("");
+
+
   const generateOtp = async () => {
-    let obj = {
-      "add1": "string",
-      "add2": "string",
-      "city": "JAWA TIMUR",
-      "country": "United Arab Emirates",
-      "countryCode": "AE",
-      "createdBy": "",
-      "demoExam": "",
-      "dob": "2022-01-01",
-      "email": "harshy110@gmail.com",
-      "examLevel": "",
-      "examTheme": "",
-      "gender": "",
-      "mobile": "9312364889",
-      "modifiedby": "",
-      "name": "",
-      "password": "",
-      "pgEmail": "",
-      "pgMobile": "",
-      "pin": "",
-      "rollNoPrefix": "AE22019999",
-      "school": "string",
-      "section": "string",
-      "standard": "string",
-      "state": "string",
-      "state_city_cd": "string"
-    }
-    const otp = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.registerStudent}`, obj);
+    const otp = await axios.post(`${API_BASE_URL}${API_END_POINTS.generateOtp}`, { mobile: mobile });
     if (otp?.data.status) {
-      console.log(otp);
-      // setMobileOTPValue(otp.data.otp);
+      setMobileOTPValue(otp.data.otp);
+      setMsgText('Your otp has been send on your registered mobile number');
+      document.getElementsByClassName('modal')[0].style.display = 'block';
     } else {
+      setMsgText('Due to some reasons Your otp culd not be send on your registered email id');
+      document.getElementsByClassName('modal')[0].style.display = 'block';
       //  error in generating otp
     }
-  };
-
-
+  }
 
 
 
@@ -111,11 +102,55 @@ export default function StudentRegistration() {
       setCityStateList(list);
       // handleChange('', 'state');
     } else {
-      setCityStateList([])
+      setCityStateList([]);
 
     }
 
 
+  }
+
+
+
+  const closeModal = () => {
+    document.getElementsByClassName('modal')[0].style.display = 'none';
+  }
+
+
+
+  const semdEmail = async () => {
+    setIsfade(false);
+    if (email !== "") {
+      let regExp = RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/);
+      if (regExp.test(email)) {
+        const emailvalue = await axios.get(`${API_BASE_URL}${API_END_POINTS.sendEmailToCandidate}`, {
+          //let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
+          params: {
+            email: `${email}`
+          }
+        });
+        console.log("emailvalue", emailvalue);
+        if (emailvalue?.data?.status) {
+          setEmailOTPValue(emailvalue.data.otp);
+          setMsgText('Your otp has been send on your registered email id');
+          document.getElementsByClassName('modal')[0].style.display = 'block';
+
+        } else {
+          setMsgText('Due to either non validity of email id email could not be send on your registered email id');
+          document.getElementsByClassName('modal')[0].style.display = 'block';
+          setEmailOTPValue("")
+        }
+      }
+    }
+
+
+
+    // console.log("emailvalue", emailvalue);
+  }
+
+
+
+  const handleCloseModal = () => {
+    setIsfade(true);
   }
 
 
@@ -138,6 +173,15 @@ export default function StudentRegistration() {
   const submitvalue = async () => {
 
     let err = checkAllField();
+    if (mobileverify === 0) {
+      setError_message('Please validate mobile otp');
+      return;
+    }
+
+    if (emailverify === 0) {
+      setError_message('Please validate email otp');
+      return;
+    }
     if (err)
       return err;
     console.log(country, state, name, mobile, date, email);
@@ -174,14 +218,34 @@ export default function StudentRegistration() {
       "state_city_cd": stateVal.stateCode
     }
 
-    const otp = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.registerStudent}`, obj);
-    if (otp?.data.status) {
-      console.log(otp);
+    const reg_res = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.registerStudent}`, obj);
+    if (reg_res?.status && reg_res?.data !== "") {
+      console.log(reg_res?.data?.data);
       // setMobileOTPValue(otp.data.otp);
-    } else {
-      //  error in generating otp
     }
   }
+
+
+  const mobileOTPset = (ev, index) => {
+    mobileOTP[index] = ev.target.value;
+
+    setmobileOTP(mobileOTP);
+  };
+
+
+  const emailOTPset = (ev, index) => {
+    emailOTP[index] = ev.target.value;
+
+    setemailOTP(emailOTP);
+  };
+
+
+
+
+
+
+
+
 
   const getCountry = async () => {
     const countryList = await axios.get(`${API_BASE_URL}${API_END_POINTS.getCountry}`);
@@ -220,6 +284,35 @@ export default function StudentRegistration() {
     });
     return err;
   };
+
+
+  const otpMobileverifcation = () => {
+
+    // document.getElementsByClassName('modal')[0].style.display = 'block';
+    if (mobileOTP.join('') === mobileOTPValue) {
+      setMobileVerMsg('Your mobile has been verified');
+      setmobileverify(1);
+    } else {
+      setMobileVerMsg('Your mobile has not been verified');
+      setmobileverify(0);
+    }
+  }
+
+
+
+  const otpEmailVerifcation = () => {
+
+
+    if (emailOTP.join('') === emailOTPValue) {
+      setEmailVerMsg('Your email has been verified');
+      setemailverify(1);
+    } else {
+      setEmailVerMsg('Your email has not been verified');
+      setemailverify(0);
+    }
+  }
+
+
 
 
 
@@ -367,7 +460,7 @@ export default function StudentRegistration() {
                           }}
 
                           name="mobile" required="" />
-                        <button class="otbutton flex-grow-1 btn btn-accent" style={{ whiteSpace: 'nowrap' }}>Generate OTP</button>
+                        <button class="otbutton flex-grow-1 btn btn-accent" style={{ whiteSpace: 'nowrap' }} onClick={generateOtp}>Generate OTP</button>
                       </div>
                     </div>
                   </div>
@@ -375,11 +468,14 @@ export default function StudentRegistration() {
                     <div class="form-wrapper">
                       <label>Mobile OTP</label>
                       <div class=" d-flex justify-content-between">
-                        <input type="number" class="me-3" maxlength="1" placeholder="" name="otp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" name="otp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" name="otp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" name="otp" required="" />
-                        <button class="otbutton btn btn-accent">Verify</button>
+                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { mobileOTPset(ev, 0) }} name="otp" required="" />
+                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { mobileOTPset(ev, 1) }} name="otp" required="" />
+                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { mobileOTPset(ev, 2) }} name="otp" required="" />
+                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { mobileOTPset(ev, 3) }} name="otp" required="" />
+                        <button class="otbutton btn btn-accent" onClick={otpMobileverifcation}>Verify</button>
+                      </div>
+                      <div>
+                        <h5>{mobileVerMsg}</h5>
                       </div>
                     </div>
                   </div>
@@ -401,7 +497,7 @@ export default function StudentRegistration() {
 
 
                           required="" />
-                        <button class="otbutton btn btn-accent" style={{ whiteSpace: 'nowrap' }}>Generate OTP</button>
+                        <button class="otbutton btn btn-accent" style={{ whiteSpace: 'nowrap' }} onClick={semdEmail}>Generate OTP</button>
                       </div>
                     </div>
                   </div>
@@ -409,11 +505,14 @@ export default function StudentRegistration() {
                     <div class="form-wrapper">
                       <label>E-Mail OTP</label>
                       <div class=" d-flex justify-content-between">
-                        <input type="number" class="me-3" maxlength="1" placeholder="" name="eotp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" name="eotp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" name="eotp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" name="eotp" required="" />
-                        <button class="otbutton btn btn-accent">Verify</button>
+                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { emailOTPset(ev, 0) }} name="eotp" required="" />
+                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { emailOTPset(ev, 1) }} name="eotp" required="" />
+                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { emailOTPset(ev, 2) }} name="eotp" required="" />
+                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { emailOTPset(ev, 3) }} name="eotp" required="" />
+                        <button class="otbutton btn btn-accent" onClick={otpEmailVerifcation}>Verify</button>
+                      </div>
+                      <div>
+                        <h5>{emilVerMsg}</h5>
                       </div>
                     </div>
                   </div>
@@ -429,9 +528,32 @@ export default function StudentRegistration() {
                 {error_message && (<div className="alert alert-danger w-100" role="alert">
                   {error_message}
                 </div>)}
+                {/* modal start */}
 
+                <div className="modal" id="myModalexam">
+                  <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                      {/* <div className="modal-header">
+                        <h5 className="modal-title">Slots for Examination</h5>
+                        <button type="button" className="btn-close" data-dismiss="modal">wqwqwq</button>
+                      </div> */}
+                      <div className="modal-body">
+                        <div className="table-responsive ">
+                          <h3>{msgText}</h3>
+                        </div>
+                      </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-primary" onClick={closeModal}>Ok</button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                {/* modal end */}
 
               </div>
+
+
             </div>
           </main>
         </div>

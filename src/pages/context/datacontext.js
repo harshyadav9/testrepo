@@ -5,7 +5,8 @@ export const StudentDataContext = createContext();
 
 const initialState = {
     schoolname: '', country: '', state: '', pincode: "", postal_address: "", phonestd: "", mobile: "", principal_name: "",
-    email: "", district: "", coordinating_teacher: "", school_code: "", email_coordinator: "", mobile_coordinator: "", student: {}
+    email: "", district: "", coordinating_teacher: "", school_code: "", email_coordinator: "", mobile_coordinator: "", student: { Class: 4 },
+    roll_no: ""
 
 };
 const StudentDataProvider = (props) => {

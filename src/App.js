@@ -59,6 +59,8 @@ function App() {
             />
             <Route path="/school-payment" element={<SchoolPayment />} exact />
             <Route path="/school-slot" element={<SchoolSlot />} exact />
+            <Route path="/student-slot" element={<StudentSlot />} exact />
+
             <Route
               path="/school-application-status"
               element={<SchoolApplicationStatus />}
@@ -106,7 +108,6 @@ function App() {
               exact
             />
             <Route path="/student-payment" element={<StudentPayment />} exact />
-            <Route path="/student-slot" element={<StudentSlot />} exact />
             <Route
               path="/student-application-status"
               element={<StudentApplicationStatus />}

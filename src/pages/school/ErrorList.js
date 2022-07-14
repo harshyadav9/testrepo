@@ -85,5 +85,58 @@ const Error = [
 		message: "Please enter coordinating Teacher's Mobile",
 		status: false
 	},
+
+	{
+		fieldNam: "pgname",
+		message: "Please enter Parent/Guardian name",
+		status: false
+	},
+	{
+		fieldNam: "classcandidate",
+		message: "Please enter class",
+		status: false
+	},
+	{
+		fieldNam: "section",
+		message: "Please enter section",
+		status: false
+	},
+
+	{
+		fieldNam: "school",
+		message: "Please enter schoolName",
+		status: false
+	},
+	{
+		fieldNam: "city",
+		message: "Please enter city",
+		status: false
+	},
+	{
+		fieldNam: "pin",
+		message: "Please enter pinCode",
+		status: false,
+		regex: /^.{6,}$/,
+		message2: "Please enter valid pin code"
+	},
+	{
+		fieldNam: "pgemobile",
+		regex: /^\w{10}$/,
+		message: "Please enter mobile",
+		status: false,
+		message2: "mobile length should be 10"
+	},
+	{
+		fieldNam: "pgemail",
+		message: "Please enter email",
+		status: false,
+		regex: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+		message2: "Please enter valid email",
+	},
+	{
+		fieldNam: "add1",
+		message: "Please enter address",
+		status: false
+	},
 ]
 export default Error

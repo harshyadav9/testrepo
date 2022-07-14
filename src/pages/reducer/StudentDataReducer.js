@@ -17,6 +17,16 @@ export const StundentDataReducer = (state, action) => {
             };
 
 
+
+
+        case 'ADD_ROLL_NO':
+            console.log("action ADD_STUDENT_INFO", action);
+
+            return {
+                ...state,
+
+                roll_no: action.roll_no
+            }
         case 'ADD_STUDENT_INFO':
             console.log("action ADD_STUDENT_INFO", action);
 

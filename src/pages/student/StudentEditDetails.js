@@ -31,7 +31,7 @@ export default function SchoolEditDetails() {
   const [add1, SetAdd1] = useState('');
   const [school, SetSchool] = useState('');
 
-  const [classcandidate, SetClassCandidate] = useState('');
+  const [classcandidate, SetClassCandidate] = useState(4);
   const [section, SetSection] = useState('');
   const [pgname, SetPgName] = useState(''); // bind kal 
   const [pgemail, SetPgEmail] = useState('');
@@ -40,16 +40,83 @@ export default function SchoolEditDetails() {
   const [examtheme, SetExamTheme] = useState('');
   const [demoexam, SetDemoExam] = useState('');
 
+  const [errorList] = useState(Error);
+  const [error_message, setError_message] = useState('');
+  const [RegisterationClicked, setRegisterationClicked] = useState(0);
+
+  // dispatch({
+  //   type: 'ADD_STUDENT_INFO',
+  //   student: {
+  //     ...obj
+  //   }
+  // });
+
+
+
+
+  const getStudentDetailsData = async () => {
+
+    const studentdetails = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.viewIndividualStudentDetails}`, {
+      params: {
+        rollNumber: state?.roll_no
+      }
+    });
+
+    if (studentdetails?.status === 200) {
+      dispatch({
+        type: 'ADD_STUDENT_INFO',
+        student: {
+          ...studentdetails.data
+        }
+      });
+
+      SetRollno(state?.roll_no);
+      SetCName(studentdetails.data.name);
+      SetDob(studentdetails.data.dob);
+      setCountry(studentdetails.data.country);
+      SetState(studentdetails.data.state);
+      // SetRollno(studentdetails.data.RollNo);
+      SetMobile(studentdetails.data.mobile);
+      SetEmail(studentdetails.data.email);
+      SetGender(studentdetails.data.gender || 'Male');
+      SetAdd1(studentdetails.data.add1);
+      SetPin(studentdetails.data.pin);
+      SetSchool(studentdetails.data.school);
+      SetClassCandidate(studentdetails.data.standard || 4);
+      SetSection(studentdetails.data.section);
+      SetPgEmail(studentdetails.data.pgEmail);
+      SetPgMobile(studentdetails.data.pgMobile);
+      SetLevelExam(studentdetails.data.examLevel || 'Level_1');
+      SetExamTheme(studentdetails.data.examTheme || 'ESD');
+      SetDemoExam(studentdetails.data.demoExam || 'YES');
+      SetPgName(studentdetails.data?.pgName);
+      SetCity(studentdetails.data?.city);
+
+      checkAllField();
+    }
+    console.log("studentdetails", studentdetails);
+
+  }
+
+
+  useEffect(() => {
+    getStudentDetailsData();
+    // getStudentDetails();
+  }, []);
+
 
   const updateDetails = async () => {
+    setRegisterationClicked(1)
 
+    let err = checkAllField();
+    if (err)
+      return err;
     console.log(rollnO, cname, country, dob, stateval, mobile, email, gender, pin, add1, school, classcandidate, section, pgname, pgemail, pgemobile, levelexam,
       examtheme, demoexam
     );
 
     let obj = {
       add1,
-      add2: '',
       city,
       country,
       createdby: rollnO,
@@ -57,21 +124,26 @@ export default function SchoolEditDetails() {
       demoSlotDateTime: state?.student.DemoSlotDateTime,
       dob,
       email,
-      examLevel: 'LEVEL_1',
-      examSlotDateTime: state?.student.ExamSlotDateTime,
+      examLevel: levelexam,
+      // examSlotDateTime: state?.student.ExamSlotDateTime,
       examTheme: examtheme,
       gender,
       mobile,
       modifiedby: rollnO,
       name: cname,
-      password: "",
       paymentStatus: state?.student.PaymentStatus,
       pgEmail: pgemail,
       pgMobile: pgemobile,
+      pgName: pgname,
       pin,
-      rollNumber: rollnO,
+      rollNo: rollnO,
       school,
-      section
+      section,
+      standard: classcandidate,
+      createdBy: null,
+      state_city_cd: null,
+      countryCode: null,
+      rollNoPrefix: null
     }
     const savedetails = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.updateIndividualStudentDetails}`, obj);
 
@@ -80,33 +152,134 @@ export default function SchoolEditDetails() {
 
   }
 
-  const getStudentDetails = async () => {
-    console.log(state);
-    SetRollno(state?.student.RollNo);
-    SetCName(state?.student.Name);
-    SetDob(state?.student.DOB);
-    setCountry(state?.student.Country);
-    SetState(state?.student.State);
-    SetRollno(state?.student.RollNo);
-    SetMobile(state?.student.Mobile);
-    SetEmail(state?.student.Email);
-    SetGender(state?.student.Gender);
-    SetAdd1(state?.student.Add1);
-    SetPin(state?.student.Pin);
-    SetSchool(state?.student.School);
-    SetClassCandidate(state?.student.Class);
-    SetSection(state?.student.Section);
-    SetPgEmail(state?.student.PGEmail);
-    SetPgMobile(state?.student.PGMobile);
-    SetLevelExam(state?.student.ExamLevel);
-    SetExamTheme(state?.student.ExamTheme);
-    SetDemoExam(state?.student.DemoExam);
+  // const getStudentDetails = async () => {
+  //   console.log(state);
+  //   SetRollno(state?.student.RollNo);
+  //   SetCName(state?.student.Name);
+  //   SetDob(state?.student.DOB);
+  //   setCountry(state?.student.Country);
+  //   SetState(state?.student.State);
+  //   SetRollno(state?.student.RollNo);
+  //   SetMobile(state?.student.Mobile);
+  //   SetEmail(state?.student.Email);
+  //   SetGender(state?.student.Gender || 'Male');
+  //   SetAdd1(state?.student.Add1);
+  //   SetPin(state?.student.Pin);
+  //   SetSchool(state?.student.School);
+  //   SetClassCandidate(state?.student.Class || 4);
+  //   SetSection(state?.student.Section);
+  //   SetPgEmail(state?.student.PGEmail);
+  //   SetPgMobile(state?.student.PGMobile);
+  //   SetLevelExam(state?.student.ExamLevel || 'Level_1');
+  //   SetExamTheme(state?.student.ExamTheme || 'ESD');
+  //   SetDemoExam(state?.student.DemoExam || 'YES');
+  //   SetPgName(state?.student?.PGName);
+  //   SetCity(state?.student?.City);
+
+
+
+
+  //   checkAllField();
+  // }
+
+
+
+  const checkAllField = () => {
+    let arr = [city, add1, pin, school, classcandidate, section, pgname, pgemail, pgemobile];
+    let arrKey = ['city', 'add1', 'pin', 'school', 'classcandidate', 'section', 'pgname', 'pgemail', 'pgemobile'];
+    let err = '';
+    arr.forEach((value, index) => {
+      if (err === '') {
+        err = formValidate({ 'key': arrKey[index], 'value': value });
+      }
+
+    })
+
+    return err;
+  };
+
+
+  const formValidate = (e) => {
+    const { key, value } = e;
+    let err = '';
+    setError_message('');
+
+    switch (key) {
+
+      case "city":
+      case "add1":
+      case "school":
+      case "pgname":
+      case "classcandidate":
+      case "section":
+        if ((value === undefined) || (value === null) || (value.length < 1))
+          err = (errorList.find(item => item.fieldNam === key).message);
+        if (key == 'classcandidate') {
+          if (+value > 12 || (+value < 4))
+            err = 'Class Value range is 4 to 12 only';
+          else {
+            err = ""
+            // let lvl = '';
+            // if (+value >= 4 && +value <= 5) { lvl = 1; }
+            // if (+value >= 6 && +value <= 8) { lvl = 2; }
+            // if (+value >= 9 && +value <= 10) { lvl = 3; }
+            // if (+value >= 11 && +value <= 12) { lvl = 4; }
+            // if (lvl) {
+            //   SetLevelExam('Level ' + lvl);
+            // }
+            // else {
+            //   SetLevelExam(lvl);
+            // }
+          }
+        }
+        break;
+      case "pgemobile":
+        if (!value || (value.length < 1))
+          err = (errorList.find(item => item.fieldNam === key).message);
+        if (err === "") {
+          let item = errorList.find(item => item.fieldNam === key);
+          let regExp = RegExp(item.regex)
+          err = (regExp.test(value) ? "" : item.message2);
+        }
+        break;
+      case "pgemail":
+        if (!value || (value.length < 1))
+          err = (errorList.find(item => item.fieldNam === key).message);
+        if (err === '') {
+          let item = errorList.find(item => item.fieldNam === key);
+          let regExp = RegExp(item.regex)
+          err = (regExp.test(value) ? "" : item.message2);
+        }
+        break;
+      case "pin":
+        if (!value || value.length === 0)
+          err = (errorList.find(item => item.fieldNam === key).message);
+        if (err === '') {
+          let item = errorList.find(item => item.fieldNam === key);
+          let regExp = RegExp(item.regex)
+          err = regExp.test(value) ? "" : item.message2;
+        }
+        break;
+      default:
+        break;
+    }
+    setError_message(err)
+    return err;
+  };
+
+
+
+
+  const changeLevel = (value) => {
+    let lvl = '';
+    if (+value >= 4 && +value <= 5) { lvl = 1; }
+    if (+value >= 6 && +value <= 8) { lvl = 2; }
+    if (+value >= 9 && +value <= 10) { lvl = 3; }
+    if (+value >= 11 && +value <= 12) { lvl = 4; }
+    if (lvl) {
+      SetLevelExam(`Level_${lvl}`);
+    }
   }
-
-  useEffect(() => {
-    getStudentDetails()
-  }, []);
-
 
 
   return (
@@ -187,6 +360,7 @@ export default function SchoolEditDetails() {
                       <label>City</label>
                       <input type="text" placeholder="New Delhi" value={city} onChange={(e) => {
                         SetCity(e.target.value);
+                        formValidate({ 'key': 'city', 'value': e.target.value });
                       }}
 
                         name="city" required="" />
@@ -231,7 +405,7 @@ export default function SchoolEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Gender</label>{gender}
+                      <label>Gender</label>
                       <select name="gender" value={gender} onChange={(e) => {
                         SetGender(e.target.value);
                       }}>
@@ -256,6 +430,7 @@ export default function SchoolEditDetails() {
                       <textarea name="address" placeholder="B-562, locality, street, city, state "
                         value={add1} onChange={(e) => {
                           SetAdd1(e.target.value);
+                          formValidate({ 'key': 'add1', 'value': e.target.value });
                         }}
                         cols="30" rows="1"></textarea>
                     </div>
@@ -265,6 +440,7 @@ export default function SchoolEditDetails() {
                       <label>Pin Code</label>
                       <input type="text" name="pincode" value={pin} onChange={(e) => {
                         SetPin(e.target.value);
+                        formValidate({ 'key': 'pin', 'value': e.target.value });
                       }}
 
                         required="" />
@@ -277,6 +453,7 @@ export default function SchoolEditDetails() {
                       <label>School</label>
                       <input type="text" name="school" value={school} onChange={(e) => {
                         SetSchool(e.target.value);
+                        formValidate({ 'key': 'school', 'value': e.target.value });
                       }}
                         placeholder="School Name" required="" />
                     </div>
@@ -284,11 +461,28 @@ export default function SchoolEditDetails() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Class</label>
-                      <input type="text" name="class" value={classcandidate} onChange={(e) => {
+                      {/* <input type="text" name="class" value={classcandidate} onChange={(e) => {
                         SetClassCandidate(e.target.value);
-                      }}
+                      }} */}
 
-                        placeholder="V" required />
+                      <select name="class" value={classcandidate} onChange={(e) => {
+                        changeLevel(e.target.value);
+                        SetClassCandidate(e.target.value);
+                        formValidate({ 'key': 'classcandidate', 'value': e.target.value });
+                      }}>
+
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                      </select>
+
+                      {/* placeholder="V" required /> */}
                     </div>
                   </div>
                   <div class="col-sm">
@@ -296,6 +490,7 @@ export default function SchoolEditDetails() {
                       <label>Section</label>
                       <input type="text" name="section" value={section} onChange={(e) => {
                         SetSection(e.target.value);
+                        formValidate({ 'key': 'section', 'value': e.target.value });
                       }}
                         placeholder="A" required />
                     </div>
@@ -309,6 +504,7 @@ export default function SchoolEditDetails() {
                       <label>Name of Parent/Guardian</label>
                       <input type="text" name="pname" value={pgname} onChange={(e) => {
                         SetPgName(e.target.value);
+                        formValidate({ 'key': 'pgname', 'value': e.target.value });
                       }}
                         placeholder="Mr. Ram Kumar" required="" />
                     </div>
@@ -318,6 +514,7 @@ export default function SchoolEditDetails() {
                       <label>Email of Parent/Guardian</label>
                       <input type="email" name="pemail" value={pgemail} onChange={(e) => {
                         SetPgEmail(e.target.value);
+                        formValidate({ 'key': 'pgemail', 'value': e.target.value });
                       }}
                         placeholder="email@parent.in" required />
                     </div>
@@ -327,6 +524,7 @@ export default function SchoolEditDetails() {
                       <label>Mobile of Parent/Guardian</label>
                       <input type="text" name="pmobile" placeholder="9xxxxxxxxx" value={pgemobile} onChange={(e) => {
                         SetPgMobile(e.target.value);
+                        formValidate({ 'key': 'pgemobile', 'value': e.target.value });
                       }} required />
                     </div>
                   </div>
@@ -361,14 +559,17 @@ export default function SchoolEditDetails() {
                       <select name="examoption" value={demoexam} onChange={(e) => {
                         SetDemoExam(e.target.value);
                       }}>
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
+                        <option value="YES">Yes</option>
+                        <option value="NO">No</option>
                       </select>
                     </div>
                   </div>
                 </div>
 
                 <div class="row my-3">
+                  {RegisterationClicked === 1 && error_message && (<div className="alert alert-danger w-100" role="alert">
+                    {error_message}
+                  </div>)}
                   <div class="text-center">
                     <button class="btn btn-primary mx-2 my-2" style={{ minWidth: '15rem' }} onClick={updateDetails}>Save &amp; Pay</button>
                     <button class="btn btn-secondary mx-2 my-2" style={{ minWidth: '10rem' }}>Edit</button>
