@@ -16,6 +16,15 @@ export const StundentDataReducer = (state, action) => {
                 ...action
             };
 
+
+        case 'ADD_STUDENT_INFO':
+            console.log("action ADD_STUDENT_INFO", action);
+
+            return {
+                ...state,
+
+                ...action
+            }
         case 'SAVEINFO':
             console.log("SAVEINFO", action);
             return {

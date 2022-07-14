@@ -357,8 +357,8 @@ img {
   font-weight: 600;
   border-radius: 7px;
   align-items: center;
-  position: relative;
 }
+
 
 .sidebar ul li a:after {
   content: '';
@@ -634,6 +634,7 @@ border-radius: 50%;box-shadow: 0 0 10px #ddd;}
     border: 2px solid var(--primary);
     border-radius: 50%;
   }
+
 
   .mobileToggler .closetogglerbtn svg {
     width: 24px;

@@ -4,6 +4,19 @@ const Error = [
 		message: "Please enter principalName",
 		status: false
 	},
+
+	{
+		fieldNam: "date",
+		message: "Please enter date",
+		status: false
+	},
+
+
+	{
+		fieldNam: "name",
+		message: "Please enter name",
+		status: false
+	},
 	{
 		fieldNam: "schoolName",
 		message: "Please enter schoolName",

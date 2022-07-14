@@ -45,7 +45,13 @@ export const API_END_POINTS = {
 	updatePaymentDetails: 'terry/updatePaymentDetails',
 
 	// otp:
-	generateOtp: 'api/generateOtp'
+	generateOtp: 'api/generateOtp',
 
+	// register student
+
+	registerStudent: 'terry/registerStudent',
+	studentLogin: 'api/studentLogin',
+	viewIndividualStudentDetails: 'terry/viewIndividualStudentDetails',
+	updateIndividualStudentDetails: 'terry/updateIndividualStudentDetails'
 
 }
