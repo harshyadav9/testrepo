@@ -120,8 +120,8 @@ export default function StudentSlot() {
     console.log('submit', response)
     if (response && response?.data && response?.status) {
       notify('Slot booked successfully', true);
-      getSlots();
-      // navigation('/school-application-status')
+      // getSlots();
+      navigation('/student-payment');
     }
     else {
       notify('Please select ESD OR EADGREEN ')

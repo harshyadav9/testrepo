@@ -155,7 +155,7 @@ export default function SchoolPayment() {
         ...payment.data.data
       };
 
-      const paymentinsertrecords = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.updatePaymentDetails}`, paymentinsertrecordsObj);
+      const paymentinsertrecords = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.insertPaymentDetails}`, paymentinsertrecordsObj);
 
       console.log("paymentinsertrecords", paymentinsertrecords);
 
