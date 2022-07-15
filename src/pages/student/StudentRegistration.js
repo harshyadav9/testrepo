@@ -1,10 +1,15 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Error from '../school/ErrorList';
+import { useNavigate } from "react-router";
 import { API_ADMIN_URL_2, REGISTER_API, API_BASE_URL, API_END_POINTS, API_BASE_JAVA_URL } from "../../apis/api";
+import { StudentDataContext } from "../context/datacontext";
 export default function StudentRegistration() {
 
+
+  const { dispatch } = useContext(StudentDataContext);
+  const navigate = useNavigate();
   const [mobileOTP, setmobileOTP] = useState([-1, -1, -1, -1]);
   const [emailOTP, setemailOTP] = useState([-1, -1, -1, -1]);
   const [mobileOTPValue, setMobileOTPValue] = useState("");
@@ -12,8 +17,8 @@ export default function StudentRegistration() {
   const [error_message, setError_message] = useState('');
   const [errorList, setErrorList] = useState(Error);
   const [countryList, setCountryList] = useState([]);
-
-
+  const [dateOriginal, setDateOriginal] = useState("");
+  const [roll_no, setRoll_no] = useState("");
 
 
 
@@ -43,16 +48,20 @@ export default function StudentRegistration() {
 
 
   const generateOtp = async () => {
-    const otp = await axios.post(`${API_BASE_URL}${API_END_POINTS.generateOtp}`, { mobile: mobile });
-    if (otp?.data.status) {
-      setMobileOTPValue(otp.data.otp);
-      setMsgText('Your otp has been send on your registered mobile number');
-      document.getElementsByClassName('modal')[0].style.display = 'block';
-    } else {
-      setMsgText('Due to some reasons Your otp culd not be send on your registered email id');
-      document.getElementsByClassName('modal')[0].style.display = 'block';
-      //  error in generating otp
+
+    if (mobile !== "") {
+      const otp = await axios.post(`${API_BASE_URL}${API_END_POINTS.generateOtp}`, { mobile: mobile });
+      if (otp?.data.status) {
+        setMobileOTPValue(otp.data.otp);
+        setMsgText('Your otp has been send on your registered mobile number');
+        document.getElementsByClassName('modal')[0].style.display = 'block';
+      } else {
+        setMsgText('Due to some reasons Your otp culd not be send on your registered email id');
+        document.getElementsByClassName('modal')[0].style.display = 'block';
+        //  error in generating otp
+      }
     }
+
   }
 
 
@@ -148,6 +157,12 @@ export default function StudentRegistration() {
   }
 
 
+  const movetonext = () => {
+    navigate("/student-edit-details");
+    document.getElementsByClassName('modal')[0].style.display = 'none';
+  }
+
+
 
   const handleCloseModal = () => {
     setIsfade(true);
@@ -173,6 +188,11 @@ export default function StudentRegistration() {
   const submitvalue = async () => {
 
     let err = checkAllField();
+
+    if (err)
+      return err;
+
+
     if (mobileverify === 0) {
       setError_message('Please validate mobile otp');
       return;
@@ -182,8 +202,6 @@ export default function StudentRegistration() {
       setError_message('Please validate email otp');
       return;
     }
-    if (err)
-      return err;
     console.log(country, state, name, mobile, date, email);
 
     let countryval = JSON.parse(country);
@@ -220,7 +238,14 @@ export default function StudentRegistration() {
 
     const reg_res = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.registerStudent}`, obj);
     if (reg_res?.status && reg_res?.data !== "") {
-      console.log(reg_res?.data?.data);
+      console.log(reg_res?.data);
+      setRoll_no(reg_res?.data);
+      dispatch({
+        type: 'ADD_ROLL_NO',
+        roll_no: reg_res?.data
+      });
+      document.getElementsByClassName('modal')[0].style.display = 'block';
+      // navigate("/student-edit-details");
       // setMobileOTPValue(otp.data.otp);
     }
   }
@@ -274,8 +299,8 @@ export default function StudentRegistration() {
 
 
   const checkAllField = () => {
-    let arr = [country, state, name, mobile, date, email];
-    let arrKey = ['country', 'state', 'name', 'mobile', 'date', 'email'];
+    let arr = [country, state, name, date, mobile, email];
+    let arrKey = ['country', 'state', 'name', 'date', 'mobile', 'email'];
     let err = '';
     arr.forEach((value, index) => {
       if (err === '') {
@@ -299,6 +324,10 @@ export default function StudentRegistration() {
   }
 
 
+
+  const goToHome = () => {
+    navigate("/");
+  }
 
   const otpEmailVerifcation = () => {
 
@@ -438,8 +467,10 @@ export default function StudentRegistration() {
                   <div class=" col-sm">
                     <div class="form-wrapper">
                       <label>Date of Birth</label>
-                      <input type="date" placeholder="choose date" value={date} onChange={(e) => {
-                        setDate(e.target.value);
+                      <input type="date" placeholder="choose date" value={dateOriginal} onChange={(e) => {
+                        let date = e.target.value.split("-").reverse().join('-');
+                        setDate(date);
+                        setDateOriginal(e.target.value);
                       }}
 
                         name="dob" required="" />
@@ -468,10 +499,10 @@ export default function StudentRegistration() {
                     <div class="form-wrapper">
                       <label>Mobile OTP</label>
                       <div class=" d-flex justify-content-between">
-                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { mobileOTPset(ev, 0) }} name="otp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { mobileOTPset(ev, 1) }} name="otp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { mobileOTPset(ev, 2) }} name="otp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { mobileOTPset(ev, 3) }} name="otp" required="" />
+                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 0) }} name="otp" required="" />
+                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 1) }} name="otp" required="" />
+                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 2) }} name="otp" required="" />
+                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 3) }} name="otp" required="" />
                         <button class="otbutton btn btn-accent" onClick={otpMobileverifcation}>Verify</button>
                       </div>
                       <div>
@@ -505,10 +536,10 @@ export default function StudentRegistration() {
                     <div class="form-wrapper">
                       <label>E-Mail OTP</label>
                       <div class=" d-flex justify-content-between">
-                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { emailOTPset(ev, 0) }} name="eotp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { emailOTPset(ev, 1) }} name="eotp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { emailOTPset(ev, 2) }} name="eotp" required="" />
-                        <input type="number" class="me-3" maxlength="1" placeholder="" onChange={(ev) => { emailOTPset(ev, 3) }} name="eotp" required="" />
+                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { emailOTPset(ev, 0) }} name="eotp" required="" />
+                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { emailOTPset(ev, 1) }} name="eotp" required="" />
+                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { emailOTPset(ev, 2) }} name="eotp" required="" />
+                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { emailOTPset(ev, 3) }} name="eotp" required="" />
                         <button class="otbutton btn btn-accent" onClick={otpEmailVerifcation}>Verify</button>
                       </div>
                       <div>
@@ -520,7 +551,7 @@ export default function StudentRegistration() {
                 <div class="mt-4 mb-3">
                   <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center">
                     <button class="btn btn-primary mx-2  mb-4 mb-sm-0" style={{ minWidth: '15rem' }} onClick={submitvalue} >Save &amp; Proceed</button>
-                    <button class="btn btn-secondary mx-2 " style={{ minWidth: '10rem' }}>Cancel</button>
+                    <button class="btn btn-primary mx-2 " style={{ minWidth: '10rem' }} onClick={goToHome}>Cancel</button>
                   </div>
 
                 </div>
@@ -537,14 +568,37 @@ export default function StudentRegistration() {
                         <h5 className="modal-title">Slots for Examination</h5>
                         <button type="button" className="btn-close" data-dismiss="modal">wqwqwq</button>
                       </div> */}
-                      <div className="modal-body">
-                        <div className="table-responsive ">
-                          <h3>{msgText}</h3>
-                        </div>
-                      </div>
-                      <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={closeModal}>Ok</button>
-                      </div>
+                      {(msgText.length > 0 && roll_no.length === 0) && (
+                        <>
+                          <div className="modal-body">
+                            <div className="table-responsive ">
+                              <h3>{msgText}</h3>
+                            </div>
+                          </div>
+                          <div className="modal-footer">
+                            <button type="button" className="btn btn-primary" onClick={closeModal}>Ok</button>
+                          </div>
+                        </>
+                      )}
+
+                      {roll_no.length > 0 && (
+                        <>
+                          <div className="modal-body">
+                            <div className="table-responsive ">
+                              <div className="table-responsive ">
+                                <h3>Registration number is {roll_no} and password is {mobile}</h3>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="modal-footer">
+                            <button type="button" className="btn btn-primary" onClick={movetonext}>Ok</button>
+                          </div>
+                        </>
+                      )}
+
+
+
+
 
                     </div>
                   </div>
