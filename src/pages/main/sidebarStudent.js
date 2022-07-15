@@ -125,7 +125,7 @@ function SidebarStudent() {
 
 
 
-                        <Link to="/school-application-status">
+                        <Link to="/student-application-status">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Application Status

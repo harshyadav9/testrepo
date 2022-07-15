@@ -40,6 +40,7 @@ export default function SchoolEditDetails() {
   const [examtheme, SetExamTheme] = useState('');
   const [demoexam, SetDemoExam] = useState('');
 
+  const [slotDisabled, setSlotDisabled] = useState(true);
   const [errorList] = useState(Error);
   const [error_message, setError_message] = useState('');
   const [RegisterationClicked, setRegisterationClicked] = useState(0);
@@ -69,7 +70,12 @@ export default function SchoolEditDetails() {
           ...studentdetails.data
         }
       });
-
+      console.log("state?.student.examSlotDateTime", studentdetails.data.examSlotDateTime);
+      if (studentdetails.data.examSlotDateTime === null || studentdetails.data.demoSlotDateTime === null) {
+        setSlotDisabled(false);
+      } else {
+        setSlotDisabled(true);
+      }
       SetRollno(state?.roll_no);
       SetCName(studentdetails.data.name);
       SetDob(studentdetails.data.dob);
@@ -546,7 +552,7 @@ export default function SchoolEditDetails() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Exam Theme<span style={{ color: 'red' }}>*</span></label>
-                      <select name="examtheme" value={examtheme} onChange={(e) => {
+                      <select name="examtheme" disabled={slotDisabled} value={examtheme} onChange={(e) => {
                         SetExamTheme(e.target.value);
                       }}>
 
@@ -558,7 +564,7 @@ export default function SchoolEditDetails() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Do you want to give demo exam</label>
-                      <select name="examoption" value={demoexam} onChange={(e) => {
+                      <select name="examoption" disabled={slotDisabled} value={demoexam} onChange={(e) => {
                         SetDemoExam(e.target.value);
                       }}>
                         <option value="YES">Yes</option>

@@ -22,7 +22,8 @@ export default function StudentSlot() {
   const [studantWithSlot, setstudantWithSlot] = useState([]);
   const [serverPayLoad, setPayload] = useState([]);
   const [slotErrmsg, setSlotErrmsg] = useState("");
-
+  const [examtypes, setExamTypes] = useState({});
+  const [showSlotErr, setShowSlotErr] = useState("");
   const [serverPayloadData, setServerPayloadData] = useState([]);
   const navigation = useNavigate()
 
@@ -45,6 +46,13 @@ export default function StudentSlot() {
       if (getslots?.data && getslots.status) {
         // setSlot(response.data.list)
         setSlot(getslots.data);
+        let obj = {};
+        let examTypevalues = new Set(getslots?.data.map(value => value.examTheme));
+        examTypevalues.forEach((examtheme => {
+          obj[examtheme] = false;
+        }));
+        console.log(obj);
+        setExamTypes(obj);
       }
       // }
     }
@@ -53,7 +61,37 @@ export default function StudentSlot() {
   useEffect(() => {
     getSlots();
     // setStudantAndSlot()
-  }, [])
+  }, []);
+
+
+  const checkslotFill = () => {
+    console.log("examtypes", examtypes);
+    let chooseboth = true;
+    for (let key in examtypes) {
+      if (!examtypes[key]) {
+        chooseboth = false;
+      }
+    }
+
+    if (!chooseboth) {
+      setShowSlotErr("Please select the slots in the above options");
+      return false;
+    } else {
+      setShowSlotErr("");
+      return true;
+    }
+    // let examTypes = new Set(slots.map(value => value.examTheme));
+    // let chooseboth = true;
+    // examTypes.forEach((examtheme => {
+    //   if (!obj[examtheme]) {
+    //     chooseboth = false;
+    //   }
+    // }));
+
+
+
+
+  }
   const togglePop = (slot) => {
     setavailableSlots(slot)
     setFade(false);
@@ -116,17 +154,21 @@ export default function StudentSlot() {
 
   const submitSlots = async () => {
 
-    let response = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.updateSlotsDataForIndividualStudent}`, serverPayloadData);
-    console.log('submit', response)
-    if (response && response?.data && response?.status) {
-      notify('Slot booked successfully', true);
-      // getSlots();
-      navigation('/student-payment');
+    let saveslots = checkslotFill();
+    if (saveslots) {
+      let response = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.updateSlotsDataForIndividualStudent}`, serverPayloadData);
+      console.log('submit', response)
+      if (response && response?.data && response?.status) {
+        // notify('Slot booked successfully', true);
+        getSlots();
+        navigation('/student-payment');
+      }
+      else {
+        // notify('Please select ESD OR EADGREEN ')
+      }
     }
-    else {
-      notify('Please select ESD OR EADGREEN ')
-    }
-    return;
+
+    // return;
   }
 
 
@@ -421,7 +463,16 @@ export default function StudentSlot() {
                             <label>Slot for ESD Exam</label>
 
 
-                            <select onChange={e => chooseSlot('ESD', e.target.value)}>
+                            <select onChange={e => {
+                              chooseSlot('ESD', e.target.value);
+                              setExamTypes(ev => ({
+                                ...ev,
+                                ['ESD']: true,
+                              }))
+
+
+
+                            }}>
                               <option value="volvo" >Select Slot</option>
                               {
                                 slots && Array.isArray(slots) ? slots.filter(s => s.examTheme === "ESD").map(slot => (
@@ -457,7 +508,14 @@ export default function StudentSlot() {
                             <div className="form-wrapper">
                               <label>Slot for ESDGREEN Exam</label>
 
-                              <select class="dropdown-school" id="cars" onChange={e => chooseSlot('ESDGREEN', e.target.value)}>
+                              <select class="dropdown-school" id="cars" onChange={e => {
+                                chooseSlot('ESDGREEN', e.target.value);
+                                setExamTypes(ev => ({
+                                  ...ev,
+                                  ['ESDGREEN']: true,
+                                }))
+
+                              }}>
                                 <option value="volvo" >Select Slot</option>
 
                                 {
@@ -499,7 +557,14 @@ export default function StudentSlot() {
                           <div className="form-wrapper">
                             <label>Slot of Mock Test</label>
 
-                            <select class="dropdown-school" id="cars" onChange={e => chooseSlot('MOCK', e.target.value)}>
+                            <select class="dropdown-school" id="cars" onChange={e => {
+                              chooseSlot('MOCK', e.target.value);
+                              setExamTypes(ev => ({
+                                ...ev,
+                                ['MOCK']: true,
+                              }))
+                            }
+                            }>
                               <option value="volvo" >Select Slot</option>
 
                               {
@@ -531,10 +596,20 @@ export default function StudentSlot() {
                       <div className="text-center">
                         <button className="btn btn-primary mx-auto" onClick={submitSlots}>Book slot for exam and mock test</button>
                       </div>
+
+                      {showSlotErr.length > 0 && (
+                        <div>
+                          <h2> {showSlotErr}</h2>
+
+                        </div>
+                      )}
+
+
+
                     </div>
                   ) : (
                     <div>
-                      <h2>You have already booked your slots .</h2>
+                      <h2>You have booked your slots .</h2>
                     </div>
                   )}
 

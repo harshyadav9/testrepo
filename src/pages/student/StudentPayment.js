@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import studentimg from "../../assets/icons/login.png";
 import { Colors } from "../../assets/css/color";
+import { useNavigate } from "react-router";
 import SidebarStudent from "../main/sidebarStudent";
 import axios from "axios";
 import { API_BASE_JAVA_URL, API_BASE_URL, API_END_POINTS } from "../../apis/api";
@@ -14,8 +15,9 @@ export default function StudentPayment() {
   }, []);
   const [err, setErr] = useState("");
   const { state, dispatch } = useContext(StudentDataContext);
+  const navigate = useNavigate();
   const [paymentData, setPaymentData] = useState({});
-
+  const [currencyIcon, setCurrencyIcon] = useState();
 
   const makePayment = async () => {
 
@@ -29,6 +31,8 @@ export default function StudentPayment() {
     if (payment?.data?.status === 200) {
       // navigate("/school-slot");
       // console.log("payment", payment);
+      navigate("/student-application-status");
+      // student-application-status
       window.open(payment.data.url, "_blank");
       let paymentinsertrecordsObj = {
         schoolcode_Rollno: state?.roll_no, mode: "ONLINE",
@@ -62,6 +66,8 @@ export default function StudentPayment() {
     });
 
     if (getpayment?.status === 200) {
+      let currencyval = state?.student?.country === 'India' ? 'INR' : "$";
+      setCurrencyIcon(currencyval);
       setPaymentData(getpayment.data);
     }
 
@@ -135,7 +141,7 @@ export default function StudentPayment() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Total fees to be paid</label>
-                      <input type="text" placeholder="New Delhi" value={paymentData?.totalFees} disabled name="city" required="" />
+                      <input type="text" placeholder="New Delhi" value={`${currencyIcon} ${paymentData?.totalFees}`} disabled name="city" required="" />
                     </div>
                   </div>
                 </div>

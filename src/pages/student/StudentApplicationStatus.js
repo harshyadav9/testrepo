@@ -1,88 +1,96 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import studentimg from "../../assets/icons/login.png";
 import { Colors } from "../../assets/css/color";
+import SidebarStudent from "../main/sidebarStudent";
+import axios from "axios";
+import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
+import { StudentDataContext } from "../context/datacontext";
 
 export default function StudentApplicationStatus() {
+
+
+  const { state, dispatch } = useContext(StudentDataContext);
+  const [appStatus, setAppStatus] = useState([]);
+
+  const getAppStatus = async () => {
+    const appStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.applicationIndStatus}`, {
+      roll_no: state.roll_no
+    });
+
+    if (appStatus?.status && appStatus?.data) {
+      setAppStatus(appStatus?.data.data);
+    }
+    console.log("appStatus", appStatus);
+
+
+
+  }
+
+  useEffect(() => {
+    getAppStatus();
+  }, [])
+
+
   return (
-    <div className="container-home">
-      <div className="card">
-        <div className="card-body">
-          <h6 class="card-title">
-            <span>
-              <img class="card-img-top" src={studentimg} alt="Card image" />
-            </span>
-            SCHOOL DESK
-          </h6>
-          <ul class="sidebar">
-            <Link to="">
-              <p class="side-text">SCHOOL DETAILS</p>
-            </Link>
-            <br />
-            <Link to="">
-              <p class="side-text">UPLOAD STUDENTS DATA</p>
-            </Link>
-            <br />
-            <Link to="">
-              <p class="side-text">MAKE PAYMENT</p>
-            </Link>
-            <br />
-            <Link to="">
-              <p class="side-text">SELECT SLOT DETAILS</p>
-            </Link>
-            <br />
-            <Link to="">
-              <p
-                class="side-text"
-                style={{ backgroundColor: Colors.MAINCOLOR, color: "#fff" }}
-              >
-                APPLICATION STATUS
-              </p>
-            </Link>
-            <br />
-            <Link to="/student-helpdesk-ticket">
-              <p class="side-text">SUBMIT HELPDESK TICKET</p>
-            </Link>
-            <br />
-            <Link to="/student-view-helpdesk-ticket">
-              <p class="side-text">VIEW HELPDESK TICKET</p>
-            </Link>
-            <br />
-            <Link to="/student-certificate">
-              <p class="side-text">DOWNLOAD CERTIFICATE</p>
-            </Link>
-            <br />
-            <Link to="/student-change-password">
-              <p class="side-text">CHANGE PASSWORD</p>
-            </Link>
-            <br />
-            <Link to="/">
-              <p class="side-text">LOGOUT</p>
-            </Link>
-            <br />
-          </ul>
-        </div>
-      </div>
+    <div className="container-fluid">
+      <div className="row ">
+        <div className="col-lg-3">
+          {/* side bar will come here */}
+          <SidebarStudent />
 
-      <div className="main-head">
-        <div className="main">
-          <marquee> Welcome to Green Olympiad</marquee>
         </div>
+        <div className="col-lg-9 ">
+          <div className="application-status p-5">
+            <div className="page-heading">
+              <h4>Application Status</h4>
+              {/* <p>Check Payment details</p> */}
+            </div>
+            <div className="shadow-lg p-4 bg-body rounded">
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Class</th>
+                    <th>Section</th>
+                    {/* <th>Level</th> */}
+                    <th>Exam</th>
+                    <th>ExamSlot</th>
+                    <th>Mock Test</th>
+                    <th>MockSlot</th>
 
-        <h2 style={{ textAlign: "center", marginBottom: -15 }}>
-          Application Status
-        </h2>
-        <div class="Application-section">
-          <div>
-            <h2
-              style={{
-                marginRight: 85,
-                marginTop: 90,
-              }}
-            >
-              Your Application Status is
-              <scan className="text-success"> PAID</scan>
-            </h2>
+                    <th>Roll no.</th>
+                    <th>Fees</th>
+                    <th>Fees Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    appStatus.map((status, i) => {
+                      console.log("status", status);
+                      return (
+                        <tr>
+                          <td>{status.Name}</td>
+                          <td>{status.DOB}</td>
+                          <td>{status.Class}</td>
+                          <td>{status.Section}</td>
+                          <td>{status.ExamTheme}</td>
+                          <td>{status.ExamSlotDateTime}</td>
+                          <td>{status.DemoExam}</td>
+                          <td>{status.DemoSlotDateTime}</td>
+
+                          <td>{status.Rollno === 0 ? "" : status.Rollno}</td>
+                          <td>{status.Fee}</td>
+                          <td className={status.PaymentStatus === 1 ? 'paid' : 'unpaid'}>{status.PaymentStatus === 1 ? 'PAID' : 'UNPAID'}</td>
+                        </tr>
+                      )
+                    })
+                  }
+
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
