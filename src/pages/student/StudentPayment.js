@@ -22,7 +22,7 @@ export default function StudentPayment() {
     const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, {
       amount: paymentData?.totalFees,
       type: 'INDV',
-      email: state?.student.Email, phone: state?.student.Mobile, name: state?.student.Name, productinfo: state?.student.RollNo
+      email: state?.student.Email, phone: state?.student.Mobile, name: state?.student.Name, productinfo: state.roll_no
     });
     //const payment = await axios.get(`${API_END_POINTS.payment}`);
 
@@ -31,9 +31,9 @@ export default function StudentPayment() {
       // console.log("payment", payment);
       window.open(payment.data.url, "_blank");
       let paymentinsertrecordsObj = {
-        schoolcode_Rollno: state?.student.RollNo, mode: "ONLINE",
-        subscriberType: "INDV", paymentId: "", paymentReceivedStatus: "pending", createdBy: state?.student.RollNo,
-        modifyBy: state?.student.RollNo,
+        schoolcode_Rollno: state?.roll_no, mode: "ONLINE",
+        subscriberType: "INDV", paymentId: "", paymentReceivedStatus: "pending", createdBy: state.roll_no,
+        modifyBy: state.roll_no,
         ...payment.data.data
       };
 
@@ -57,7 +57,7 @@ export default function StudentPayment() {
 
     const getpayment = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getPaymentDetailsForIndividualStudent}`, {
       params: {
-        rollNumber: state?.student?.RollNo
+        rollNumber: state.roll_no
       }
     });
 

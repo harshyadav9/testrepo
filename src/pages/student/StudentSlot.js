@@ -31,7 +31,7 @@ export default function StudentSlot() {
 
     let getslots = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getSlotsDataForIndividualStudent}`, {
       params: {
-        mode: 'ONLINE', rollNumber: `${state?.student.RollNo}`
+        mode: 'ONLINE', rollNumber: `${state.roll_no}`
       }
     });
 

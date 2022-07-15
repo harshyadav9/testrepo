@@ -106,12 +106,15 @@ img {
 }
 
 .mybg-accent-light {
-  background-color: var(--accent-light);
+  /* background-color: var(--accent-light); */
+  background-color: var(--primary);
+  color: #fff;
 }
 
 /* overrides */
 .navbar-dark .navbar-text {
   color: white;
+
 }
 
 .navbar-brand {

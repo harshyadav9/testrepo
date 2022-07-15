@@ -17,7 +17,7 @@ export default function SchoolEditDetails() {
 
 
   const { state, dispatch } = useContext(StudentDataContext);
-
+  const navigate = useNavigate();
   const [rollnO, SetRollno] = useState('');
   const [cname, SetCName] = useState('');
   const [city, SetCity] = useState('');
@@ -148,7 +148,9 @@ export default function SchoolEditDetails() {
     const savedetails = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.updateIndividualStudentDetails}`, obj);
 
     console.log("savedetails", savedetails);
-
+    if (savedetails?.status === 200) {
+      navigate("/student-slot");
+    }
 
   }
 
@@ -329,7 +331,7 @@ export default function SchoolEditDetails() {
                         <option value="Nepal">Nepal</option>
                         <option value="Bhutan">Bhutan</option>
                       </select> */}
-                      <input type="text" placeholder="Country"
+                      <input type="text" placeholder=""
                         style={{ backgroundColor: "#dfdbdb" }}
                         disabled
                         name="city"
@@ -347,7 +349,7 @@ export default function SchoolEditDetails() {
                         <option value="goa">Goa</option>
                         <option value="uk">Uttrakhand</option>
                       </select> */}
-                      <input type="text" placeholder="State"
+                      <input type="text" placeholder=""
                         style={{ backgroundColor: "#dfdbdb" }}
                         disabled
                         name="state"
@@ -357,8 +359,8 @@ export default function SchoolEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>City</label>
-                      <input type="text" placeholder="New Delhi" value={city} onChange={(e) => {
+                      <label>City<span style={{ color: 'red' }}>*</span></label>
+                      <input type="text" placeholder="" value={city} onChange={(e) => {
                         SetCity(e.target.value);
                         formValidate({ 'key': 'city', 'value': e.target.value });
                       }}
@@ -385,7 +387,7 @@ export default function SchoolEditDetails() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Mobile</label>
-                      <input type="text" name="mobile" placeholder="9xxxxxxxxx"
+                      <input type="text" name="mobile" placeholder=""
                         value={mobile} style={{ backgroundColor: "#dfdbdb" }}
                         disabled
                         required="" />
@@ -397,7 +399,7 @@ export default function SchoolEditDetails() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>E-mail </label>
-                      <input type="text" name="email" value={email} placeholder="email@domain.in"
+                      <input type="text" name="email" value={email} placeholder=""
                         style={{ backgroundColor: "#dfdbdb" }}
                         disabled
                         required="" />
@@ -405,7 +407,7 @@ export default function SchoolEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Gender</label>
+                      <label>Gender<span style={{ color: 'red' }}>*</span></label>
                       <select name="gender" value={gender} onChange={(e) => {
                         SetGender(e.target.value);
                       }}>
@@ -426,8 +428,8 @@ export default function SchoolEditDetails() {
                 <div class="row">
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Address</label>
-                      <textarea name="address" placeholder="B-562, locality, street, city, state "
+                      <label>Address<span style={{ color: 'red' }}>*</span></label>
+                      <textarea name="address" placeholder=""
                         value={add1} onChange={(e) => {
                           SetAdd1(e.target.value);
                           formValidate({ 'key': 'add1', 'value': e.target.value });
@@ -437,7 +439,7 @@ export default function SchoolEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Pin Code</label>
+                      <label>Pin Code<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="pincode" value={pin} onChange={(e) => {
                         SetPin(e.target.value);
                         formValidate({ 'key': 'pin', 'value': e.target.value });
@@ -450,17 +452,17 @@ export default function SchoolEditDetails() {
                 <div class="row">
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>School</label>
+                      <label>School<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="school" value={school} onChange={(e) => {
                         SetSchool(e.target.value);
                         formValidate({ 'key': 'school', 'value': e.target.value });
                       }}
-                        placeholder="School Name" required="" />
+                        placeholder="" required="" />
                     </div>
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Class</label>
+                      <label>Class<span style={{ color: 'red' }}>*</span></label>
                       {/* <input type="text" name="class" value={classcandidate} onChange={(e) => {
                         SetClassCandidate(e.target.value);
                       }} */}
@@ -487,12 +489,12 @@ export default function SchoolEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Section</label>
+                      <label>Section<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="section" value={section} onChange={(e) => {
                         SetSection(e.target.value);
                         formValidate({ 'key': 'section', 'value': e.target.value });
                       }}
-                        placeholder="A" required />
+                        placeholder="" required />
                     </div>
                   </div>
                 </div>
@@ -501,28 +503,28 @@ export default function SchoolEditDetails() {
                 <div class="row">
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Name of Parent/Guardian</label>
+                      <label>Name of Parent/Guardian<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="pname" value={pgname} onChange={(e) => {
                         SetPgName(e.target.value);
                         formValidate({ 'key': 'pgname', 'value': e.target.value });
                       }}
-                        placeholder="Mr. Ram Kumar" required="" />
+                        placeholder="" required="" />
                     </div>
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Email of Parent/Guardian</label>
+                      <label>Email of Parent/Guardian<span style={{ color: 'red' }}>*</span></label>
                       <input type="email" name="pemail" value={pgemail} onChange={(e) => {
                         SetPgEmail(e.target.value);
                         formValidate({ 'key': 'pgemail', 'value': e.target.value });
                       }}
-                        placeholder="email@parent.in" required />
+                        placeholder="" required />
                     </div>
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Mobile of Parent/Guardian</label>
-                      <input type="text" name="pmobile" placeholder="9xxxxxxxxx" value={pgemobile} onChange={(e) => {
+                      <label>Mobile of Parent/Guardian<span style={{ color: 'red' }}>*</span></label>
+                      <input type="text" name="pmobile" placeholder="" value={pgemobile} onChange={(e) => {
                         SetPgMobile(e.target.value);
                         formValidate({ 'key': 'pgemobile', 'value': e.target.value });
                       }} required />
@@ -535,7 +537,7 @@ export default function SchoolEditDetails() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Level of Exam</label>
-                      <input type="text" name="level" placeholder="Level 1" style={{ backgroundColor: "#dfdbdb" }}
+                      <input type="text" name="level" placeholder="" style={{ backgroundColor: "#dfdbdb" }}
                         disabled value={levelexam}
 
                         required="" />
@@ -543,7 +545,7 @@ export default function SchoolEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Exam Theme</label>
+                      <label>Exam Theme<span style={{ color: 'red' }}>*</span></label>
                       <select name="examtheme" value={examtheme} onChange={(e) => {
                         SetExamTheme(e.target.value);
                       }}>
@@ -567,12 +569,13 @@ export default function SchoolEditDetails() {
                 </div>
 
                 <div class="row my-3">
+                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory!!!</h3>
                   {RegisterationClicked === 1 && error_message && (<div className="alert alert-danger w-100" role="alert">
                     {error_message}
                   </div>)}
                   <div class="text-center">
                     <button class="btn btn-primary mx-2 my-2" style={{ minWidth: '15rem' }} onClick={updateDetails}>Save &amp; Pay</button>
-                    <button class="btn btn-secondary mx-2 my-2" style={{ minWidth: '10rem' }}>Edit</button>
+                    {/* <button class="btn btn-secondary mx-2 my-2" style={{ minWidth: '10rem' }}>Edit</button> */}
                   </div>
 
                 </div>

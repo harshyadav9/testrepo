@@ -193,15 +193,19 @@ export default function StudentRegistration() {
       return err;
 
 
-    if (mobileverify === 0) {
-      setError_message('Please validate mobile otp');
-      return;
+    if (isIndain) {
+      if (mobileverify === 0) {
+        setError_message('Please validate mobile otp');
+        return;
+      }
     }
 
     if (emailverify === 0) {
       setError_message('Please validate email otp');
       return;
     }
+
+
     console.log(country, state, name, mobile, date, email);
 
     let countryval = JSON.parse(country);
@@ -224,7 +228,7 @@ export default function StudentRegistration() {
       "mobile": mobile,
       "modifiedby": "",
       "name": name,
-      "password": date,
+      "password": mobile,
       "pgEmail": "",
       "pgMobile": "",
       "pin": "",
@@ -368,7 +372,7 @@ export default function StudentRegistration() {
         break;
 
       case "mobile":
-        if (value.length < 1)
+        if (value.length < 1 && isIndain)
           err = (errorList.find(item => item.fieldNam === key).message);
         if (err === "") {
           let item = errorList.find(item => item.fieldNam === key);
@@ -407,7 +411,7 @@ export default function StudentRegistration() {
                 <div class="row">
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Country</label>
+                      <label>Country<span style={{ color: 'red' }}>*</span></label>
 
 
 
@@ -429,7 +433,7 @@ export default function StudentRegistration() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>State/City</label>
+                      <label>State/City<span style={{ color: 'red' }}>*</span></label>
                       <select
                         className="dropdown"
                         id="cars"
@@ -454,8 +458,8 @@ export default function StudentRegistration() {
                 <div class="row">
                   <div class=" col-sm">
                     <div class="form-wrapper">
-                      <label>Name</label>
-                      <input type="text" placeholder="name here" value={name} onChange={(e) => {
+                      <label>Name<span style={{ color: 'red' }}>*</span></label>
+                      <input type="text" placeholder="" value={name} onChange={(e) => {
                         setName(e.target.value);
                       }}
 
@@ -466,8 +470,8 @@ export default function StudentRegistration() {
                   </div>
                   <div class=" col-sm">
                     <div class="form-wrapper">
-                      <label>Date of Birth</label>
-                      <input type="date" placeholder="choose date" value={dateOriginal} onChange={(e) => {
+                      <label>Date of Birth<span style={{ color: 'red' }}>*</span></label>
+                      <input type="date" placeholder="" value={dateOriginal} onChange={(e) => {
                         let date = e.target.value.split("-").reverse().join('-');
                         setDate(date);
                         setDateOriginal(e.target.value);
@@ -481,9 +485,9 @@ export default function StudentRegistration() {
                 <div class="row">
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Mobile</label>
+                      <label>Mobile<span style={{ color: 'red' }}>*</span></label>
                       <div class="d-flex">
-                        <input type="text" class="me-3" placeholder="Mobile "
+                        <input type="text" class="me-3" placeholder=""
                           onChange={(e) => {
 
                             setMobile(e.target.value);
@@ -495,29 +499,32 @@ export default function StudentRegistration() {
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm">
-                    <div class="form-wrapper">
-                      <label>Mobile OTP</label>
-                      <div class=" d-flex justify-content-between">
-                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 0) }} name="otp" required="" />
-                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 1) }} name="otp" required="" />
-                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 2) }} name="otp" required="" />
-                        <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 3) }} name="otp" required="" />
-                        <button class="otbutton btn btn-accent" onClick={otpMobileverifcation}>Verify</button>
-                      </div>
-                      <div>
-                        <h5>{mobileVerMsg}</h5>
+                  {isIndain && (
+                    <div class="col-sm">
+                      <div class="form-wrapper">
+                        <label>Mobile OTP<span style={{ color: 'red' }}>*</span></label>
+                        <div class=" d-flex justify-content-between">
+                          <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 0) }} name="otp" required="" />
+                          <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 1) }} name="otp" required="" />
+                          <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 2) }} name="otp" required="" />
+                          <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { mobileOTPset(ev, 3) }} name="otp" required="" />
+                          <button class="otbutton btn btn-accent" onClick={otpMobileverifcation}>Verify</button>
+                        </div>
+                        <div>
+                          <h5>{mobileVerMsg}</h5>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
+
                 </div>
 
                 <div class="row">
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>E-Mail</label>
+                      <label>E-Mail<span style={{ color: 'red' }}>*</span></label>
                       <div class="d-flex">
-                        <input type="email" class="me-3" placeholder="Email" value={email} name="email"
+                        <input type="email" class="me-3" placeholder="" value={email} name="email"
 
                           onChange={(e) => {
 
@@ -534,7 +541,7 @@ export default function StudentRegistration() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>E-Mail OTP</label>
+                      <label>E-Mail OTP<span style={{ color: 'red' }}>*</span></label>
                       <div class=" d-flex justify-content-between">
                         <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { emailOTPset(ev, 0) }} name="eotp" required="" />
                         <input type="text" class="me-3" maxLength={1} placeholder="" onChange={(ev) => { emailOTPset(ev, 1) }} name="eotp" required="" />
@@ -553,6 +560,9 @@ export default function StudentRegistration() {
                     <button class="btn btn-primary mx-2  mb-4 mb-sm-0" style={{ minWidth: '15rem' }} onClick={submitvalue} >Save &amp; Proceed</button>
                     <button class="btn btn-primary mx-2 " style={{ minWidth: '10rem' }} onClick={goToHome}>Cancel</button>
                   </div>
+                  <div>
+                    <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory!!!</h3>
+                  </div>
 
                 </div>
 
@@ -568,6 +578,7 @@ export default function StudentRegistration() {
                         <h5 className="modal-title">Slots for Examination</h5>
                         <button type="button" className="btn-close" data-dismiss="modal">wqwqwq</button>
                       </div> */}
+
                       {(msgText.length > 0 && roll_no.length === 0) && (
                         <>
                           <div className="modal-body">

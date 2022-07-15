@@ -15,6 +15,7 @@ export default function SchoolLogin() {
   const { state, dispatch } = useContext(StudentDataContext);
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
+  const [errMsg, setErrMsg] = useState('');
   const navigate = useNavigate();
   const [userError, setUserError] = useState({})
   const [passError, setPassError] = useState({})
@@ -61,6 +62,7 @@ export default function SchoolLogin() {
         //.post(`${API_END_POINTS?.login}`, serverData)
         .then((res) => {
           console.log(res.data);
+          setErrMsg("");
           if (res?.data.status) {
             let obj = {};
             for (let key in res.data.data) {
@@ -73,7 +75,8 @@ export default function SchoolLogin() {
               roll_no: user
             });
           } else {
-            console.log("wrong credentials");
+            // console.log("wrong credentials");
+            setErrMsg(res.data.message)
           }
         })
         .catch((error) => {
@@ -200,6 +203,9 @@ export default function SchoolLogin() {
                       </div>
                       <div className="text-sm-center mt-4 mt-md-5">
                         <button className="btn btn-primary btnReg w-100" onClick={handleSubmit}>Login</button>
+                      </div>
+                      <div>
+                        <h4 style={{ textAlign: 'center' }}>{errMsg}</h4>
                       </div>
                     </div>
                   </div>
