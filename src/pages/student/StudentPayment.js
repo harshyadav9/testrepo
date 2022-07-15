@@ -22,7 +22,7 @@ export default function StudentPayment() {
     const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, {
       amount: paymentData?.totalFees,
       type: 'INDV',
-      email: state?.student.Email, phone: state?.student.Mobile, name: state?.student.Name, productinfo: state.roll_no
+      email: state?.student.email, phone: state?.student.mobile, name: state?.student.name, productinfo: state.roll_no
     });
     //const payment = await axios.get(`${API_END_POINTS.payment}`);
 

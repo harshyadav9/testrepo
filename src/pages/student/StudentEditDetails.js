@@ -574,7 +574,7 @@ export default function SchoolEditDetails() {
                     {error_message}
                   </div>)}
                   <div class="text-center">
-                    <button class="btn btn-primary mx-2 my-2" style={{ minWidth: '15rem' }} onClick={updateDetails}>Save &amp; Pay</button>
+                    <button class="btn btn-primary mx-2 my-2" style={{ minWidth: '15rem' }} onClick={updateDetails}>Save &amp; Proceed</button>
                     {/* <button class="btn btn-secondary mx-2 my-2" style={{ minWidth: '10rem' }}>Edit</button> */}
                   </div>
 
