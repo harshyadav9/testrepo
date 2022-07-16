@@ -63,4 +63,12 @@ export const API_END_POINTS = {
 	getPaymentDetailsForIndividualStudent: 'terry/getPaymentDetailsForIndividualStudent',
 
 
+
+
+	// getCategory: 'api/get-category',
+	// createTicket: 'api/create-help-ticket',
+	// getAllTickets: 'api/get-ticket-by-id'
+
+
+
 }
