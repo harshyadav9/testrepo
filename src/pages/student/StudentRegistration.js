@@ -137,7 +137,8 @@ export default function StudentRegistration() {
         const emailvalue = await axios.get(`${API_BASE_URL}${API_END_POINTS.sendEmailToCandidate}`, {
           //let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
           params: {
-            email: `${email}`
+            email: `${email}`,
+            email_header: 'New Individual User'
           }
         });
         console.log("emailvalue", emailvalue);

@@ -600,6 +600,52 @@ export default function StudentSlot() {
                     }
 
                   </div>
+
+                  <div>
+                    {
+                      slots.filter(s => s.examTheme === "MOCKGREEN").length !== 0 &&
+
+
+
+                      (
+                        <div className="col-sm">
+                          <div className="form-wrapper">
+                            <label>Slot of Mock Test</label>
+
+                            <select class="dropdown-school" id="cars" onChange={e => {
+                              chooseSlot('MOCKGREEN', e.target.value);
+                              setExamTypes(ev => ({
+                                ...ev,
+                                ['MOCKGREEN']: true,
+                              }))
+                            }
+                            }>
+                              <option value="volvo" >Select Slot</option>
+
+                              {
+                                slots && Array.isArray(slots) ? slots.filter(s => s.examTheme === "MOCKGREEN").map(slot => (
+                                  <option value={slot.slotID}>{dayjs(slot?.dateofExam).format('DD-MM-YYYY')} / {slot?.slotdatetime}</option>
+                                )) : null
+                              }
+                            </select>
+
+
+
+
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#myModalmock" onClick={_ => togglePop(slots.filter(s => s.examTheme === "MOCKGREEN"))}>
+                              <svg className="icon align-middle">
+                                <use xlinkHref="#check-slot"></use>
+                              </svg> <span className="align-middle">Check Slot</span>
+                            </a>
+
+
+                          </div>
+                        </div>
+                      )
+
+                    }
+                  </div>
+
                   {(slots.length > 0) && (
                     <>
                       <div className="row my-3">
