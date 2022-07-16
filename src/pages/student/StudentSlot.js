@@ -55,7 +55,7 @@ export default function StudentSlot() {
           obj[examtheme] = false;
         }));
 
-        if (state?.student.examTheme === null || state?.student.demoExam === null) {
+        if (state?.student.examTheme === null || state?.student.demoExam === null || state?.student.examTheme === "" || state?.student.demoExam === "") {
           setIsThemeChoosen(false);
         } else {
           setIsThemeChoosen(true);
@@ -601,21 +601,26 @@ export default function StudentSlot() {
 
                   </div>
                   {(slots.length > 0) && (
-                    <div className="row my-3">
-                      <div className="text-center">
-                        <button className="btn btn-primary mx-auto" onClick={submitSlots}>Book slot for exam and mock test</button>
-                      </div>
-
-                      {showSlotErr.length > 0 && (
-                        <div>
-                          <h2> {showSlotErr}</h2>
-
+                    <>
+                      <div className="row my-3">
+                        <div className="text-center">
+                          <button className="btn btn-primary mx-auto" onClick={submitSlots}>Book slot for exam and mock test</button>
                         </div>
-                      )}
+
+                        {showSlotErr.length > 0 && (
+                          <div>
+                            <h2> {showSlotErr}</h2>
+
+                          </div>
+                        )}
 
 
 
-                    </div>
+                      </div>
+                      <div>
+                        <h2 style={{ color: 'red' }}>Slot once booked cannot be changed again.</h2>
+                      </div>
+                    </>
                   )}
 
 
