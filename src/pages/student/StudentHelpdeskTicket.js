@@ -331,7 +331,7 @@ export default function StudentHelpdeskTicket() {
                     <textarea name="message" placeholder="your message" cols="30" rows="2" onChange={e => setMessage(e.target.value)}></textarea>
                   </div>
 
-                  <div class="form-wrapper">
+                  {/* <div class="form-wrapper">
                     <label>Input File</label>
                     <input
                       type="file"
@@ -339,7 +339,7 @@ export default function StudentHelpdeskTicket() {
                       name="please upload attachment"
                       onChange={setFileCb}
                     />
-                  </div>
+                  </div> */}
                   <div class="row my-3">
                     <div class="text-center">
                       <button class="btn btn-primary mx-auto" style={{ width: '15rem' }} onClick={handleCreateTikcet}>Submit</button>

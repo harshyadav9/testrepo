@@ -804,7 +804,7 @@ export default function SchoolRegistration() {
                             )
                           })
                         }
-                        <option value="volvo">Other (When Enter Your College)</option>
+                        <option value="volvo">Others</option>
                       </select>
                     </div>
                   </div>
@@ -1016,7 +1016,7 @@ export default function SchoolRegistration() {
                   <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory!!!</h3>
                   <div className="d-flex justify-content-center">
                     {/* <button className="btn btn-primary w-50" type="submit">Registration</button> */}
-                    <button className="btn btn-primary w-50" onClick={RegisterationApi}>Registration</button>
+                    <button className="btn btn-primary w-50" onClick={RegisterationApi}>Register</button>
                     {/* <!-- <button class="btn btn-secondary" type="reset">Cancel</button> --> */}
                   </div>
                   {/* <!-- <a href="./uploadstudentdata.html"> --> */}

@@ -106,7 +106,7 @@ export default function Home() {
     //   </div>
     // </div>
     <div className="dashboard-wraper d-flex">
-      <aside className="sidebar" id="sidebar" >
+      {/* <aside className="sidebar" id="sidebar" >
         <div className="sidenav">
           <div className="mobileToggler d-lg-none">
             <a className="navbar-brand" href="#"><img src="images/logo.png" alt="" /></a>
@@ -120,14 +120,12 @@ export default function Home() {
             <div className="navtitle">Announcements</div>
             <ul className="list-unstyled">
               <li className="active"><a href="#" onClick={openins}><img src={download} height="18" alt="" />Instructions</a></li>
-              {/* <li><a href="#"><img src={download} height="18" alt="" /> Slot for Demo</a></li>
-              <li><a href="#"><img src={download} height="18" alt="" /> Account Details</a></li>
-              <li><a href="#"><img src={download} height="18" alt="" /> Page Navigation</a></li> */}
+            
             </ul>
           </div>
 
         </div>
-      </aside>
+      </aside> */}
       <main className="content">
         <div className="container-fluid ps-md-4 ps-lg-5 pe-md-4 py-5">
           <div className="welcomebox">

@@ -32,7 +32,7 @@ export default function StudentSlot() {
 
   let decodedSchoolData = {}
   const getSlots = async () => {
-
+    setShowSlotErr("");
     let getslots = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getSlotsDataForIndividualStudent}`, {
       params: {
         mode: 'ONLINE', rollNumber: `${state.roll_no}`
@@ -55,7 +55,7 @@ export default function StudentSlot() {
           obj[examtheme] = false;
         }));
 
-        if (state?.student.examTheme === "" || state?.student.demoExam === "") {
+        if (state?.student.examTheme === null || state?.student.demoExam === null) {
           setIsThemeChoosen(false);
         } else {
           setIsThemeChoosen(true);
@@ -620,18 +620,20 @@ export default function StudentSlot() {
 
 
                   {
-                    (isthemeChoosen !== true) ? (
+                    (isthemeChoosen !== true) && (
                       <div>
-                        <h2>Please choose your theme or demo exam first.</h2>
+                        <h2>Choose your theme or demo exam.</h2>
                       </div>
-                    ) : (
+                    )
+                  }
+
+                  {
+                    ((isthemeChoosen === true) && (slots.length === 0)) && (
                       <div>
                         <h2>You have booked your slots .</h2>
                       </div>
                     )
                   }
-
-
 
 
 

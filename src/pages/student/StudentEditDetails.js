@@ -151,6 +151,18 @@ export default function SchoolEditDetails() {
       countryCode: null,
       rollNoPrefix: null
     }
+
+
+    dispatch({
+      type: 'ADD_THEME',
+      student: {
+        ...state.student,
+        examTheme: examtheme,
+        demoExam: demoexam
+      }
+    });
+
+
     const savedetails = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.updateIndividualStudentDetails}`, obj);
 
     console.log("savedetails", savedetails);

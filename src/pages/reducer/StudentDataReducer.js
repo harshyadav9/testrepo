@@ -17,6 +17,14 @@ export const StundentDataReducer = (state, action) => {
             };
 
 
+        case 'ADD_THEME':
+            console.log("action", action);
+            return {
+                ...state,
+                ...action
+            };
+
+
 
 
         case 'ADD_ROLL_NO':

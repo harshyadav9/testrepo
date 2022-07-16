@@ -9,7 +9,7 @@ import jwt_decode from "jwt-decode";
 import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
 import { StudentDataContext } from "../context/datacontext";
 import { notify } from "../../Utills";
-
+import file from "../../assets/pdf/guide_school.pdf";
 
 export default function SchoolLogin() {
   const { state, dispatch } = useContext(StudentDataContext);
@@ -164,6 +164,7 @@ export default function SchoolLogin() {
           </Link>
         </div>
       </div> */}
+
       <div>
         <div className="my-5 login">
           <div className="container">
@@ -173,17 +174,30 @@ export default function SchoolLogin() {
                   <div className="card shadow p-3 p-md-4 ">
                     <div className="loginbox w-100">
                       <div className="loginInner">
-                        <h3>Registration</h3>
+                        <h3>School</h3>
                         <div className="newSchool text-center">
                           <img src="images/new-school.png" alt="" />
-                          <h4>New School</h4>
+                          {/* <h4>New School</h4> */}
                           <h5>
-                            <Link to="/school-registration" className="stretched-link link-light">
+                            <Link to="/school-registration" className="headingLogin link-light">
                               Registration
                             </Link>
+                            <p style={{
+                              fontSize: '25px'
+                            }}>STD 4-12</p>
+                            <br />
+
+
+
                             {/* <a href="school-register.html" className="stretched-link link-light">Registration</a> */}
                           </h5>
-                          <p>STD 4-12</p>
+
+                        </div>
+                        <div style={{
+                          marginTop: '14px',
+                          fontSize: '18px'
+                        }}>
+                          <a className="link-light" href={file} target="_blank">Guidelines to fill Registration form</a>
                         </div>
                       </div>
                     </div>

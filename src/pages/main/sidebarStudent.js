@@ -149,7 +149,7 @@ function SidebarStudent() {
                             Download Certificate
                         </Link> */}
 
-                        <Link to="/school-change-password">
+                        <Link to="/student-change-password">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Change Password

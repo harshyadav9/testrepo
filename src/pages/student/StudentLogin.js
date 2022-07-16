@@ -9,7 +9,7 @@ import jwt_decode from "jwt-decode";
 import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
 import { StudentDataContext } from "../context/datacontext";
 import { notify } from "../../Utills";
-
+import file from "../../assets/pdf/guide_individual.pdf";
 
 export default function SchoolLogin() {
   const { state, dispatch } = useContext(StudentDataContext);
@@ -154,12 +154,25 @@ export default function SchoolLogin() {
                           <img src="images/new-school.png" alt="" />
                           {/* <h4>New School</h4> */}
                           <h5>
-                            <Link to="/student-registration" className="headingLogin stretched-link link-light">
+                            <Link to="/student-registration" className="headingLogin link-light">
                               Registration
                             </Link>
+                            <p style={{
+                              fontSize: '25px'
+                            }}>STD 4-12</p>
+                            <br />
+
+
+
                             {/* <a href="school-register.html" className="stretched-link link-light">Registration</a> */}
                           </h5>
-                          <p>STD 4-12</p>
+
+                        </div>
+                        <div style={{
+                          marginTop: '14px',
+                          fontSize: '18px'
+                        }}>
+                          <a className="link-light" href={file} target="_blank">Guidelines to fill Registration form</a>
                         </div>
                       </div>
                     </div>
@@ -171,6 +184,9 @@ export default function SchoolLogin() {
                       <h6 className="font-bold ">Individual Login</h6>
                       <p>Welcome to Individial login</p>
                     </div>
+
+
+
 
                     <div className="">
                       <div className="form-wrapper">
