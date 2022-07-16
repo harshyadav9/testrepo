@@ -244,16 +244,19 @@ export default function SchoolRegistration() {
 
 
   const generateOtp = async () => {
-    const otp = await axios.post(`${API_BASE_URL}${API_END_POINTS.generateOtp}`, { mobile: mobile });
-    if (otp?.data.status) {
-      setMobileOTPValue(otp.data.otp);
-      setMsgText('Your OTP has been send on your registered mobile number');
-      document.getElementsByClassName('modal')[0].style.display = 'block';
-    } else {
-      //  error in generating otp
-      setMsgText('Due to some reasons Your OTP culd not be send on your registered email id');
-      document.getElementsByClassName('modal')[0].style.display = 'block';
+    if (mobile !== "") {
+      const otp = await axios.post(`${API_BASE_URL}${API_END_POINTS.generateOtp}`, { mobile: mobile });
+      if (otp?.data.status) {
+        setMobileOTPValue(otp.data.otp);
+        setMsgText('Your OTP has been send on your registered mobile number');
+        document.getElementsByClassName('modal')[0].style.display = 'block';
+      } else {
+        //  error in generating otp
+        setMsgText('Due to some reasons Your OTP culd not be send on your registered email id');
+        document.getElementsByClassName('modal')[0].style.display = 'block';
+      }
     }
+
   }
 
   // console.log("Error",Error)
@@ -347,6 +350,7 @@ export default function SchoolRegistration() {
             email: RegisterationOptions.email,
             district: ''
           });
+
           setMsgText("");
           document.getElementsByClassName('modal')[0].style.display = 'block';
           // setTimeout(() => {
@@ -368,6 +372,9 @@ export default function SchoolRegistration() {
       })
       .catch((error) => {
         console.log(error);
+        document.getElementsByClassName('modal')[0].style.display = 'block';
+        setMsgText(error.response.data.message);
+        setUserRegistered(false);
       });
   };
 
