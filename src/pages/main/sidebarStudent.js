@@ -131,7 +131,7 @@ function SidebarStudent() {
                             Application Status
                         </Link>
 
-                        <Link to="/school-helpdesk-ticket">
+                        <Link to="/student-helpdesk-ticket">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Submit Helpdesk Ticket

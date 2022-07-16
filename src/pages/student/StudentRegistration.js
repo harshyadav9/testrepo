@@ -5,6 +5,9 @@ import Error from '../school/ErrorList';
 import { useNavigate } from "react-router";
 import { API_ADMIN_URL_2, REGISTER_API, API_BASE_URL, API_END_POINTS, API_BASE_JAVA_URL } from "../../apis/api";
 import { StudentDataContext } from "../context/datacontext";
+const dayjs = require('dayjs');
+
+
 export default function StudentRegistration() {
 
 
@@ -53,10 +56,10 @@ export default function StudentRegistration() {
       const otp = await axios.post(`${API_BASE_URL}${API_END_POINTS.generateOtp}`, { mobile: mobile });
       if (otp?.data.status) {
         setMobileOTPValue(otp.data.otp);
-        setMsgText('Your otp has been send on your registered mobile number');
+        setMsgText('Your OTP has been send on your registered mobile number');
         document.getElementsByClassName('modal')[0].style.display = 'block';
       } else {
-        setMsgText('Due to some reasons Your otp culd not be send on your registered email id');
+        setMsgText('Due to some reasons Your OTP culd not be send on your registered email id');
         document.getElementsByClassName('modal')[0].style.display = 'block';
         //  error in generating otp
       }
@@ -140,7 +143,7 @@ export default function StudentRegistration() {
         console.log("emailvalue", emailvalue);
         if (emailvalue?.data?.status) {
           setEmailOTPValue(emailvalue.data.otp);
-          setMsgText('Your otp has been send on your registered email id');
+          setMsgText('Your OTP has been send on your registered email id');
           document.getElementsByClassName('modal')[0].style.display = 'block';
 
         } else {
@@ -191,6 +194,9 @@ export default function StudentRegistration() {
 
     if (err)
       return err;
+
+
+
 
 
     if (isIndain) {
@@ -363,8 +369,12 @@ export default function StudentRegistration() {
           err = errorList.find(item => item.fieldNam === key).message;
         break;
       case "date":
-        if (value === "" || value === undefined)
+        if (value === "" || value === undefined) {
           err = errorList.find(item => item.fieldNam === key).message;
+        } else if (!dayjs(dateOriginal).isBefore(dayjs())) {
+          err = errorList.find(item => item.fieldNam === key).message2;
+        }
+
         break;
       case "name":
         if (value.length < 1)
@@ -402,7 +412,7 @@ export default function StudentRegistration() {
         <div class="col-lg-10 mx-auto">
           <main class="p-3 p-sm-4 p-lg-5">
             <div class="section-title mb-4 text-muted">
-              <h6 class="font-bold ">New Registration</h6>
+              <h6 class="font-bold">New Registration</h6>
               <p>Fill this form for registration</p>
             </div>
 
@@ -472,8 +482,10 @@ export default function StudentRegistration() {
                     <div class="form-wrapper">
                       <label>Date of Birth<span style={{ color: 'red' }}>*</span></label>
                       <input type="date" placeholder="" value={dateOriginal} onChange={(e) => {
-                        let date = e.target.value.split("-").reverse().join('-');
-                        setDate(date);
+                        let dateval = dayjs(e.target.value).format('DD-MM-YYYY');
+                        // let date = e.target.value.split("-").reverse().join('-');
+                        // console.log(dayjs(e.target.value).isBefore(dayjs()));
+                        setDate(dateval);
                         setDateOriginal(e.target.value);
                       }}
 

@@ -18,7 +18,8 @@ export default function StudentPayment() {
   const navigate = useNavigate();
   const [paymentData, setPaymentData] = useState({});
   const [currencyIcon, setCurrencyIcon] = useState();
-
+  const [paymentstatus, setpaymentStatus] = useState("");
+  const [paymentAllowedMsg, setPaymentAllowedMsg] = useState("");
   const makePayment = async () => {
 
     const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, {
@@ -69,6 +70,17 @@ export default function StudentPayment() {
       let currencyval = state?.student?.country === 'India' ? 'INR' : "$";
       setCurrencyIcon(currencyval);
       setPaymentData(getpayment.data);
+
+      if (getpayment.data.examTheme === "" && getpayment.data.demoExam === "") {
+        setPaymentAllowedMsg("Kindly choose your examtheme or demo exam  first before doing payment");
+        setpaymentStatus('paid');
+        return;
+      }
+      if (getpayment.data.paymentStatus === 0) {
+        setpaymentStatus('unpaid');
+      } else {
+        setpaymentStatus('paid');
+      }
     }
 
     console.log("getpayment", getpayment);
@@ -98,7 +110,7 @@ export default function StudentPayment() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Roll No</label>
-                      <input type="text" placeholder="New Delhi" value={paymentData?.rollNo} disabled name="city" required="" />
+                      <input type="text" placeholder="" value={paymentData?.rollNo} disabled name="city" required="" />
                     </div>
                   </div>
 
@@ -106,7 +118,7 @@ export default function StudentPayment() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Name Of Candidate</label>
-                      <input type="text" placeholder="New Delhi" value={paymentData?.name} disabled name="city" required="" />
+                      <input type="text" placeholder="" value={paymentData?.name} disabled name="city" required="" />
                     </div>
                   </div>
 
@@ -116,14 +128,14 @@ export default function StudentPayment() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Level Of Exam</label>
-                      <input type="text" placeholder="New Delhi" value={paymentData?.examLevel} disabled name="city" required="" />
+                      <input type="text" placeholder="" value={paymentData?.examLevel} disabled name="city" required="" />
                     </div>
                   </div>
 
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Topic of exam</label>
-                      <input type="text" placeholder="New Delhi" value={paymentData?.examTheme} disabled name="city" required="" />
+                      <input type="text" placeholder="" value={paymentData?.examTheme} disabled name="city" required="" />
                     </div>
                   </div>
                 </div>
@@ -134,20 +146,25 @@ export default function StudentPayment() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Demo of exam status</label>
-                      <input type="text" placeholder="New Delhi" value={paymentData?.demoExam} disabled name="city" required="" />
+                      <input type="text" placeholder="" value={paymentData?.demoExam} disabled name="city" required="" />
                     </div>
                   </div>
 
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Total fees to be paid</label>
-                      <input type="text" placeholder="New Delhi" value={`${currencyIcon} ${paymentData?.totalFees}`} disabled name="city" required="" />
+                      <input type="text" placeholder="" value={`${currencyIcon} ${paymentData?.totalFees}`} disabled name="city" required="" />
                     </div>
                   </div>
                 </div>
                 <div className="row my-3">
                   <div className="text-center">
-                    <button className="btn btn-primary mx-auto" onClick={makePayment}>Make Payment</button>
+
+                    <button class={`btn btn-primary mx-auto ${paymentstatus === 'paid' ? 'paidcls' : 'unpaidcls'}`} onClick={makePayment}>Make Payment</button>
+                    {/* <button className={({ 'paidcls': paymentstatus === 'paid', 'unpaidcls': paymentstatus !== 'paid', 'btn': true, 'btn-primary': true, 'mx-auto': true })} onClick={makePayment}>Make Payment</button> */}
+                  </div>
+                  <div>
+                    <h2>{paymentAllowedMsg}</h2>
                   </div>
                 </div>
 

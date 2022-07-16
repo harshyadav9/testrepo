@@ -94,7 +94,7 @@ export default function SchoolEditDetails() {
       SetPgMobile(studentdetails.data.pgMobile);
       SetLevelExam(studentdetails.data.examLevel || 'Level_1');
       SetExamTheme(studentdetails.data.examTheme || 'ESD');
-      SetDemoExam(studentdetails.data.demoExam || 'YES');
+      SetDemoExam(studentdetails.data.demoExam || 'NO');
       SetPgName(studentdetails.data?.pgName);
       SetCity(studentdetails.data?.city);
 

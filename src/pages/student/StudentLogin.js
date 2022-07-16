@@ -154,7 +154,7 @@ export default function SchoolLogin() {
                           <img src="images/new-school.png" alt="" />
                           {/* <h4>New School</h4> */}
                           <h5>
-                            <Link to="/student-registration" className="stretched-link link-light">
+                            <Link to="/student-registration" className="headingLogin stretched-link link-light">
                               Registration
                             </Link>
                             {/* <a href="school-register.html" className="stretched-link link-light">Registration</a> */}
@@ -177,7 +177,7 @@ export default function SchoolLogin() {
                         {/* <input type="text" className="" placeholder="School Code" /> */}
                         <input
                           type="text"
-                          placeholder="school code"
+                          placeholder="Roll No"
                           name="uname"
                           required
                           onChange={setUserName}

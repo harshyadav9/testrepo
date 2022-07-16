@@ -8,6 +8,7 @@ const Error = [
 	{
 		fieldNam: "date",
 		message: "Please enter date",
+		message2: "Date of birth cannot be greater than current date",
 		status: false
 	},
 

@@ -395,11 +395,17 @@ img {
   background: var(--primary)
 }
 
-.sidebar ul li.active a,
-.sidebar ul li:hover a {
+.sidebar ul li.active a {
   box-shadow: 0 0 20px #e6e6e6;
   color: #2c2c2c;
 }
+
+.sidebar ul li a:hover {
+  box-shadow: 0 0 20px #e6e6e6;
+  color: #fff;
+  background-color: #228B22;
+}
+
 
 .sidebar ul li:hover a:before,
 .sidebar ul li.active a:before {
@@ -427,8 +433,12 @@ img {
   /*margin-bottom: 70px;*/
 }
 
-.welcomebox h1 span {
+.welcomebox h1 {
   color: var(--primary);
+}
+
+.headingLogin {
+  font-size: 25px;
 }
 
 .welcomebox img {
@@ -612,6 +622,8 @@ border-radius: 50%;box-shadow: 0 0 10px #ddd;}
     width: 35px;
   }
 
+
+
   .sidebar .navtitle {
     padding: 10px 35px;
     font-size: 20px;
@@ -734,6 +746,16 @@ td.unpaid {
   height: 100%;
   position: relative;
   top: 45%;
+}
+
+.paidcls {
+  pointer-events: none;
+  background-color: #dfdbdb;
+}
+
+.unpaidcls {
+  pointer-events: '';
+  background-color: '';
 }
 
 /* modal design  end */

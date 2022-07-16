@@ -16,6 +16,8 @@ const dayjs = require('dayjs');
 
 export default function StudentSlot() {
   const { state, dispatch } = useContext(StudentDataContext);
+
+  console.log("state", state);
   const [slots, setSlot] = useState([]);
   const [isFade, setFade] = useState(true)
   const [availableSlots, setavailableSlots] = useState([]);
@@ -23,6 +25,7 @@ export default function StudentSlot() {
   const [serverPayLoad, setPayload] = useState([]);
   const [slotErrmsg, setSlotErrmsg] = useState("");
   const [examtypes, setExamTypes] = useState({});
+  const [isthemeChoosen, setIsThemeChoosen] = useState(false);
   const [showSlotErr, setShowSlotErr] = useState("");
   const [serverPayloadData, setServerPayloadData] = useState([]);
   const navigation = useNavigate()
@@ -51,6 +54,12 @@ export default function StudentSlot() {
         examTypevalues.forEach((examtheme => {
           obj[examtheme] = false;
         }));
+
+        if (state?.student.examTheme === "" || state?.student.demoExam === "") {
+          setIsThemeChoosen(false);
+        } else {
+          setIsThemeChoosen(true);
+        }
         console.log(obj);
         setExamTypes(obj);
       }
@@ -591,7 +600,7 @@ export default function StudentSlot() {
                     }
 
                   </div>
-                  {slots.length > 0 ? (
+                  {(slots.length > 0) && (
                     <div className="row my-3">
                       <div className="text-center">
                         <button className="btn btn-primary mx-auto" onClick={submitSlots}>Book slot for exam and mock test</button>
@@ -607,11 +616,27 @@ export default function StudentSlot() {
 
 
                     </div>
-                  ) : (
-                    <div>
-                      <h2>You have booked your slots .</h2>
-                    </div>
                   )}
+
+
+                  {
+                    (isthemeChoosen !== true) ? (
+                      <div>
+                        <h2>Please choose your theme or demo exam first.</h2>
+                      </div>
+                    ) : (
+                      <div>
+                        <h2>You have booked your slots .</h2>
+                      </div>
+                    )
+                  }
+
+
+
+
+
+
+
 
                   {/* <Slotmodal show={show} /> */}
 
