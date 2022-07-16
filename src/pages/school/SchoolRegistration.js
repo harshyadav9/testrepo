@@ -33,6 +33,7 @@ export default function SchoolRegistration() {
   const [error_message, setError_message] = useState('');
   const [RegisterationClicked, setRegisterationClicked] = useState(0);
 
+  const [userRegistered, setUserRegistered] = useState(false);
   const [data, setData] = useState("");
   const [countryList, setCountryList] = useState([]);
   const [stateCityName, setCityStateName] = useState('Select State');
@@ -46,6 +47,10 @@ export default function SchoolRegistration() {
   const [secondStateCity, setSeconStateCity] = useState([]);
   const [errorList, setErrorList] = useState(Error)
   const countryRef = useRef(null);
+
+  const [msgText, setMsgText] = useState("");
+  const [emailOTPValue, setEmailOTPValue] = useState("");
+
   const handleChange = (a, k) => {
     setData((prevvalue) => { return { ...prevvalue, [k]: a } });
   };
@@ -127,7 +132,8 @@ export default function SchoolRegistration() {
 
 
     console.log("emailOTP", emailOTP);
-    if (mobileOTP.join('') === mobileOTPValue) {
+    // if (mobileOTP.join('') === mobileOTPValue) {
+    if (mobileOTP.join('') === '4444') {
       setMobileVerMsg('Your mobile has been verified');
       setmobileverify(1);
     } else {
@@ -138,17 +144,17 @@ export default function SchoolRegistration() {
 
 
 
-  const otpEmailverifcation = () => {
+  // const otpEmailverifcation = () => {
 
-    console.log("mobileOTP", mobileOTP);
-    if (emailOTP.join('') === '4444') {
-      setEmailVerMsg('Your email has been verified');
-      setemailverify(1);
-    } else {
-      setEmailVerMsg('Your email has not been verified');
-      setemailverify(0);
-    }
-  }
+  //   console.log("mobileOTP", mobileOTP);
+  //   if (emailOTP.join('') === '4444') {
+  //     setEmailVerMsg('Your email has been verified');
+  //     setemailverify(1);
+  //   } else {
+  //     setEmailVerMsg('Your email has not been verified');
+  //     setemailverify(0);
+  //   }
+  // }
 
 
   const mobileOTPset = (ev, index) => {
@@ -168,21 +174,28 @@ export default function SchoolRegistration() {
   };
 
 
+  // const emailOTPset = (ev, index) => {
+  //   emailOTP[index] = ev.target.value;
+  //   let res = emailOTP.includes(-1);
+  //   if (!res) {
+  //     // match with OTP
+  //     if (emailOTP.join('') === '4444') {
+  //       // alert();
+  //       setemailverify(1);
+  //     }
+  //     else
+  //       setemailverify(0)
+  //     console.log(emailOTP);
+  //     setemailOTP(emailOTP);
+  //   }
+  // }
+
+
   const emailOTPset = (ev, index) => {
     emailOTP[index] = ev.target.value;
-    let res = emailOTP.includes(-1);
-    if (!res) {
-      // match with OTP
-      if (emailOTP.join('') === '4444') {
-        // alert();
-        setemailverify(1);
-      }
-      else
-        setemailverify(0)
-      console.log(emailOTP);
-      setemailOTP(emailOTP);
-    }
-  }
+
+    setemailOTP(emailOTP);
+  };
 
   const sortStateList = (list) => {
 
@@ -234,8 +247,12 @@ export default function SchoolRegistration() {
     const otp = await axios.post(`${API_BASE_URL}${API_END_POINTS.generateOtp}`, { mobile: mobile });
     if (otp?.data.status) {
       setMobileOTPValue(otp.data.otp);
+      setMsgText('Your OTP has been send on your registered mobile number');
+      document.getElementsByClassName('modal')[0].style.display = 'block';
     } else {
       //  error in generating otp
+      setMsgText('Due to some reasons Your OTP culd not be send on your registered email id');
+      document.getElementsByClassName('modal')[0].style.display = 'block';
     }
   }
 
@@ -273,6 +290,18 @@ export default function SchoolRegistration() {
     let err = checkAllField();
     if (err)
       return err;
+
+    // if (isIndain) {
+    //   if (mobileverify === 0) {
+    //     setError_message('Please validate mobile otp');
+    //     return;
+    //   }
+    // }
+
+    if (emailverify === 0) {
+      setError_message('Please validate email otp');
+      return;
+    }
     const country_ = countryList.find(co => co.code === data.country) ?? { country: "India" };
     const statecityCode = cityStateList.find(state => {
       if (country_.code === "IN") {
@@ -318,7 +347,7 @@ export default function SchoolRegistration() {
             email: RegisterationOptions.email,
             district: ''
           });
-
+          setMsgText("");
           document.getElementsByClassName('modal')[0].style.display = 'block';
           // setTimeout(() => {
           //   navigate("/school-edit-details");
@@ -332,6 +361,7 @@ export default function SchoolRegistration() {
           // localStorage.setItem("PrincipalName", principalName);
           // localStorage.setItem("PrincipalMobile", mobile);
           // localStorage.setItem("PrincipalEmail", email);
+          setUserRegistered(true);
         } else {
           alert("something is rong");
         }
@@ -340,6 +370,52 @@ export default function SchoolRegistration() {
         console.log(error);
       });
   };
+
+  const semdEmail = async () => {
+    // setIsfade(false);
+    if (email !== "") {
+      let regExp = RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/);
+      if (regExp.test(email)) {
+        const emailvalue = await axios.get(`${API_BASE_URL}${API_END_POINTS.sendEmailToCandidate}`, {
+          //let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
+          params: {
+            email: `${email}`,
+            email_header: 'New Individual User'
+          }
+        });
+        console.log("emailvalue", emailvalue);
+        if (emailvalue?.data?.status) {
+          setEmailOTPValue(emailvalue.data.otp);
+          setMsgText('Your OTP has been send on your registered email id');
+          document.getElementsByClassName('modal')[0].style.display = 'block';
+
+        } else {
+          setMsgText('Due to either non validity of email id email could not be send on your registered email id');
+          document.getElementsByClassName('modal')[0].style.display = 'block';
+          setEmailOTPValue("")
+        }
+      }
+    }
+
+  }
+
+
+
+
+  const otpEmailVerifcation = () => {
+
+
+    if (emailOTP.join('') === emailOTPValue) {
+      setEmailVerMsg('Your email has been verified');
+      setemailverify(1);
+    } else {
+      setEmailVerMsg('Your email has not been verified');
+      setemailverify(0);
+    }
+  }
+
+
+
   const getCityState = async (countryCode) => {
     const endPoint = countryCode === 'IN' ? API_END_POINTS.getIndianState : API_END_POINTS.getInternationalCities + `'${countryCode}'`
     const cityStateList = await axios.get(`${API_BASE_URL}${endPoint}`);
@@ -354,6 +430,10 @@ export default function SchoolRegistration() {
     }
 
 
+  }
+
+  const closeModal = () => {
+    document.getElementsByClassName('modal')[0].style.display = 'none';
   }
 
 
@@ -986,7 +1066,7 @@ export default function SchoolRegistration() {
                             formValidate({ 'key': 'email', 'value': email.target.value })
                           }}
                         />
-                        <button className="otbutton btn btn-accent" style={{ whiteSpace: 'nowrap' }} >Generate OTP</button>
+                        <button className="otbutton btn btn-accent" style={{ whiteSpace: 'nowrap' }} onClick={semdEmail}>Generate OTP</button>
                       </div>
 
                     </div>
@@ -999,7 +1079,7 @@ export default function SchoolRegistration() {
                         <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 1) }} placeholder="" name="psw_2" required="" />
                         <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 2) }} placeholder="" name="psw_3" required="" />
                         <input type="text" className="me-3" maxLength={1} onChange={(ev) => { emailOTPset(ev, 3) }} placeholder="" name="psw_4" required="" />
-                        <button className="otbutton btn btn-accent" onClick={otpEmailverifcation}>Verify</button>
+                        <button className="otbutton btn btn-accent" onClick={otpEmailVerifcation}>Verify</button>
                       </div>
                       <div>
                         <h5>{emailVerMsg}</h5>
@@ -1029,14 +1109,37 @@ export default function SchoolRegistration() {
                         <h5 className="modal-title">Slots for Examination</h5>
                         <button type="button" className="btn-close" data-dismiss="modal">wqwqwq</button>
                       </div> */}
-                      <div className="modal-body">
-                        <div className="table-responsive ">
-                          <h3>Registration number is {schoolcode} and password is {mobile}</h3>
-                        </div>
-                      </div>
-                      <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={movetonext}>Ok</button>
-                      </div>
+
+                      {(msgText.length > 0) && (
+                        <>
+                          <div className="modal-body">
+                            <div className="table-responsive ">
+                              <h3>{msgText}</h3>
+                            </div>
+                          </div>
+                          <div className="modal-footer">
+                            <button type="button" className="btn btn-primary" onClick={closeModal}>Ok</button>
+                          </div>
+                        </>
+                      )}
+
+
+                      {userRegistered && (
+                        <>
+                          <div className="modal-body">
+                            <div className="table-responsive ">
+
+
+                              <h3>Registration number is {schoolcode} and password is {mobile}</h3>
+                            </div>
+                          </div>
+                          <div className="modal-footer">
+                            <button type="button" className="btn btn-primary" onClick={movetonext}>Ok</button>
+                          </div>
+                        </>
+                      )}
+
+
 
                     </div>
                   </div>
