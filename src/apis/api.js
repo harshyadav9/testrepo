@@ -61,7 +61,7 @@ export const API_END_POINTS = {
 	// updateSchoolAndSlotDetail: 'terry/updateSchoolAndSlotDetail',
 	sendEmailToCandidate: 'api/sendEmailToCandidate',
 	getPaymentDetailsForIndividualStudent: 'terry/getPaymentDetailsForIndividualStudent',
-
+	sendEmail: 'api/sendEmail'
 
 
 

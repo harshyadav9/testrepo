@@ -256,6 +256,13 @@ export default function StudentRegistration() {
         roll_no: reg_res?.data
       });
       document.getElementsByClassName('modal')[0].style.display = 'block';
+      const mail = await axios.post(`${API_BASE_URL}${API_END_POINTS.sendEmail}`, {
+        roll_no: reg_res?.data, pass: mobile, email
+      });
+      if (mail?.status) {
+        console.log("mail");
+      }
+
       // navigate("/student-edit-details");
       // setMobileOTPValue(otp.data.otp);
     }
@@ -612,6 +619,7 @@ export default function StudentRegistration() {
                             <div className="table-responsive ">
                               <div className="table-responsive ">
                                 <h3>Registration number is {roll_no} and password is {mobile}</h3>
+                                <h4>Remember this code and password for logging in future.</h4>
                               </div>
                             </div>
                           </div>
