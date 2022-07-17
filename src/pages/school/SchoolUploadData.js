@@ -74,29 +74,84 @@ export default function SchoolUploadData() {
 
   let decodedSchoolData = { ...state };
 
-  const checkStudentCount = () => {
-    axios
-      .post(`${API_BASE_URL}${API_END_POINTS?.isStudentUploadMax}`, {
-        school_code: state?.school_code
-      })
-      // .post(`${API_END_POINTS?.updateShoolData}`, editschooloption)
-      .then((res) => {
-        console.log("hhhhhhh", res.data);
-        setRecPresent(res.data.data.count);
-        if (res.data.data.count >= 20) {
-          setMinRecordsLimit(0);
-        } else {
-          setMinRecordsLimit(20);
-        }
+  // const checkStudentCount = () => {
+  //   axios
+  //     .post(`${API_BASE_URL}${API_END_POINTS?.isStudentUploadMax}`, {
+  //       school_code: state?.school_code
+  //     })
+  //     // .post(`${API_END_POINTS?.updateShoolData}`, editschooloption)
+  //     .then((res) => {
+  //       console.log("hhhhhhh", res.data);
+  //       setRecPresent(res.data.data.count);
+  //       if (res.data.data.count >= 20) {
+  //         setMinRecordsLimit(0);
+  //       } else {
+  //         setMinRecordsLimit(20);
+  //       }
 
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
+  const getAppStatus = async () => {
+    const appStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.applicationStatus}`, {
+      school_code: state.school_code
+    });
+
+    if (appStatus?.status === 200) {
+      let idVal = JSON.parse(JSON.stringify(idCount));
+      let finalArr = [];
+      let existingdata = appStatus.data.data;
+
+      for (let i = 0; i < existingdata.length; i++) {
+        let resultset = {};
+        let invalidDate = false;
+        const regex = /^\d{2}-\d{2}-\d{4}$/;
+
+
+        resultset['id'] = idVal++;
+        resultset['name'] = existingdata[i]['Name'];
+        console.log("existingdata[i]['DOB']", existingdata[i]['DOB']);
+        console.log("existingdata[i]['DOB']", existingdata[i]['DOB']);
+        if (existingdata[i]['DOB'].match(regex) === null) {
+          resultset['dob'] = existingdata[i]['DOB'].split('-').reverse().join('-');
+        } else {
+          resultset['dob'] = existingdata[i]['DOB'];
+        }
+        // resultset['dob'] = dayjs(new Date(existingdata[i]['DOB'])).format('DD-MM-YYYY');
+        console.log("resultset['dob']", resultset['dob']);
+        resultset['className'] = existingdata[i]['Class'];
+        resultset['section'] = existingdata[i]['Section'];
+        resultset['examTheme'] = existingdata[i]['ExamTheme'];
+        resultset['demoExam'] = existingdata[i]['DemoExam'];
+        resultset['schoolId'] = state.school_code;
+
+
+
+        if ((resultset['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(resultset['className'])) === -1) ||
+          (examThemedropdown.indexOf(resultset['examTheme']) === -1) || (['YES', 'NO'].indexOf(resultset['demoExam']) === -1)) {
+          invalidDate = true;
+
+          // errRows.push(i + 1);
+        }
+        resultset['error'] = invalidDate ? 'invalid' : 'valid';
+
+
+        finalArr.push(resultset);
+      };
+      setIdCount(prevCount => prevCount + idVal);
+      console.log("appStatus", appStatus);
+      setStudanntData([...finalArr]);
+    }
+
+
   }
 
   useEffect(() => {
-    checkStudentCount();
+    // checkStudentCount();
+    getAppStatus();
 
   }, []);
 
@@ -108,11 +163,11 @@ export default function SchoolUploadData() {
       alert("kindly upload some records to save ");
       return;
     }
-    if (serverData.length < minRecordLimit) {
-      // notify(`Studant record minmum of ${MINIMUMROW} rows. Duplicate data in files`, false)
-      alert(`kindly select ${minRecordLimit} number of records minimum`);
-      return
-    }
+    // if (serverData.length < minRecordLimit) {
+    //   // notify(`Studant record minmum of ${MINIMUMROW} rows. Duplicate data in files`, false)
+    //   alert(`kindly select ${minRecordLimit} number of records minimum`);
+    //   return
+    // }
     // let messge = checkRowDuplicacy(serverData)
     // if (messge.length > 0) {
     //   notify(`${messge.join()}`, false);
@@ -168,7 +223,7 @@ export default function SchoolUploadData() {
     // let res = await uploadFile(JSON.stringify(serverData));
     let studentuploaddone = await uploadFile();
     console.log("studentuploaddone", studentuploaddone);
-    navigate("/school-slot");
+
     // if (res?.data && res?.data?.status) {
     //   localStorage.setItem('payment', JSON.stringify(res.data.data))
     //   setStudanntData([])
@@ -195,12 +250,14 @@ export default function SchoolUploadData() {
     let studantDataVal = [...studantData];
     let errRows = [];
     let invalidDate = false;
+    let isSubmit = true;
     //  check the date validation
     for (let i = 0; i < studantDataVal.length; i++) {
       const regex = /^\d{2}-\d{2}-\d{4}$/;
       if ((studantDataVal[i]['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(studantDataVal[i]['className'])) === -1) ||
         (examThemedropdown.indexOf(studantDataVal[i]['examTheme']) === -1) || (['YES', 'NO'].indexOf(studantDataVal[i]['demoExam']) === -1)) {
         invalidDate = true;
+        isSubmit = false;
         studantDataVal[i]['error'] = 'invalid';
         errRows.push(i + 1);
       } else {
@@ -209,7 +266,7 @@ export default function SchoolUploadData() {
 
     }
     setStudanntData([...studantDataVal]);
-    if (invalidDate) {
+    if (isSubmit === false) {
       notify(`Please correct the respective  columns of row number ${errRows}`, false);
       return;
     }
@@ -224,7 +281,7 @@ export default function SchoolUploadData() {
 
     let fileupload = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.uploadApi}`, finalData);
     console.log("fileupload", fileupload);
-    navigate("/school-payment");
+    navigate("/school-slot");
     // checkStudentCount();
     // alert()
     // notify(`Students successfully uploaded!.`, true);

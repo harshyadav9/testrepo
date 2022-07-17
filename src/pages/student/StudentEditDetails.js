@@ -71,7 +71,7 @@ export default function SchoolEditDetails() {
         }
       });
       console.log("state?.student.examSlotDateTime", studentdetails.data.examSlotDateTime);
-      if (studentdetails.data.examSlotDateTime === null || studentdetails.data.demoSlotDateTime === null) {
+      if (studentdetails.data.examSlotDateTime === null) {
         setSlotDisabled(false);
       } else {
         setSlotDisabled(true);

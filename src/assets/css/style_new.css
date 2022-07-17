@@ -660,7 +660,7 @@ border-radius: 50%;box-shadow: 0 0 10px #ddd;}
 
 
 tr.invalid {
-  border-color: red;
+  border-color: #e2c3c3;
 }
 
 .table .invalid {
