@@ -128,6 +128,8 @@ export default function SchoolUploadData() {
         resultset['demoExam'] = existingdata[i]['DemoExam'];
         resultset['schoolId'] = state.school_code;
 
+        resultset['DemoSlotDateTime'] = existingdata[i]['DemoSlotDateTime'];
+        resultset['ExamSlotDateTime'] = existingdata[i]['ExamSlotDateTime'];
 
 
         if ((resultset['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(resultset['className'])) === -1) ||
@@ -434,6 +436,9 @@ export default function SchoolUploadData() {
     resultset['demoExam'] = demoExam;
     resultset['schoolId'] = state.school_code;
     resultset['error'] = 'valid';
+    resultset['DemoSlotDateTime'] = null;
+    resultset['ExamSlotDateTime'] = null;
+
 
     const regex = /^\d{2}-\d{2}-\d{4}$/;
     let invalidDate = false;
@@ -452,12 +457,12 @@ export default function SchoolUploadData() {
     setIdCount(runningId);
     // let cpyStudantData = [...studantData, [stName, stDOB, stClass, stSection, examTheme, demoExam, 'valid']];
 
-    // setStName('');
-    // setDOB('');
-    // setClass('');
-    // setexamTheme('');
-    // setSection('');
-    // setDemoExam('');
+    setStName('');
+    setDOB('');
+    setClass('');
+    setexamTheme('');
+    setSection('');
+    setDemoExam('');
     // setStudanntData(cpyStudantData)
 
   }
@@ -900,6 +905,7 @@ export default function SchoolUploadData() {
                         <th>SECTION</th>
                         <th>EXAM THEME</th>
                         <th>MOCK TEST</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -990,6 +996,12 @@ export default function SchoolUploadData() {
                             />
                           </div>
                         </td>
+                        <td>
+                          <button className="btn btn-outline-secondary"><svg className="icon align-middle me-1">
+                            <use xlinkHref="#add-plus"></use>
+                          </svg> <span className="align-middle" onClick={addNewRow}>Insert Row</span></button>
+                        </td>
+
                       </tr>
                     </tbody>
                   </table>
@@ -998,7 +1010,7 @@ export default function SchoolUploadData() {
 
 
 
-              <div className="section-title mb-4 text-muted">
+              {/* <div className="section-title mb-4 text-muted">
                 <div className="d-flex">
                   <div className="me-auto">
                     <h6 className="font-bold ">Add Student Data</h6>
@@ -1008,7 +1020,7 @@ export default function SchoolUploadData() {
                     <use xlinkHref="#add-plus"></use>
                   </svg> <span className="align-middle" onClick={addNewRow}>Insert Row</span></button>
                 </div>
-              </div>
+              </div> */}
 
               <div className="shadow bg-white p-3 rounded-16">
                 <div className="table-responsive ">

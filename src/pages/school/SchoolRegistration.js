@@ -126,10 +126,10 @@ export default function SchoolRegistration() {
       }
 
     })
-    if (err === '' && !mobileverify) {
-      err = 'Please verify mobile OTP'
-      setError_message(err);
-    }
+    // if (err === '' && !mobileverify) {
+    //   err = 'Please verify mobile OTP'
+    //   setError_message(err);
+    // }
     if (err === '' && !emailverify) {
       err = 'Please verify Email OTP'
       setError_message(err);
