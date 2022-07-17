@@ -1,12 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.cbb05bc6.css",
-    "main.js": "/static/js/main.314a78dd.js",
+    "main.js": "/static/js/main.0ac19303.js",
     "static/js/787.5aa6d655.chunk.js": "/static/js/787.5aa6d655.chunk.js",
     "static/media/paper-education-information-university-text.jpg": "/static/media/paper-education-information-university-text.d7e32afa8a9827d544e1.jpg",
     "static/media/school_bg.png": "/static/media/school_bg.85a7f62aa59f50e71922.png",
     "static/media/school1_bg.png": "/static/media/school1_bg.c255b85fde84eb60bb9d.png",
     "static/media/terilogo.png": "/static/media/terilogo.c58b254dbf04f3db3274.png",
+    "static/media/guide_individual.pdf": "/static/media/guide_individual.7faa5c457769db79e915.pdf",
+    "static/media/guide_school.pdf": "/static/media/guide_school.a34ed859626768653019.pdf",
     "static/media/download-icon.png": "/static/media/download-icon.13d4abb52999109667f3.png",
     "static/media/common.svg": "/static/media/common.2cce762e3f73ff8437e089440068c52f.svg",
     "static/media/youth.svg": "/static/media/youth.36bf16d4c561c0aa4393ed35865cc59f.svg",
@@ -14,11 +16,11 @@
     "static/media/computer-user.svg": "/static/media/computer-user.29aaf62b5ec2ac6f9ce0a0fc04a775e0.svg",
     "index.html": "/index.html",
     "main.cbb05bc6.css.map": "/static/css/main.cbb05bc6.css.map",
-    "main.314a78dd.js.map": "/static/js/main.314a78dd.js.map",
+    "main.0ac19303.js.map": "/static/js/main.0ac19303.js.map",
     "787.5aa6d655.chunk.js.map": "/static/js/787.5aa6d655.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.cbb05bc6.css",
-    "static/js/main.314a78dd.js"
+    "static/js/main.0ac19303.js"
   ]
 }
