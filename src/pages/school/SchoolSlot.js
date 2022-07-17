@@ -75,6 +75,11 @@ export default function SchoolSlot() {
       // setSlot(response.data.list)
       setSlot(response.data);
       let obj = {};
+      console.log("response?.data", response?.data)
+      if (response?.data.length === 0) {
+        setSlotErrmsg("Either all slots are booked for the alloted students or no slot is available");
+        return;
+      }
       let examTypevalues = new Set(response?.data.map(value => value.examTheme));
       examTypevalues.forEach((examtheme => {
         obj[examtheme] = false;
@@ -669,6 +674,9 @@ export default function SchoolSlot() {
                   {slotErrmsg.length === 0 && (<div className="row my-3">
                     <div className="text-center">
                       <button className="btn btn-primary mx-auto" onClick={submitSlots}>Book slot for exam and mock test</button>
+                    </div>
+                    <div>
+                      <h2>{showSlotErr}</h2>
                     </div>
                   </div>)}
                   {/* <Slotmodal show={show} /> */}
