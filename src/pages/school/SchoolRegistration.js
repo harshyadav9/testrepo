@@ -340,12 +340,12 @@ export default function SchoolRegistration() {
 
 
 
-    // if (isIndain) {
-    //   if (mobileverify === 0) {
-    //     setError_message('Please validate mobile otp');
-    //     return;
-    //   }
-    // }
+    if (isIndain) {
+      if (mobileverify === 0) {
+        setError_message('Please validate mobile otp');
+        return;
+      }
+    }
 
     if (emailverify === 0) {
       setError_message('Please validate email otp');
@@ -1155,26 +1155,36 @@ export default function SchoolRegistration() {
                             formValidate({ 'key': 'mobile', 'value': mobile.target.value });
                           }}
                         />
-                        <button className="otbutton flex-grow-1 btn btn-accent" style={{ whiteSpace: 'nowrap' }} onClick={generateOtp}>Generate OTP</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm">
-                    <div className="form-wrapper">
-                      <label>Mobile OTP:<span style={{ color: 'red' }}>*</span></label>
-                      <div className=" d-flex justify-content-between">
-                        <input type="text" className="me-3 pw1" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 0) }} name="psw0" placeholder-type="number" />
-                        <input type="text" className="me-3 pw2" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 1) }} name="psw1" />
-                        <input type="text" className="me-3 pw3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 2) }} name="psw2" />
-                        <input type="text" className="me-3 pw4" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 3) }} name="psw3" />
 
-                        <button className="otbutton btn btn-accent" onClick={otpMobileverifcation}>Verify</button>
-                      </div>
-                      <div>
-                        <h5>{mobileVerMsg}</h5>
+                        {isIndain && (
+                          <button className="otbutton flex-grow-1 btn btn-accent" style={{ whiteSpace: 'nowrap' }} onClick={generateOtp}>Generate OTP</button>
+                        )}
+
+
                       </div>
                     </div>
                   </div>
+
+
+
+                  {isIndain && (
+                    <div className="col-sm">
+                      <div className="form-wrapper">
+                        <label>Mobile OTP:<span style={{ color: 'red' }}>*</span></label>
+                        <div className=" d-flex justify-content-between">
+                          <input type="text" className="me-3 pw1" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 0) }} name="psw0" placeholder-type="number" />
+                          <input type="text" className="me-3 pw2" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 1) }} name="psw1" />
+                          <input type="text" className="me-3 pw3" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 2) }} name="psw2" />
+                          <input type="text" className="me-3 pw4" maxLength={1} onChange={(ev) => { mobileOTPset(ev, 3) }} name="psw3" />
+
+                          <button className="otbutton btn btn-accent" onClick={otpMobileverifcation}>Verify</button>
+                        </div>
+                        <div>
+                          <h5>{mobileVerMsg}</h5>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="row">
