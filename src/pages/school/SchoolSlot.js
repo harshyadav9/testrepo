@@ -22,6 +22,12 @@ export default function SchoolSlot() {
   const [serverPayLoad, setPayload] = useState([]);
   const [slotErrmsg, setSlotErrmsg] = useState("");
 
+
+  const [examtypes, setExamTypes] = useState({});
+  const [isthemeChoosen, setIsThemeChoosen] = useState(false);
+  const [showSlotErr, setShowSlotErr] = useState("");
+
+
   const [serverPayloadData, setServerPayloadData] = useState([]);
   const navigation = useNavigate()
 
