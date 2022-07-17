@@ -14,6 +14,13 @@ export default function StudentChangePassword() {
   const [errordisp, setErrordisp] = useState("");
 
 
+  const submitpass = () => {
+    if (confirmPassword.trim() !== newPassword.trim()) {
+      setErrordisp('The new password and confirm password do not match');
+    }
+  }
+
+
 
   return (
 
@@ -31,7 +38,7 @@ export default function StudentChangePassword() {
                 <div class="col-lg-10 mx-auto">
                   <main class="p-3 p-sm-4 p-lg-5">
                     <div class="section-title mb-4 text-muted">
-                      <h6 class="font-bold ">Forget Password </h6>
+                      <h6 class="font-bold ">Change Password </h6>
 
                     </div>
                     <div class="shadow mb-5 rounded-16	">
@@ -39,7 +46,7 @@ export default function StudentChangePassword() {
 
                         <div class="form-wrapper">
                           <label>Old Password  </label>
-                          <input type="password" name="oldpass" value="test" id="" onChange={(password) =>
+                          <input type="text" name="oldpass" value={oldPss} id="" onChange={(password) =>
                             setOldPss(password.target.value)
                           } />
                         </div>
@@ -47,7 +54,7 @@ export default function StudentChangePassword() {
                           <div class="col-sm">
                             <div class="form-wrapper">
                               <label>New Password</label>
-                              <input type="password" name="newpass" id="" value="password" onChange={(password) =>
+                              <input type="password" name="newpass" id="" value={newPassword} onChange={(password) =>
                                 setNewPassword(password.target.value)
                               } />
                             </div>
@@ -55,7 +62,7 @@ export default function StudentChangePassword() {
                           <div class="col-sm">
                             <div class="form-wrapper">
                               <label>Confirm Password</label>
-                              <input type="password" name="confirmpass" id="" value="setConfirmpass" onChange={(password) =>
+                              <input type="password" name="confirmpass" id="" value={confirmPassword} onChange={(password) =>
                                 setConfirmPassword(password.target.value)
                               } />
                             </div>
@@ -66,7 +73,7 @@ export default function StudentChangePassword() {
                         </div>
                         <div class="mt-4 mb-3">
                           <div class="d-flex justify-content-center">
-                            <button class="btn btn-primary " style={{ width: '15rem' }}>Submit</button>
+                            <button class="btn btn-primary " style={{ width: '15rem' }} onClick={submitpass}>Submit</button>
                           </div>
                         </div>
                       </div>

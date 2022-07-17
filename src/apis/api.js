@@ -63,7 +63,10 @@ export const API_END_POINTS = {
 	getPaymentDetailsForIndividualStudent: 'terry/getPaymentDetailsForIndividualStudent',
 	sendEmail: 'api/sendEmail',
 
-	downloadExcelTemplate: 'terry/downloadExcelTemplate'
+	downloadExcelTemplate: 'terry/downloadExcelTemplate',
+
+
+	isStudentUploadMax: 'api/isStudentUploadMax'
 
 
 

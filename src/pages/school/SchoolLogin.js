@@ -73,7 +73,7 @@ export default function SchoolLogin() {
             } } = res.data
             navigate("/school-edit-details");
             // alert("login successfull!");
-            notify(`login successfull!!.`, true);
+            // notify(`login successfull!!.`, true);
             // history.push()
             // localStorage.removeItem("token");
             // localStorage.setItem("token", res?.data?.token);

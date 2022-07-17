@@ -38,6 +38,7 @@ export default function SchoolRegistration() {
   const [countryList, setCountryList] = useState([]);
   const [stateCityName, setCityStateName] = useState('Select State');
   const [cityStateList, setCityStateList] = useState([]);
+
   const [isIndain, setIsIndain] = useState(true);
   const [searchPin, setSearchpinCode] = useState('');
   const [cityState, setStateCity] = useState('');
@@ -47,7 +48,12 @@ export default function SchoolRegistration() {
   const [secondStateCity, setSeconStateCity] = useState([]);
   const [errorList, setErrorList] = useState(Error)
   const countryRef = useRef(null);
+
   const [searchcountry, setSearchCountry] = useState("");
+  const [searchstate, setSearchState] = useState("");
+  const [searchStateList, setSearchStateList] = useState([]);
+  const [searchCountryList, setSearchCountryList] = useState([]);
+
   const [msgText, setMsgText] = useState("");
   const [emailOTPValue, setEmailOTPValue] = useState("");
 
@@ -260,6 +266,36 @@ export default function SchoolRegistration() {
   }
 
   // console.log("Error",Error)
+
+  const firstTimeload = async () => {
+    const countryList = await axios.get(`${API_BASE_URL}${API_END_POINTS.getCountry}`);
+    //const countryList = await axios.get(`${API_END_POINTS.getCountry}`);
+    try {
+
+      if (countryList?.status == 200 && countryList?.data?.status) {
+        let list = sortCountryList(countryList.data.list);
+        setCountryList(list);
+        setSearchCountryList(list);
+        setSearchCountry('IN');
+
+        setIsIndain(true);
+
+        setCityStateName('Select State');
+        setData({ "country": 'IN', "state": "" });
+
+
+        getCitySearchState('IN');
+
+      } else {
+        setCountryList([]);
+
+      }
+    } catch (e) {
+      console.log("error")
+    }
+  }
+
+
   const getCountry = async () => {
     const countryList = await axios.get(`${API_BASE_URL}${API_END_POINTS.getCountry}`);
     //const countryList = await axios.get(`${API_END_POINTS.getCountry}`);
@@ -268,11 +304,11 @@ export default function SchoolRegistration() {
       if (countryList?.status == 200 && countryList?.data?.status) {
         let list = sortCountryList(countryList.data.list);
         setCountryList(list);
-        setSearchCountry('IN');
-        setIsIndain(true);
-        setCityStateName('Select State');
-        setData({ "country": 'IN', "state": "" });
-        getCityState('IN');
+        // setSearchCountry('IN');
+        // setIsIndain(true);
+        // setCityStateName('Select State');
+        // setData({ "country": 'IN', "state": "" });
+        // getCityState('IN');
       } else {
         setCountryList([]);
 
@@ -282,7 +318,8 @@ export default function SchoolRegistration() {
     }
   }
   useEffect(() => {
-    getCountry();
+    firstTimeload();
+    // getCountry();
   }, []);
 
   const RegisterationApi = async (e) => {
@@ -437,6 +474,25 @@ export default function SchoolRegistration() {
 
 
 
+  const getCitySearchState = async (countryCode) => {
+    const endPoint = countryCode === 'IN' ? API_END_POINTS.getIndianState : API_END_POINTS.getInternationalCities + `'${countryCode}'`
+    const cityStateList = await axios.get(`${API_BASE_URL}${endPoint}`);
+    //const cityStateList = await axios.get(`${endPoint}`);
+    if (cityStateList.status === 200 && cityStateList.data.status) {
+      let list = sortStateList(cityStateList.data.list);
+      // setCityStateList(list);
+      setSearchStateList(list);
+      // handleChange('', 'state');
+    } else {
+      setSearchStateList([]);
+      // setCityStateList([]);
+
+    }
+
+
+  }
+
+
   const getCityState = async (countryCode) => {
     const endPoint = countryCode === 'IN' ? API_END_POINTS.getIndianState : API_END_POINTS.getInternationalCities + `'${countryCode}'`
     const cityStateList = await axios.get(`${API_BASE_URL}${endPoint}`);
@@ -444,9 +500,10 @@ export default function SchoolRegistration() {
     if (cityStateList.status === 200 && cityStateList.data.status) {
       let list = sortStateList(cityStateList.data.list);
       setCityStateList(list);
+      // setSearchStateList(list);
       // handleChange('', 'state');
     } else {
-      setCityStateList([])
+      setCityStateList([]);
 
     }
 
@@ -464,15 +521,17 @@ export default function SchoolRegistration() {
   }
 
 
-  const changeCityState = (event) => {
+  const changeSearchCountry = (event) => {
     if (event.target.value !== "IN") {
-      setIsIndain(false)
+      setIsIndain(false);
       setCityStateName('Select Province')
     } else {
       setIsIndain(true)
       setCityStateName('Select State')
     }
-    getCityState(event.target.value)
+    setSearchCountry(event.target.value);
+    getCitySearchState(event.target.value);
+    // getCityState(event.target.value)
 
   }
   const findSchools = async () => {
@@ -504,6 +563,8 @@ export default function SchoolRegistration() {
       // internation schools search api //getInternationalSchools
 
     }
+    // setData({ "country": searchcountry, "state": JSON.parse(searchstate).stateCity });
+    // setpinCode(searchPin);
   }
   const getSchoolDetail = async (event) => {
     const schoolcode = event.target.value;
@@ -511,48 +572,66 @@ export default function SchoolRegistration() {
       schoolscode: schoolcode,
       isLocal: isIndain
     }
-    const responseData = await axios.post(`${API_BASE_URL}${API_END_POINTS.getSchoolDetail}`, serverData);
-    //const responseData = await axios.post(`${API_END_POINTS.getSchoolDetail}`, serverData);
-    if (responseData.status === 200 && responseData.data.status) {
-      const schoolDetail = responseData.data.schoolDetail;
-      // getCityState(event.target.value)
-      await getCityState("IN");
-      setSchoolDetail(responseData.data.schoolDetail);
-      if (isIndain) {
-        let perData = data;
-        let newData = {
-          ...perData,
-          ... {
-            'country': "IN",
-            "state": schoolDetail?.state,
 
-          }
-        }
-        setData(newData)
-      } else {
-        let perData = data;
-        let contryCode = countryList.find(co => co?.country?.toLowerCase() === schoolDetail?.country?.toLowerCase())
-        let newData = {
-          ...perData,
-          ... {
-            'country': contryCode.code,
-            "state": schoolDetail?.city
-          }
-        }
-        setData(newData)
-      }
-      setpinCode(schoolDetail?.pincode)
-      setschoolName(schoolDetail?.schoolName)
+    if (event.target.value === 'volvo') {
+      setpinCode("");
+      setschoolName("");
+      console.log("searchstate", searchstate);
+      // setSearchCountry('IN');
+      // setIsIndain(true);
+      ;
+      // setCityStateName('Select State');
+      // setData({ "country": searchcountry, "state": JSON.parse(searchstate).stateCity });
+      // getCityState('IN');
+      return;
     } else {
-      setExistingSchool(null)
+      const responseData = await axios.post(`${API_BASE_URL}${API_END_POINTS.getSchoolDetail}`, serverData);
+      //const responseData = await axios.post(`${API_END_POINTS.getSchoolDetail}`, serverData);
+      if (responseData.status === 200 && responseData.data.status) {
+        const schoolDetail = responseData.data.schoolDetail;
+        // getCityState(event.target.value)
+        await getCityState("IN");
+        await getCitySearchState("IN");
+        setSchoolDetail(responseData.data.schoolDetail);
+        if (isIndain) {
+          let perData = data;
+          let newData = {
+            ...perData,
+            ... {
+              'country': "IN",
+              "state": schoolDetail?.state,
+
+            }
+          }
+          setData(newData)
+        } else {
+          let perData = data;
+          let contryCode = countryList.find(co => co?.country?.toLowerCase() === schoolDetail?.country?.toLowerCase())
+          let newData = {
+            ...perData,
+            ... {
+              'country': contryCode.code,
+              "state": schoolDetail?.city
+            }
+          }
+          setData(newData)
+        }
+        setpinCode(schoolDetail?.pincode)
+        setschoolName(schoolDetail?.schoolName)
+      } else {
+        setExistingSchool(null)
+      }
     }
+
   }
 
   const setSecondState = (code) => {
     if (code !== "IN") {
       setIsIndain(false)
+      setCityStateName('Select Province');
     } else {
-      setIsIndain(true)
+      setIsIndain(true);
+      setCityStateName('Select State');
     }
     getCityState(code)
   }
@@ -825,10 +904,10 @@ export default function SchoolRegistration() {
                   <div className="col-sm ">
                     <div className="form-wrapper ">
 
-                      <select required value={searchcountry} onChange={changeCityState}>
+                      <select required value={searchcountry} onChange={changeSearchCountry}>
                         <option value="volvo" id="country_id">Select Country</option>
                         {
-                          countryList.map(co => {
+                          searchCountryList.map(co => {
                             return (
                               <option value={co.code} key={co.code}>{co?.country}</option>)
                           })
@@ -844,12 +923,13 @@ export default function SchoolRegistration() {
                   <div className="col-sm ">
                     <div className="form-wrapper ">
 
-                      <select className="dropdown" id="cars" onChange={e => {
+                      <select className="dropdown" id="cars" value={searchstate} onChange={e => {
+                        setSearchState(e.target.value);
                         setStateCity(JSON.parse(e.target.value).stateCity);
-                        setCityStateCode(JSON.parse(e.target.value).code)
+                        setCityStateCode(JSON.parse(e.target.value).code);
                       }}>
                         <option value="">{stateCityName}</option>
-                        {cityStateList && cityStateList.map(ci => {
+                        {searchStateList && searchStateList.map(ci => {
                           return (
                             <option key={ci?.cityname || ci?.statename} value={JSON.stringify({ stateCity: ci?.cityname || ci?.statename, code: ci?.srn || ci?.citycode })}>{ci?.cityname || ci?.statename}</option>)
                         })

@@ -5,7 +5,7 @@ export const StudentDataContext = createContext();
 
 const initialState = {
     schoolname: '', country: '', state: '', pincode: "", postal_address: "", phonestd: "", mobile: "", principal_name: "",
-    email: "", district: "", coordinating_teacher: "", school_code: "", email_coordinator: "", mobile_coordinator: "", student: { Class: 4 },
+    email: "", district: "", coordinating_teacher: "", school_code: "", email_coordinator: "", mobile_coordinator: "", min_student_upload_count: 0, student: { Class: 4 },
     roll_no: ""
 
 };

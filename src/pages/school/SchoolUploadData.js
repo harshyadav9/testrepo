@@ -14,9 +14,14 @@ import Sidebar from "../main/sidebar";
 import { StudentDataContext } from "../context/datacontext";
 var md5 = require('md5');
 
-const MINIMUMROW = 20;
+
 const XLSX = require("xlsx");
 const dayjs = require('dayjs')
+
+
+
+
+
 
 function processExcel(data) {
   var workbook = XLSX.read(data, {
@@ -41,6 +46,8 @@ function to_json(workbook) {
 
 
 
+
+
 export default function SchoolUploadData() {
   const { state, dispatch } = useContext(StudentDataContext);
   const [file, setFile] = useState(null);
@@ -59,20 +66,53 @@ export default function SchoolUploadData() {
   const classesdropdown = [4, 5, 6, 7, 8, 9, 10, 11, 12, 'UG', 'PG'];
   const examThemedropdown = ['ESD', 'ESDGREEN'];
   const [filename, setFilename] = useState("");
+  const [minRecordLimit, setMinRecordsLimit] = useState(0);
+  const [recPresent, setRecPresent] = useState(false);
   const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
   let token = userToken;
   // let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
 
   let decodedSchoolData = { ...state };
 
+  const checkStudentCount = () => {
+    axios
+      .post(`${API_BASE_URL}${API_END_POINTS?.isStudentUploadMax}`, {
+        school_code: state?.school_code
+      })
+      // .post(`${API_END_POINTS?.updateShoolData}`, editschooloption)
+      .then((res) => {
+        console.log("hhhhhhh", res.data);
+        setRecPresent(res.data.data.count);
+        if (res.data.data.count >= 20) {
+          setMinRecordsLimit(0);
+        } else {
+          setMinRecordsLimit(20);
+        }
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    checkStudentCount();
+
+  }, []);
+
 
   const submitStudantData = async e => {
     e.preventDefault();
     let serverData = [...studantData];
-    // if (studantData.length <= MINIMUMROW) {
-    //   notify(`Studant record minmum of ${MINIMUMROW} rows. Duplicate data in files`, false)
-    //   return
-    // }
+    if (serverData.length === 0) {
+      alert("kindly upload some records to save ");
+      return;
+    }
+    if (serverData.length < minRecordLimit) {
+      // notify(`Studant record minmum of ${MINIMUMROW} rows. Duplicate data in files`, false)
+      alert(`kindly select ${minRecordLimit} number of records minimum`);
+      return
+    }
     // let messge = checkRowDuplicacy(serverData)
     // if (messge.length > 0) {
     //   notify(`${messge.join()}`, false);
@@ -127,11 +167,12 @@ export default function SchoolUploadData() {
 
     // let res = await uploadFile(JSON.stringify(serverData));
     let studentuploaddone = await uploadFile();
-
+    console.log("studentuploaddone", studentuploaddone);
+    navigate("/school-slot");
     // if (res?.data && res?.data?.status) {
     //   localStorage.setItem('payment', JSON.stringify(res.data.data))
     //   setStudanntData([])
-    //   navigate("/school-payment");
+
     //   notify(`studant data uploaded.`, true)
     // } else {
     //   notify(`please try again!.`, false)
@@ -181,8 +222,12 @@ export default function SchoolUploadData() {
     //   console.log("finalData", finalData);
 
 
-    await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.uploadApi}`, finalData);
-    notify(`Students successfully uploaded!.`, true);
+    let fileupload = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.uploadApi}`, finalData);
+    console.log("fileupload", fileupload);
+    navigate("/school-payment");
+    // checkStudentCount();
+    // alert()
+    // notify(`Students successfully uploaded!.`, true);
     // }
 
 
@@ -252,6 +297,7 @@ export default function SchoolUploadData() {
         }
       }
       r.readAsBinaryString(f);
+      e.target.value = null;
     } else {
       notify('Failed to load file!', false);
     }
