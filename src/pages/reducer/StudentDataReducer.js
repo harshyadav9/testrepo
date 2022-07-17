@@ -17,6 +17,13 @@ export const StundentDataReducer = (state, action) => {
             };
 
 
+
+        case 'SCHOOL_SLOT_VALID':
+            console.log("action", action);
+            return {
+                ...state,
+                ...action
+            };
         case 'ADD_THEME':
             console.log("action", action);
             return {

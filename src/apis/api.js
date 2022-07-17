@@ -34,7 +34,7 @@ export const API_END_POINTS = {
 	// slotting api endpoints
 	isSlottingAllowed: 'api/isSlottingAllowed',
 	getslots: 'terry/getSlotsData',
-	submitslot: 'terry/updateSchoolAndSlotDetail',
+	submitslot: 'terry/updateSchoolSlotDetail',
 
 	//  application status
 	applicationStatus: 'api/applicationStatus',

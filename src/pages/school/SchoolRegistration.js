@@ -74,9 +74,15 @@ export default function SchoolRegistration() {
       case "principalName":
       case "country":
       case "state":
-      case "mobile":
         if (value.length < 1)
           err = (errorList.find(item => item.fieldNam === key).message);
+        break;
+      case "mobile":
+        console.log("value", value)
+        if (value.length < 1) {
+          err = (errorList.find(item => item.fieldNam === key).message);
+
+        }
         if (err === "") {
           let item = errorList.find(item => item.fieldNam === key);
           let regExp = RegExp(item.regex)
@@ -112,7 +118,7 @@ export default function SchoolRegistration() {
 
   const checkAllField = () => {
     let arr = [schoolName, principalName, pinCode, mobile, email];
-    let arrKey = ['schoolName', 'principalName', 'pinCode', , 'mobile', 'email'];
+    let arrKey = ['schoolName', 'principalName', 'pinCode', 'mobile', 'email'];
     let err = '';
     arr.forEach((value, index) => {
       if (err === '') {
@@ -283,7 +289,7 @@ export default function SchoolRegistration() {
         setCityStateName('Select State');
         setData({ "country": 'IN', "state": "" });
 
-
+        getCityState("IN");
         getCitySearchState('IN');
 
       } else {
