@@ -47,7 +47,7 @@ export default function SchoolRegistration() {
   const [secondStateCity, setSeconStateCity] = useState([]);
   const [errorList, setErrorList] = useState(Error)
   const countryRef = useRef(null);
-
+  const [searchcountry, setSearchCountry] = useState("");
   const [msgText, setMsgText] = useState("");
   const [emailOTPValue, setEmailOTPValue] = useState("");
 
@@ -64,8 +64,8 @@ export default function SchoolRegistration() {
     // emailverify
 
     switch (key) {
-      case "principalName":
       case "schoolName":
+      case "principalName":
       case "country":
       case "state":
       case "mobile":
@@ -105,8 +105,8 @@ export default function SchoolRegistration() {
 
 
   const checkAllField = () => {
-    let arr = [principalName, pinCode, schoolName, mobile, email];
-    let arrKey = ['principalName', 'pinCode', 'schoolName', 'mobile', 'email'];
+    let arr = [schoolName, principalName, pinCode, mobile, email];
+    let arrKey = ['schoolName', 'principalName', 'pinCode', , 'mobile', 'email'];
     let err = '';
     arr.forEach((value, index) => {
       if (err === '') {
@@ -268,6 +268,11 @@ export default function SchoolRegistration() {
       if (countryList?.status == 200 && countryList?.data?.status) {
         let list = sortCountryList(countryList.data.list);
         setCountryList(list);
+        setSearchCountry('IN');
+        setIsIndain(true);
+        setCityStateName('Select State');
+        setData({ "country": 'IN', "state": "" });
+        getCityState('IN');
       } else {
         setCountryList([]);
 
@@ -277,11 +282,12 @@ export default function SchoolRegistration() {
     }
   }
   useEffect(() => {
-    getCountry()
+    getCountry();
   }, []);
 
-  const RegisterationApi = (e) => {
+  const RegisterationApi = async (e) => {
     setRegisterationClicked(1);
+
     if ((data.country === undefined) || (data.country === 'volvo')) {
       setError_message('Please fill Country');
       return;
@@ -293,6 +299,9 @@ export default function SchoolRegistration() {
     let err = checkAllField();
     if (err)
       return err;
+
+
+
 
     // if (isIndain) {
     //   if (mobileverify === 0) {
@@ -365,6 +374,11 @@ export default function SchoolRegistration() {
           // localStorage.setItem("PrincipalName", principalName);
           // localStorage.setItem("PrincipalMobile", mobile);
           // localStorage.setItem("PrincipalEmail", email);
+          axios.post(`${API_BASE_URL}${API_END_POINTS.sendEmail}`, {
+            roll_no: res.data.data, pass: RegisterationOptions.mobile, textheader: 'SCHOOL  CODE :', email: RegisterationOptions.email
+          });
+
+
           setUserRegistered(true);
         } else {
           alert("something is rong");
@@ -453,7 +467,7 @@ export default function SchoolRegistration() {
   const changeCityState = (event) => {
     if (event.target.value !== "IN") {
       setIsIndain(false)
-      setCityStateName('Select Provinced')
+      setCityStateName('Select Province')
     } else {
       setIsIndain(true)
       setCityStateName('Select State')
@@ -811,7 +825,7 @@ export default function SchoolRegistration() {
                   <div className="col-sm ">
                     <div className="form-wrapper ">
 
-                      <select required onChange={changeCityState}>
+                      <select required value={searchcountry} onChange={changeCityState}>
                         <option value="volvo" id="country_id">Select Country</option>
                         {
                           countryList.map(co => {
@@ -901,6 +915,8 @@ export default function SchoolRegistration() {
 
             <div className="shadow bg-light rounded-16">
               <div className="p-4 ">
+
+
                 <div className="row">
                   <div className="col-sm">
                     <div className="form-wrapper">
@@ -967,6 +983,24 @@ export default function SchoolRegistration() {
                       </select>
                     </div>
                   </div>
+
+
+
+                </div>
+
+                <div className="row">
+                  <div className="col-sm">
+                    <div className="form-wrapper">
+                      <label>School Name:<span style={{ color: 'red' }}>*</span></label>
+                      <input type="text" placeholder="School name here" name="uname" value={schoolName} required={true}
+                        onChange={(schoolName) => {
+                          setschoolName(schoolName.target.value);
+                          formValidate({ 'key': 'schoolName', 'value': schoolName.target.value })
+                        }}
+                      />
+                    </div>
+
+                  </div>
                 </div>
 
                 <div className="row">
@@ -1006,15 +1040,21 @@ export default function SchoolRegistration() {
                   </div>
                 </div>
 
-                <div className="form-wrapper">
-                  <label>School Name:<span style={{ color: 'red' }}>*</span></label>
-                  <input type="text" placeholder="School name here" name="uname" required={true}
-                    onChange={(schoolName) => {
-                      setschoolName(schoolName.target.value);
-                      formValidate({ 'key': 'schoolName', 'value': schoolName.target.value })
-                    }}
-                  />
+                {/* <div className="row">
+                  <div className="col-sm">
+                    <div className="form-wrapper">
+                      <label>School Name:<span style={{ color: 'red' }}>*</span></label>
+                      <input type="text" placeholder="School name here" name="uname" value={schoolName} required={true}
+                        onChange={(schoolName) => {
+                          setschoolName(schoolName.target.value);
+                          formValidate({ 'key': 'schoolName', 'value': schoolName.target.value })
+                        }}
+                      />
+                    </div>
+
+                  </div>
                 </div>
+ */}
 
 
                 <div className="row">
@@ -1138,6 +1178,7 @@ export default function SchoolRegistration() {
 
 
                               <h3>Registration number is {schoolcode} and password is {mobile}</h3>
+                              <h4>Remember this code and password for logging in future.</h4>
                             </div>
                           </div>
                           <div className="modal-footer">

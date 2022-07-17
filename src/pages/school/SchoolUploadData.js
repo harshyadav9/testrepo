@@ -69,10 +69,10 @@ export default function SchoolUploadData() {
   const submitStudantData = async e => {
     e.preventDefault();
     let serverData = [...studantData];
-    if (studantData.length <= MINIMUMROW) {
-      notify(`Studant record minmum of ${MINIMUMROW} rows. Duplicate data in files`, false)
-      return
-    }
+    // if (studantData.length <= MINIMUMROW) {
+    //   notify(`Studant record minmum of ${MINIMUMROW} rows. Duplicate data in files`, false)
+    //   return
+    // }
     // let messge = checkRowDuplicacy(serverData)
     // if (messge.length > 0) {
     //   notify(`${messge.join()}`, false);
@@ -137,6 +137,13 @@ export default function SchoolUploadData() {
     //   notify(`please try again!.`, false)
     // }
   };
+
+
+  const downloadexcel = async () => {
+    document.getElementsByClassName('modal')[0].style.display = 'block';
+    const otp = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.downloadExcelTemplate}`);
+
+  }
 
   const uploadFile = async () => {
     // let SCHOOLID = decodedSchoolData?.schoolsCode
@@ -209,10 +216,10 @@ export default function SchoolUploadData() {
 
           let correctDatawithErr = correctData.map((row, i) => [...row, 'valid']);
           console.log("correctDatawithErr", correctDatawithErr);
-          if (correctData.length <= MINIMUMROW) {
-            notify(`this file must contain minimum ${MINIMUMROW} rows.`, false)
-            return
-          }
+          // if (correctData.length <= MINIMUMROW) {
+          //   notify(`this file must contain minimum ${MINIMUMROW} rows.`, false)
+          //   return
+          // }
           // let duplicateRows = checkRowDuplicacy(correctData);
           // // console.log("=tetst",duplicateRows)
           // // setDuplicateRows(duplicateRows)
@@ -220,7 +227,8 @@ export default function SchoolUploadData() {
           //   notify(`${duplicateRows.join()}`, false)
           // }
           let finalArr = [];
-          let idVal = 0;
+          let idVal = JSON.parse(JSON.stringify(idCount));
+          finalArr = [...studantData];
           for (let i = 0; i < correctData.length; i++) {
             let resultset = {};
             resultset['id'] = idVal++;
@@ -270,6 +278,14 @@ export default function SchoolUploadData() {
       // Do whatever you want with the node object.
     });
   }
+
+  const movetonext = () => {
+
+    document.getElementsByClassName('modal')[0].style.display = 'none';
+  }
+
+
+
   const handleOnChangeCell = (e, columnName, i) => {
 
     let cellValue = e.target.value
@@ -319,14 +335,14 @@ export default function SchoolUploadData() {
     const regex = /^\d{2}-\d{2}-\d{4}$/;
     let invalidDate = false;
     let errRows = [];
-    if ((resultset['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(resultset['dob']['className'])) === -1) ||
-      (examThemedropdown.indexOf(resultset['dob']['examTheme']) === -1) || (['YES', 'NO'].indexOf(resultset['dob']['demoExam']) === -1)) {
+    if ((resultset['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(resultset['className'])) === -1) ||
+      (examThemedropdown.indexOf(resultset['examTheme']) === -1) || (['YES', 'NO'].indexOf(resultset['demoExam']) === -1)) {
       resultset['error'] = 'invalid';
 
       errRows.push(exceldataset.length + 1);
     }
 
-    notify(`Please correct the respective  columns of row number ${errRows}`, false);
+    // notify(`Please correct the respective  columns of row number ${errRows}`, false);
     exceldataset.push(resultset);
 
     setStudanntData([...exceldataset]);
@@ -750,7 +766,7 @@ export default function SchoolUploadData() {
 
                     <div className="col-sm-5">
                       <div className="d-flex h-100 flex-column justify-content-around">
-                        <button className="btn btn-primary mb-4 mb-sm-0 w-100">Download Excel Format</button>
+                        <button className="btn btn-primary mb-4 mb-sm-0 w-100" onClick={downloadexcel}>Download Excel Format</button>
                         {/* <button className="btn btn-primary w-100 ">Upload Student Data</button> */}
                       </div>
                     </div>
@@ -1040,6 +1056,7 @@ export default function SchoolUploadData() {
                     </tbody>
                   </table>
                 </div>
+
                 <div>
                   <h3>Points to keep in mind
                     <ul>
@@ -1053,6 +1070,46 @@ export default function SchoolUploadData() {
                 <div className="row my-3">
                   <button className="btn btn-primary mx-auto" style={{ width: '15rem' }} onClick={submitStudantData}>Save Student Data</button>
                 </div>
+                {/* <div className="modal" id="myModalexam">
+                  <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                      <h2>Excel format is downloaded successfully.</h2>
+                      <h2>Kindly use this excel format to upload the student data.</h2>
+                    </div>
+                    <div className="modal-footer">
+                      <button type="button" className="btn btn-primary" onClick={movetonext}>Ok</button>
+                    </div>
+                  </div>
+                </div> */}
+
+
+                <div className="modal" id="myModalexam">
+                  <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                      {/* <div className="modal-header">
+                        <h5 className="modal-title">Slots for Examination</h5>
+                        <button type="button" className="btn-close" data-dismiss="modal">wqwqwq</button>
+                      </div> */}
+
+
+                      <div className="modal-body">
+                        <div className="table-responsive ">
+                          <h2>Excel format is downloaded successfully.</h2>
+                          <h2>Kindly use this excel format to upload the student data.</h2>
+                        </div>
+                        <div className="modal-footer">
+                          <button type="button" className="btn btn-primary" onClick={movetonext}>Ok</button>
+                        </div>
+                      </div>
+
+
+
+
+                    </div>
+                  </div>
+                </div>
+
+
               </div>
             </div>
           </main>

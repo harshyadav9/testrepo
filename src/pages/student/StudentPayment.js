@@ -20,6 +20,7 @@ export default function StudentPayment() {
   const [currencyIcon, setCurrencyIcon] = useState();
   const [paymentstatus, setpaymentStatus] = useState("");
   const [paymentAllowedMsg, setPaymentAllowedMsg] = useState("");
+  const [ispaymentAllowed, setIspaymentAllowed] = useState(false);
   const makePayment = async () => {
 
     const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, {
@@ -76,6 +77,14 @@ export default function StudentPayment() {
         setpaymentStatus('paid');
         return;
       }
+
+      if (getpayment.data.totalFees === 0) {
+        setIspaymentAllowed(false);
+      } else {
+        setIspaymentAllowed(true);
+      }
+
+
       if (getpayment.data.paymentStatus === 0) {
         setpaymentStatus('unpaid');
       } else {
@@ -96,84 +105,94 @@ export default function StudentPayment() {
 
         </div>
         <div className="col-lg-9 ">
-          <div class="container-fluid ps-md-4 ps-lg-5 pe-md-4 py-5">
+          {ispaymentAllowed && (
+            <div class="container-fluid ps-md-4 ps-lg-5 pe-md-4 py-5">
 
 
-            <div class="section-title mb-4 text-muted">
-              <h6 class="font-bold ">Make Payment</h6>
-              <p>Pay after click make payment button</p>
-            </div>
-
-            <div class="shadow bg-white rounded-16">
-              <div class="p-4 ">
-                <div class="row">
-                  <div class="col-sm">
-                    <div class="form-wrapper">
-                      <label>Roll No</label>
-                      <input type="text" placeholder="" value={paymentData?.rollNo} disabled name="city" required="" />
-                    </div>
-                  </div>
-
-
-                  <div class="col-sm">
-                    <div class="form-wrapper">
-                      <label>Name Of Candidate</label>
-                      <input type="text" placeholder="" value={paymentData?.name} disabled name="city" required="" />
-                    </div>
-                  </div>
-
-                </div>
-
-                <div class="row">
-                  <div class="col-sm">
-                    <div class="form-wrapper">
-                      <label>Level Of Exam</label>
-                      <input type="text" placeholder="" value={paymentData?.examLevel} disabled name="city" required="" />
-                    </div>
-                  </div>
-
-                  <div class="col-sm">
-                    <div class="form-wrapper">
-                      <label>Topic of exam</label>
-                      <input type="text" placeholder="" value={paymentData?.examTheme} disabled name="city" required="" />
-                    </div>
-                  </div>
-                </div>
-
-
-
-                <div class="row">
-                  <div class="col-sm">
-                    <div class="form-wrapper">
-                      <label>Demo of exam status</label>
-                      <input type="text" placeholder="" value={paymentData?.demoExam} disabled name="city" required="" />
-                    </div>
-                  </div>
-
-                  <div class="col-sm">
-                    <div class="form-wrapper">
-                      <label>Total fees to be paid</label>
-                      <input type="text" placeholder="" value={`${currencyIcon} ${paymentData?.totalFees}`} disabled name="city" required="" />
-                    </div>
-                  </div>
-                </div>
-                <div className="row my-3">
-                  <div className="text-center">
-
-                    <button class={`btn btn-primary mx-auto ${paymentstatus === 'paid' ? 'paidcls' : 'unpaidcls'}`} onClick={makePayment}>Make Payment</button>
-                    {/* <button className={({ 'paidcls': paymentstatus === 'paid', 'unpaidcls': paymentstatus !== 'paid', 'btn': true, 'btn-primary': true, 'mx-auto': true })} onClick={makePayment}>Make Payment</button> */}
-                  </div>
-                  <div>
-                    <h2>{paymentAllowedMsg}</h2>
-                  </div>
-                </div>
-
-
+              <div class="section-title mb-4 text-muted">
+                <h6 class="font-bold ">Make Payment</h6>
+                <p>Pay after click make payment button</p>
               </div>
+
+              <div class="shadow bg-white rounded-16">
+                <div class="p-4 ">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="form-wrapper">
+                        <label>Roll No</label>
+                        <input type="text" placeholder="" value={paymentData?.rollNo} disabled name="city" required="" />
+                      </div>
+                    </div>
+
+
+                    <div class="col-sm">
+                      <div class="form-wrapper">
+                        <label>Name Of Candidate</label>
+                        <input type="text" placeholder="" value={paymentData?.name} disabled name="city" required="" />
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="form-wrapper">
+                        <label>Level Of Exam</label>
+                        <input type="text" placeholder="" value={paymentData?.examLevel} disabled name="city" required="" />
+                      </div>
+                    </div>
+
+                    <div class="col-sm">
+                      <div class="form-wrapper">
+                        <label>Topic of exam</label>
+                        <input type="text" placeholder="" value={paymentData?.examTheme} disabled name="city" required="" />
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="form-wrapper">
+                        <label>Demo of exam status</label>
+                        <input type="text" placeholder="" value={paymentData?.demoExam} disabled name="city" required="" />
+                      </div>
+                    </div>
+
+                    <div class="col-sm">
+                      <div class="form-wrapper">
+                        <label>Total fees to be paid</label>
+                        <input type="text" placeholder="" value={`${currencyIcon} ${paymentData?.totalFees}`} disabled name="city" required="" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row my-3">
+                    <div className="text-center">
+
+                      <button class={`btn btn-primary mx-auto ${paymentstatus === 'paid' ? 'paidcls' : 'unpaidcls'}`} onClick={makePayment}>Make Payment</button>
+                      {/* <button className={({ 'paidcls': paymentstatus === 'paid', 'unpaidcls': paymentstatus !== 'paid', 'btn': true, 'btn-primary': true, 'mx-auto': true })} onClick={makePayment}>Make Payment</button> */}
+                    </div>
+                    <div>
+                      <h2>{paymentAllowedMsg}</h2>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
+
             </div>
+          )}
 
 
-          </div>
+          {!ispaymentAllowed && (
+            <div class="container-fluid ps-md-4 ps-lg-5 pe-md-4 py-5">
+              <h2>Kindly select slots before doing the payemnt</h2>
+            </div>
+          )}
+
         </div>
       </div>
     </div>

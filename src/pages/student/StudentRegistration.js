@@ -257,7 +257,7 @@ export default function StudentRegistration() {
       });
       document.getElementsByClassName('modal')[0].style.display = 'block';
       const mail = await axios.post(`${API_BASE_URL}${API_END_POINTS.sendEmail}`, {
-        roll_no: reg_res?.data, pass: mobile, email
+        roll_no: reg_res?.data, pass: mobile, textheader: 'ROLL NO :', email
       });
       if (mail?.status) {
         console.log("mail");

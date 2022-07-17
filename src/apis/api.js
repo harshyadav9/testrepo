@@ -30,7 +30,7 @@ export const API_END_POINTS = {
 	bookSlot: 'api/update-studant-slot',
 	getStudantStatus: 'api/get-studant-status',
 	getpaymentdetails: 'api/getpaymentdetails',
-	uploadApi: 'terry/uploadData',
+	uploadApi: 'terry/uploadSchoolData',
 	// slotting api endpoints
 	isSlottingAllowed: 'api/isSlottingAllowed',
 	getslots: 'terry/getSlotsData',
@@ -61,7 +61,9 @@ export const API_END_POINTS = {
 	// updateSchoolAndSlotDetail: 'terry/updateSchoolAndSlotDetail',
 	sendEmailToCandidate: 'api/sendEmailToCandidate',
 	getPaymentDetailsForIndividualStudent: 'terry/getPaymentDetailsForIndividualStudent',
-	sendEmail: 'api/sendEmail'
+	sendEmail: 'api/sendEmail',
+
+	downloadExcelTemplate: 'terry/downloadExcelTemplate'
 
 
 
