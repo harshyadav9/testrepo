@@ -280,8 +280,11 @@ export default function SchoolRegistration() {
 
       if (countryList?.status == 200 && countryList?.data?.status) {
         let list = sortCountryList(countryList.data.list);
+        //  fill country 
         setCountryList(list);
         setSearchCountryList(list);
+
+
         setSearchCountry('IN');
 
         setIsIndain(true);
@@ -289,12 +292,14 @@ export default function SchoolRegistration() {
         setCityStateName('Select State');
         setData({ "country": 'IN', "state": "" });
 
+
+        //  state 
         getCityState("IN");
         getCitySearchState('IN');
 
       } else {
         setCountryList([]);
-
+        setSearchCountryList([]);
       }
     } catch (e) {
       console.log("error")
@@ -527,6 +532,7 @@ export default function SchoolRegistration() {
   }
 
 
+  //  when search country is changed
   const changeSearchCountry = (event) => {
     if (event.target.value !== "IN") {
       setIsIndain(false);
@@ -585,7 +591,7 @@ export default function SchoolRegistration() {
       console.log("searchstate", searchstate);
       // setSearchCountry('IN');
       // setIsIndain(true);
-      ;
+
       // setCityStateName('Select State');
       // setData({ "country": searchcountry, "state": JSON.parse(searchstate).stateCity });
       // getCityState('IN');
@@ -596,9 +602,10 @@ export default function SchoolRegistration() {
       if (responseData.status === 200 && responseData.data.status) {
         const schoolDetail = responseData.data.schoolDetail;
         // getCityState(event.target.value)
-        await getCityState("IN");
-        await getCitySearchState("IN");
+
         setSchoolDetail(responseData.data.schoolDetail);
+
+        //  indian school
         if (isIndain) {
           let perData = data;
           let newData = {
@@ -609,8 +616,12 @@ export default function SchoolRegistration() {
 
             }
           }
+          await getCityState("IN");
+          await getCitySearchState("IN");
           setData(newData)
-        } else {
+        }
+        //  international school
+        else {
           let perData = data;
           let contryCode = countryList.find(co => co?.country?.toLowerCase() === schoolDetail?.country?.toLowerCase())
           let newData = {
@@ -620,6 +631,8 @@ export default function SchoolRegistration() {
               "state": schoolDetail?.city
             }
           }
+          await getCityState(contryCode);
+          await getCitySearchState(contryCode);
           setData(newData)
         }
         setpinCode(schoolDetail?.pincode)

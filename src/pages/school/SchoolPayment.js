@@ -23,9 +23,11 @@ export default function SchoolPayment() {
   let decodedSchoolData = {};
   let mockTotal = 0;
 
+  // let tFee = 0;
   const navigate = useNavigate();
   const [paymentStatus, setPaymentStatus] = useState([]);
   const { state, dispatch } = useContext(StudentDataContext);
+  const [tFee, setTFee] = useState(0);
   const [err, setErr] = useState("");
 
 
@@ -42,33 +44,59 @@ export default function SchoolPayment() {
 
 
 
-      if (!isPaymentAllowed?.data?.status) {
-        setErr(isPaymentAllowed?.data?.message);
-        return;
-      }
+
+      console.log("isPaymentAllowed", isPaymentAllowed);
 
 
-      const paymentDetails = await axios.post(`${API_BASE_URL}${API_END_POINTS.getpaymentdetails}`, {
-        school_code: state.school_code
-      });
-      // const paymentDetails = await axios.post(`${API_END_POINTS.getpaymentdetails}`, {
-      //   school_code: state.school_code
-      // }
-      // );
-      try {
-        console.log("paymentDetails", paymentDetails);
-        if (paymentDetails?.status === 200 && paymentDetails?.data?.status) {
-          console.log("paymentDetails", paymentDetails)
-          setPaymentStatus(paymentDetails.data.data);
+      if (isPaymentAllowed?.status === 200) {
+        if (isPaymentAllowed.data.data.TotalStudent > 0) {
+          // complete the slot allocation first
 
+          if (isPaymentAllowed.data.data.PendingSlotCount === 0) {
+            if (isPaymentAllowed.data.data.PendingPaymentCount > 0) {
+              const paymentDetails = await axios.post(`${API_BASE_URL}${API_END_POINTS.getpaymentdetails}`, {
+                school_code: state.school_code
+              });
+              // const paymentDetails = await axios.post(`${API_END_POINTS.getpaymentdetails}`, {
+              //   school_code: state.school_code
+              // }
+              // );
+              try {
+                console.log("paymentDetails", paymentDetails);
+                if (paymentDetails?.status === 200) {
+                  let totalFees = 0;
+                  console.log("paymentDetails", paymentDetails)
+                  for (let i = 0; i < paymentDetails.data.data.length; i++) {
+                    // if (paymentDetails.data.data[i]['ExamTheme'] === 'MOCK') {
+                    totalFees += paymentDetails.data.data[i]?.Fee;
+                    // }
+                  }
+                  setTFee(totalFees);
+
+                  setPaymentStatus(paymentDetails.data.data);
+
+                } else {
+                  setPaymentStatus([]);
+                  setErr("something wnet wrong");
+
+                }
+              } catch (e) {
+                console.log("error")
+              }
+            } else {
+              setErr(`Payment for all the students has been done`);
+            }
+          } else {
+            setErr(`Slot allocation is pending for ${isPaymentAllowed.data.data.PendingSlotCount} students. `);
+          }
         } else {
-          setPaymentStatus([]);
-          setErr("something wnet wrong");
-
+          setErr(`There are no students uploaded!!!`);
         }
-      } catch (e) {
-        console.log("error")
+
       }
+
+
+
     }
     getPaymentData();
 
@@ -79,10 +107,16 @@ export default function SchoolPayment() {
   try {
     // paymentData = JSON.parse(localStorage.getItem('payment') ?? '[]');
     console.log("paymentStatus", paymentStatus)
-    mockFee = paymentStatus[0]?.mockfee;
-    tMockStu = paymentStatus.reduce((acc, t) => t.optMock + acc, 0);
-    totalThemeExamPay = paymentStatus.reduce((acc, el) => el.themefee * el.totalCount + acc, 0);
-    mockTotal = tMockStu * paymentStatus[0]['mockfee'];
+    for (let i = 0; i < paymentStatus.length; i++) {
+      // if (paymentStatus[i]['ExamTheme'] === 'MOCK') {
+      tFee += paymentStatus[i]?.Fee;
+      // }
+    }
+    // mockFee = paymentStatus[0]?.mockfee;
+    // tFee = paymentStatus.reduce((acc, t) => t.Fee + acc, 0);
+    console.log("tFee", tFee);
+    // totalThemeExamPay = paymentStatus.reduce((acc, el) => el.ExamTheme * el.StudentCount + acc, 0);
+    // mockTotal = tMockStu * mockFee;
 
     console.log("total mocak", +tMockStu);
 
@@ -193,12 +227,12 @@ export default function SchoolPayment() {
                       return (
                         <>
                           <tr>
-                            <td>Total candidate who opted <b>{theme?.theme}</b></td>
-                            <td>{theme?.totalCount}</td>
+                            <td>Total candidate who opted <b>{theme?.ExamTheme}</b></td>
+                            <td>{theme?.StudentCount}</td>
                           </tr>
                           <tr>
                             <td>Amount</td>
-                            <td>{currency}{theme?.themefee * theme?.totalCount}</td>
+                            <td>{currency}{theme?.Fee}</td>
                           </tr>
                           <tbody className="blank-tbody">
                             <tr>
@@ -218,7 +252,7 @@ export default function SchoolPayment() {
                   </tr>
                 </tbody>
 
-                <tbody>
+                {/* <tbody>
                   <tr>
                     <td>Total candidate who opted <b>Mock</b></td>
                     <td>{tMockStu}</td>
@@ -227,11 +261,11 @@ export default function SchoolPayment() {
                     <td>Amount</td>
                     <td>{mockTotal}</td>
                   </tr>
-                </tbody>
+                </tbody> */}
                 <tfoot>
                   <tr>
                     <td>Total Amount</td>
-                    <td>{currency} {totalThemeExamPay + tMockStu * mockFee}.</td>
+                    <td>{currency} {tFee}.</td>
                   </tr>
                 </tfoot>
 

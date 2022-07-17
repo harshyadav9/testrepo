@@ -65,7 +65,7 @@ export const API_END_POINTS = {
 
 	downloadExcelTemplate: 'terry/downloadExcelTemplate',
 
-
+	checkpaymentDone: 'api/checkpaymentDone',
 	isStudentUploadMax: 'api/isStudentUploadMax'
 
 

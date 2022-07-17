@@ -1015,6 +1015,7 @@ export default function SchoolUploadData() {
                   <table className="table table-bordered table-accent">
                     <thead>
                       <tr>
+                        <th>SNO</th>
                         <th>NAME</th>
                         <th>DOB</th>
                         <th>CLASS</th>
@@ -1033,6 +1034,7 @@ export default function SchoolUploadData() {
                           console.log("tbData", tbData);
                           return (
                             <tr key={tbData.id} className={tbData['error'] === 'invalid' ? 'invalid' : 'valid'}>
+                              <td>{i + 1}</td>
                               <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['name'] ?? ''} style={{
                                 "width": "90%",
                                 "padding": "6px 15px",
