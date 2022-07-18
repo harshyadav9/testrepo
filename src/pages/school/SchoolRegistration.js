@@ -631,8 +631,8 @@ export default function SchoolRegistration() {
               "state": schoolDetail?.city
             }
           }
-          await getCityState(contryCode);
-          await getCitySearchState(contryCode);
+          await getCityState(contryCode.code);
+          await getCitySearchState(contryCode.code);
           setData(newData)
         }
         setpinCode(schoolDetail?.pincode)
