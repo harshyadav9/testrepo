@@ -35,7 +35,7 @@ const Error = [
 	},
 	{
 		fieldNam: "pinCode",
-		message: "Please enter pinCode",
+		message: "Please enter valid pinCode",
 		status: false,
 		regex: /^.{6,}$/,
 		message2: "Please enter valid pin code"
@@ -58,7 +58,7 @@ const Error = [
 		fieldNam: "coordinatingTeacherEmail",
 		message: "Please enter coordinating Teacher Email",
 		status: false,
-		regex: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,20}$/,
+		regex: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
 		message2: "Please enter valid coordinating Teacher Email",
 	},
 	{
@@ -115,7 +115,7 @@ const Error = [
 	},
 	{
 		fieldNam: "pin",
-		message: "Please enter pinCode",
+		message: "Please enter valid pinCode",
 		status: false,
 		regex: /^.{6,}$/,
 		message2: "Please enter valid pin code"

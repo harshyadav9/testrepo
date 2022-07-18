@@ -47,7 +47,7 @@ export default function SchoolSlot() {
           setSlotErrmsg("");
           getSlots();
         } else {
-          setSlotErrmsg("Minimum number of 20 students per mandatory to allocate slots");
+          setSlotErrmsg("Slots can be allocated for minimum of 20 students.");
 
         }
 

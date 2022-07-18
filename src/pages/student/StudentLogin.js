@@ -11,7 +11,7 @@ import { StudentDataContext } from "../context/datacontext";
 import { notify } from "../../Utills";
 import file from "../../assets/pdf/guide_individual.pdf";
 
-export default function SchoolLogin() {
+export default function SchoolLogin({ isLogged }) {
   const { state, dispatch } = useContext(StudentDataContext);
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
@@ -68,7 +68,7 @@ export default function SchoolLogin() {
             for (let key in res.data.data) {
               obj[[key]] = res.data.data[key];
             }
-
+            isLogged(true);
             navigate("/student-edit-details");
             dispatch({
               type: 'ADD_ROLL_NO',

@@ -30,7 +30,7 @@ export default function SchoolEditDetails() {
   const [pin, SetPin] = useState('');
   const [add1, SetAdd1] = useState('');
   const [school, SetSchool] = useState('');
-
+  const [isIndain, setIsIndain] = useState(true);
   const [classcandidate, SetClassCandidate] = useState(4);
   const [section, SetSection] = useState('');
   const [pgname, SetPgName] = useState(''); // bind kal 
@@ -97,6 +97,11 @@ export default function SchoolEditDetails() {
       SetDemoExam(studentdetails.data.demoExam || 'NO');
       SetPgName(studentdetails.data?.pgName);
       SetCity(studentdetails.data?.city);
+      if (studentdetails.data?.country !== 'India') {
+        setIsIndain(false);
+      } else {
+        setIsIndain(true);
+      }
 
       checkAllField();
     }
@@ -272,13 +277,22 @@ export default function SchoolEditDetails() {
         }
         break;
       case "pin":
-        if (!value || value.length === 0)
+        // if (!value || value.length === 0)
+        //   err = (errorList.find(item => item.fieldNam === key).message);
+        // if (err === '') {
+        //   let item = errorList.find(item => item.fieldNam === key);
+        //   let regExp = RegExp(item.regex)
+        //   err = regExp.test(value) ? "" : item.message2;
+        // }
+        if (value.length === 0 && isIndain) {
           err = (errorList.find(item => item.fieldNam === key).message);
-        if (err === '') {
-          let item = errorList.find(item => item.fieldNam === key);
-          let regExp = RegExp(item.regex)
-          err = regExp.test(value) ? "" : item.message2;
         }
+        if (err === "" && isIndain) {
+          if (("" + (value) === '000000') || (value.length !== 6)) {
+            err = (errorList.find(item => item.fieldNam === key).message);
+          }
+        }
+        console.log("err", err)
         break;
       default:
         break;
@@ -458,7 +472,7 @@ export default function SchoolEditDetails() {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Pin Code<span style={{ color: 'red' }}>*</span></label>
-                      <input type="text" name="pincode" value={pin} onChange={(e) => {
+                      <input type="number" name="pincode" value={pin} onChange={(e) => {
                         SetPin(e.target.value);
                         formValidate({ 'key': 'pin', 'value': e.target.value });
                       }}
@@ -575,7 +589,7 @@ export default function SchoolEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Do you want to give demo exam</label>
+                      <label>Mock Test</label>
                       <select name="examoption" disabled={slotDisabled} value={demoexam} onChange={(e) => {
                         SetDemoExam(e.target.value);
                       }}>

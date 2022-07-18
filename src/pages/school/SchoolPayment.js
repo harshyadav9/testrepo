@@ -295,9 +295,12 @@ export default function SchoolPayment() {
           </h4> */}
           </div>
           <div className="btnmain">
-            <a> <button className="btn btn-primary" onClick={makePayment}>
-              Make Payment
-            </button></a>
+            {state?.mode === 'ONLINE' && (
+              <a> <button className="btn btn-primary" onClick={makePayment}>
+                Make Payment
+              </button></a>
+            )}
+
 
 
           </div>

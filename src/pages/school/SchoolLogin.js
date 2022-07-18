@@ -11,7 +11,7 @@ import { StudentDataContext } from "../context/datacontext";
 import { notify } from "../../Utills";
 import file from "../../assets/pdf/guide_school.pdf";
 
-export default function SchoolLogin() {
+export default function SchoolLogin({ isLogged }) {
   const { state, dispatch } = useContext(StudentDataContext);
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
@@ -70,7 +70,9 @@ export default function SchoolLogin() {
               pincode,
               mobile,
               email
-            } } = res.data
+            } } = res.data;
+
+            isLogged(true);
             navigate("/school-edit-details");
             // alert("login successfull!");
             // notify(`login successfull!!.`, true);
@@ -94,7 +96,8 @@ export default function SchoolLogin() {
               district: res.data.data.district,
               coordinating_teacher: res.data.data.coordinating_teacher,
               email_coordinator: res.data.data.email_coordinator,
-              mobile_coordinator: res.data.data.mobile_coordinator
+              mobile_coordinator: res.data.data.mobile_coordinator,
+              mode: res.data.data.Mode
             });
 
 

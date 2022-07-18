@@ -129,11 +129,11 @@ function Sidebar() {
                             Payment
                         </Link>
 
-                        <Link to="/school-rollNo">
-                            {/* <img src="images/download-icon.png" height="18" alt="" /> */}
+                        {/* <Link to="/school-rollNo">
+                          
                             <svg className="icon"><use xlinkHref="#online-payment-method"></use></svg>
                             Generate Roll No
-                        </Link>
+                        </Link> */}
 
 
 

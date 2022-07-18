@@ -73,7 +73,7 @@ export default function StudentPayment() {
       setPaymentData(getpayment.data);
 
       if (getpayment.data.examTheme === "" && getpayment.data.demoExam === "") {
-        setPaymentAllowedMsg("Kindly choose your examtheme or demo exam  first before doing payment");
+        setPaymentAllowedMsg("Kindly choose your examtheme or mock test  first before doing payment");
         setpaymentStatus('paid');
         return;
       }
@@ -155,7 +155,7 @@ export default function StudentPayment() {
                   <div class="row">
                     <div class="col-sm">
                       <div class="form-wrapper">
-                        <label>Demo of exam status</label>
+                        <label>Mock Test</label>
                         <input type="text" placeholder="" value={paymentData?.demoExam} disabled name="city" required="" />
                       </div>
                     </div>

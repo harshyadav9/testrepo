@@ -99,13 +99,24 @@ export default function SchoolRegistration() {
         }
         break;
       case "pinCode":
-        if (value.length === 0)
-          // err = (errorList.find(item => item.fieldNam === key).message);
-          if (isIndain) {
-            let item = errorList.find(item => item.fieldNam === key);
-            let regExp = RegExp(item.regex)
-            err = regExp.test(value) ? "" : item.message2;
+        if (value.length === 0 && isIndain) {
+          err = (errorList.find(item => item.fieldNam === key).message);
+        }
+        if (err === "" && isIndain) {
+          if (("" + (value) === '000000') || (value.length !== 6)) {
+            err = (errorList.find(item => item.fieldNam === key).message);
           }
+        }
+
+
+
+        // if (value.length !== 6) {
+        // let item = errorList.find(item => item.fieldNam === key);
+        // let regExp = RegExp(item.regex)
+        // err = regExp.test(value) ? "" : item.message2;
+        // }
+
+
         break;
       default:
         break;
@@ -405,7 +416,8 @@ export default function SchoolRegistration() {
             mobile: RegisterationOptions.mobile,
             principal_name: RegisterationOptions.principalname,
             email: RegisterationOptions.email,
-            district: ''
+            district: '',
+            mode: 'ONLINE'
           });
 
           setMsgText("");
@@ -1125,7 +1137,7 @@ export default function SchoolRegistration() {
                       <label>Pin code:<span style={{ color: 'red' }}>*</span></label>
                       {/* <input type="text" placeholder="Enter Pin code" name="psw" required="" /> */}
                       <input
-                        type="text"
+                        type="number"
                         placeholder="Enter Pin code"
                         name="psw"
                         required

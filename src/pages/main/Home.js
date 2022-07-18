@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // import Header from "./Header";
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,7 @@ import computerUser from "../../assets/icons/computer-user.svg";
 import youth from "../../assets/icons/youth.svg";
 // import "./Home.scss";
 
-export default function Home() {
+export default function Home({ isLogged }) {
 
 
   const openins = () => {
