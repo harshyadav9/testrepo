@@ -34,7 +34,7 @@ export default function Footer() {
     setIsOpen(true);
     setModalHeading('Refund & Cancellation Policy');
     setModalText(`Cancellations will be considered only if the request is made within 24 hours of Registration and the Registration data would be deleted ASAP. In case of receipt of damaged deliverable like Certificates etc.,
-     Please get in touch with the help-desk team.
+     Please get in touch with the help-desk team.Fees once submitted shall not be refunded.
     `)
   };
 

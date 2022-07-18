@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from "react-router-dom";
 import downloadIcon from "../../assets/icons/download-icon.png";
-
+import { StudentDataContext } from '../context/datacontext';
+import { useNavigate } from "react-router";
 function Sidebar() {
+
+    const { state, dispatch } = useContext(StudentDataContext);
+    const navigate = useNavigate();
+
+
+    const logoutval = () => {
+        if (state?.reset_to_login) {
+            state?.reset_to_login(false);
+            navigate('/');
+        }
+    }
+
     return (
         // <aside className="sidebar" id="sidebar">
         //     <div className="sidenav">
@@ -168,11 +181,13 @@ function Sidebar() {
                         </Link>
 
 
-                        <Link to="/">
-                            {/* <img src="images/download-icon.png" height="18" alt="" /> */}
+                        {/* <Link to="/">
+                          
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Logout
-                        </Link>
+                        </Link> */}
+                        <a onClick={logoutval}><svg className="icon"><use xlinkHref="#application_status"></use></svg>
+                            Logout</a>
 
 
                     </li>

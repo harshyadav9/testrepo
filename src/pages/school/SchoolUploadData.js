@@ -239,8 +239,26 @@ export default function SchoolUploadData() {
 
   const downloadexcel = async () => {
     document.getElementsByClassName('modal')[0].style.display = 'block';
-    const otp = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.downloadExcelTemplate}`);
+    const otp = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.downloadExcelTemplate}`, {
+      headers:
+      {
+        'Content-Disposition': "attachment; filename=template.xlsx",
+        'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      },
+      responseType: 'arraybuffer',
+    });
+    console.log("otp", otp);
 
+
+    // console.log(window.URL.createObjectURL(otp));
+
+
+    const url = window.URL.createObjectURL(new Blob([otp]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'file.xlsx'); //or any other extension
+    document.body.appendChild(link);
+    link.click();
   }
 
   const uploadFile = async () => {

@@ -166,6 +166,19 @@ export default function StudentPayment() {
                         <input type="text" placeholder="" value={`${currencyIcon} ${paymentData?.totalFees}`} disabled name="city" required="" />
                       </div>
                     </div>
+                    <div class="col-sm">
+                      <div class="form-wrapper">
+                        <label>Exam Slot Time</label>
+                        <input type="text" placeholder="" value={`${paymentData?.examSlotDateTime}`} disabled name="city" required="" />
+                      </div>
+                    </div>
+
+                    <div class="col-sm">
+                      <div class="form-wrapper">
+                        <label>Demo Slot Time</label>
+                        <input type="text" placeholder="" value={`${paymentData?.demoSlotDateTime}`} disabled name="city" required="" />
+                      </div>
+                    </div>
                   </div>
                   <div className="row my-3">
                     <div className="text-center">

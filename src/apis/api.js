@@ -71,9 +71,15 @@ export const API_END_POINTS = {
 
 	generateSchoolRollNumber: 'terry/generateSchoolRollNumber',
 
-	changeSchoolPassword: 'terry/changeSchoolPassword'
+	changeSchoolPassword: 'terry/changeSchoolPassword',
 
+	getHelpDeskCategories: 'api/getHelpDeskCategories',
 
+	createHelpdeskTicket: 'terry/createHelpdeskTicket',
+
+	getHelpdeskTicketDetails: 'terry/getHelpdeskTicketDetails',
+
+	updateHelpdeskTicketDetails: 'terry/updateHelpdeskTicketDetails'
 	// getCategory: 'api/get-category',
 	// createTicket: 'api/create-help-ticket',
 	// getAllTickets: 'api/get-ticket-by-id'

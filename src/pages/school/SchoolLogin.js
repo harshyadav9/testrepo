@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "../main/Header";
 import { Link } from "react-router-dom";
 import schoolimg from "../../assets/icons/school.png";
@@ -15,6 +15,12 @@ export default function SchoolLogin({ isLogged }) {
   const { state, dispatch } = useContext(StudentDataContext);
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
+  const initialState = {
+    schoolname: '', country: '', state: '', pincode: "", postal_address: "", phonestd: "", mobile: "", principal_name: "",
+    email: "", district: "", coordinating_teacher: "", school_code: "", email_coordinator: "", mobile_coordinator: "", mode: "", allow_School_slotting: false, student: { Class: 4 },
+    roll_no: ""
+
+  };
   const navigate = useNavigate();
   const [userError, setUserError] = useState({})
   const [passError, setPassError] = useState({})
@@ -27,6 +33,16 @@ export default function SchoolLogin({ isLogged }) {
     }
     setUser(val);
   };
+
+  useEffect(() => {
+    dispatch({
+      type: 'EMPTY_STATE',
+      schoolname: '', country: '', state: '', pincode: "", postal_address: "", phonestd: "", mobile: "", principal_name: "",
+      email: "", district: "", coordinating_teacher: "", school_code: "", email_coordinator: "", mobile_coordinator: "", mode: "", allow_School_slotting: false, student: { Class: 4 },
+      roll_no: ""
+    });
+
+  }, []);
 
   const setPassword = e => {
     let val = e.target.value;
@@ -198,9 +214,13 @@ export default function SchoolLogin({ isLogged }) {
                         </div>
                         <div style={{
                           marginTop: '14px',
-                          fontSize: '18px'
+                          fontSize: '18px',
+                          textAlign: 'center'
                         }}>
                           <a className="link-light" href={file} target="_blank">Guidelines to fill Registration form</a>
+                          <p style={{
+                            fontSize: '20px', fontWeight: 'bold'
+                          }}>Before filling the form,make sure you read all the instructions</p>
                         </div>
                       </div>
                     </div>

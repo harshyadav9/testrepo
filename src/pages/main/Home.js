@@ -166,7 +166,7 @@ export default function Home({ isLogged }) {
               </Link>
             </div>
             <div className="col-md-4 item text-center">
-              <Link to="/student-login" className="box">
+              <Link to="/student-Inlogin" className="box">
 
                 <img src={schoolpreview} alt="" />
 

@@ -16,6 +16,13 @@ export const StundentDataReducer = (state, action) => {
                 ...action
             };
 
+        case 'EMPTY_STATE':
+            console.log("action", action);
+            return {
+                ...state,
+                ...action
+            };
+
 
 
         case 'SCHOOL_SLOT_VALID':
@@ -39,8 +46,9 @@ export const StundentDataReducer = (state, action) => {
 
             return {
                 ...state,
-
-                roll_no: action.roll_no
+                ...action
+                // roll_no: action.roll_no,
+                // reset_to_login: action.reset_to_login
             }
         case 'ADD_STUDENT_INFO':
             console.log("action ADD_STUDENT_INFO", action);

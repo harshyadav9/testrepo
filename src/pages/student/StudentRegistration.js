@@ -8,7 +8,7 @@ import { StudentDataContext } from "../context/datacontext";
 const dayjs = require('dayjs');
 
 
-export default function StudentRegistration() {
+export default function StudentRegistration({ isLogged }) {
 
 
   const { dispatch } = useContext(StudentDataContext);
@@ -162,6 +162,7 @@ export default function StudentRegistration() {
 
 
   const movetonext = () => {
+    isLogged(true);
     navigate("/student-edit-details");
     document.getElementsByClassName('modal')[0].style.display = 'none';
   }
@@ -244,7 +245,8 @@ export default function StudentRegistration() {
       "section": "",
       "standard": "",
       "state": stateVal.state,
-      "state_city_cd": stateVal.stateCode
+      "state_city_cd": stateVal.stateCode,
+      "indigo": "Individual"
     }
 
     const reg_res = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.registerStudent}`, obj);
@@ -332,8 +334,8 @@ export default function StudentRegistration() {
   const otpMobileverifcation = () => {
 
     // document.getElementsByClassName('modal')[0].style.display = 'block';
-    // if (mobileOTP.join('') === mobileOTPValue) {
-    if (mobileOTP.join('') === '4444') {
+    if (mobileOTP.join('') === mobileOTPValue) {
+      // if (mobileOTP.join('') === '4444') {
       setMobileVerMsg('Your mobile has been verified');
       setmobileverify(1);
     } else {

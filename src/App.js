@@ -33,6 +33,16 @@ import Instructions from "./pages/main/instructions";
 import { useNavigate } from "react-router";
 import SchoolRollNoGenerate from "./pages/school/SchoolRollNoGenerate";
 import { useEffect, useState } from "react";
+import StudentIndigoRegistration from "./pages/indigo/StudentRegistration";
+import SchoolInLogin from "./pages/indigo/StudentLogin";
+import StudentInEditDetails from "./pages/indigo/StudentEditDetails";
+import StudentInSlot from "./pages/indigo/StudentSlot";
+import StudentInPayment from "./pages/indigo/StudentPayment";
+import StudentInApplicationStatus from "./pages/indigo/StudentApplicationStatus";
+import StudentInHelpdeskTicket from "./pages/indigo/StudentHelpdeskTicket";
+import StudentInViewHelpdeskTicket from "./pages/indigo/StudentViewHelpdeskTicket";
+import StudentInChangePassword from "./pages/indigo/StudentChangePassword";
+import StudentInforget from "./pages/indigo/StudentForget";
 function App() {
 
 
@@ -42,6 +52,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const handleLogged = (flag) => {
+    console.log("flag", flag)
     setIsLoggedIn(flag);
   }
 
@@ -75,9 +86,14 @@ function App() {
           )}
 
           {!isLoggedIn && (
+            <>   <Route path="/student-Inlogin" element={<SchoolInLogin isLogged={handleLogged} />} exact /></>
+
+          )}
+
+          {!isLoggedIn && (
             <>   <Route
               path="/school-registration"
-              element={<SchoolRegistration />}
+              element={<SchoolRegistration isLogged={handleLogged} />}
               exact
             /></>
 
@@ -86,11 +102,38 @@ function App() {
           {!isLoggedIn && (
             <>   <Route
               path="/student-registration"
-              element={<StudentRegistration />}
+              element={<StudentRegistration isLogged={handleLogged} />}
               exact
             /></>
 
           )}
+
+          {!isLoggedIn && (
+            <>   <Route
+              path="/student-Indigo-registration"
+              element={<StudentIndigoRegistration isLogged={handleLogged} />}
+              exact
+            /></>
+
+          )}
+
+          {!isLoggedIn && (
+            <>    <Route path="/student-forget" element={<StudentForget />} exact /></>
+
+          )}
+
+          {!isLoggedIn && (
+            <>   <Route path="/school-forget" element={<SchoolForget />} exact /></>
+
+          )}
+
+          {!isLoggedIn && (
+            <>  <Route path="/student-Inforget" element={<SchoolForget />} exact /></>
+
+          )}
+
+
+
 
           {isLoggedIn && (
             <>
@@ -138,12 +181,12 @@ function App() {
                 element={<SchoolChangePassword />}
                 exact
               />
-              <Route path="/school-forget" element={<SchoolForget />} exact />
+
 
 
               {/* Student */}
               <Route path="/" element={<Home />} exact />
-
+              StudentInEditDetails
 
               <Route
                 path="/student-edit-details"
@@ -181,7 +224,45 @@ function App() {
                 element={<StudentChangePassword />}
                 exact
               />
-              <Route path="/student-forget" element={<StudentForget />} exact />
+
+
+              {/* go for youth */}
+
+
+
+              <Route
+                path="/student-Inedit-details"
+                element={<StudentInEditDetails />}
+                exact
+              />
+
+              <Route path="/student-Inslot" element={< StudentInSlot />} exact />
+              <Route path="/student-Inpayment" element={<StudentInPayment />} exact />
+              <Route
+                path="/student-Inapplication-status"
+                element={<StudentInApplicationStatus />}
+                exact
+              />
+
+              <Route
+                path="/student-Inhelpdesk-ticket"
+                element={<StudentInHelpdeskTicket />}
+                exact
+              />
+
+              <Route
+                path="/student-Inview-helpdesk-ticket"
+                element={<StudentInViewHelpdeskTicket />}
+                exact
+              />
+              <Route
+                path="/student-Inchange-password"
+                element={<StudentInChangePassword />}
+                exact
+              />
+
+
+
             </>
 
           )}

@@ -8,7 +8,7 @@ import Error from './ErrorList';
 import { API_ADMIN_URL_2, REGISTER_API, API_BASE_URL, API_END_POINTS } from "../../apis/api";
 import { StudentDataContext } from "../context/datacontext";
 import { notify } from "../../Utills";
-export default function SchoolRegistration() {
+export default function SchoolRegistration({ isLogged }) {
   const navigate = useNavigate();
 
   const { state, dispatch } = useContext(StudentDataContext);
@@ -155,8 +155,8 @@ export default function SchoolRegistration() {
 
 
     console.log("emailOTP", emailOTP);
-    // if (mobileOTP.join('') === mobileOTPValue) {
-    if (mobileOTP.join('') === '4444') {
+    if (mobileOTP.join('') === mobileOTPValue) {
+      // if (mobileOTP.join('') === '4444') {
       setMobileVerMsg('Your mobile has been verified');
       setmobileverify(1);
     } else {
@@ -539,6 +539,7 @@ export default function SchoolRegistration() {
 
 
   const movetonext = () => {
+    isLogged(true);
     navigate("/school-edit-details");
     document.getElementsByClassName('modal')[0].style.display = 'none';
   }
