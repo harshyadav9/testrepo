@@ -66,8 +66,12 @@ export const API_END_POINTS = {
 	downloadExcelTemplate: 'terry/downloadExcelTemplate',
 
 	checkpaymentDone: 'api/checkpaymentDone',
-	isStudentUploadMax: 'api/isStudentUploadMax'
+	isStudentUploadMax: 'api/isStudentUploadMax',
+	checkRollNo: 'api/checkRollNo',
 
+	generateSchoolRollNumber: 'terry/generateSchoolRollNumber',
+
+	changeSchoolPassword: 'terry/changeSchoolPassword'
 
 
 	// getCategory: 'api/get-category',

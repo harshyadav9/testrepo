@@ -189,6 +189,12 @@ img {
   color: white;
 }
 
+.btn-primary:disabled {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
 .btn-primary:hover,
 .btn-primary:focus {
   background-color: var(--primary-dark);

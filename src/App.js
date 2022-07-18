@@ -30,6 +30,7 @@ import StudentForget from "./pages/student/StudentForget";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import StudentDataProvider from "./pages/context/datacontext";
 import Instructions from "./pages/main/instructions";
+import SchoolRollNoGenerate from "./pages/school/SchoolRollNoGenerate";
 function App() {
   return (
     <>
@@ -57,6 +58,7 @@ function App() {
               element={<SchoolUploadData />}
               exact
             />
+            <Route path="/school-rollNo" element={<SchoolRollNoGenerate />} exact />
             <Route path="/school-payment" element={<SchoolPayment />} exact />
             <Route path="/school-slot" element={<SchoolSlot />} exact />
             <Route path="/student-slot" element={<StudentSlot />} exact />
