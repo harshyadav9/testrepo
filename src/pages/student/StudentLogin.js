@@ -72,7 +72,8 @@ export default function SchoolLogin({ isLogged }) {
     } else {
       const serverData = {
         "username": user,
-        "password": pass
+        "password": pass,
+        "login_type": "Individual"
       }
       console.log("serverData", serverData)
       axios

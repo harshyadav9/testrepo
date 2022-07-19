@@ -72,7 +72,8 @@ export default function SchoolInLogin({ isLogged }) {
     } else {
       const serverData = {
         "username": user,
-        "password": pass
+        "password": pass,
+        "login_type": "go4youth"
       }
       console.log("serverData", serverData)
       axios

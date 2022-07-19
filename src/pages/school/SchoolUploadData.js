@@ -324,7 +324,9 @@ export default function SchoolUploadData() {
             }
           }
           setHeaders(arr.shift());
-          correctData = arr.map((exData, i) => [...exData.slice(0, 1), dayjs(ExcelDateToJSDate(exData[1])).format('DD-MM-YYYY'), ...exData.slice(2, 15)]);
+          console.log("arr", arr);
+          correctData = arr.map((exData, i) => [...exData.slice(0, 1), dayjs(new Date(exData.slice(1, 2))).format('DD-MM-YYYY'), ...exData.slice(2, 15)]);
+          // correctData = arr.map((exData, i) => [...exData.slice(0, 1), dayjs(ExcelDateToJSDate(exData[1])).format('DD-MM-YYYY'), ...exData.slice(2, 15)]);
           console.log("correctData", correctData);
 
           let correctDatawithErr = correctData.map((row, i) => [...row, 'valid']);

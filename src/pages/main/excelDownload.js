@@ -35,7 +35,7 @@ const ExportCSV = ({ fileName = 'Customers_Infomation_xlsx' }) => {
 
     const exportToCSV = (fileName) => {
         let csvData = [{
-            Name: "Harsh",
+            Name: "Tom",
             DOB: "12-12-1992",
             Class: "7",
             Section: "A",
@@ -64,7 +64,7 @@ const ExportCSV = ({ fileName = 'Customers_Infomation_xlsx' }) => {
             skipHeader: true,
             origin: -1 //ok
         });
-        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const wb = { Sheets: { Sheet1: ws }, SheetNames: ["Sheet1"] };
         const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         const data = new Blob([excelBuffer], { type: fileType });
         FileSaver.saveAs(data, fileName + fileExtension);

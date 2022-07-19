@@ -186,9 +186,11 @@ function Sidebar() {
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Logout
                         </Link> */}
-                        <a onClick={logoutval}><svg className="icon"><use xlinkHref="#application_status"></use></svg>
-                            Logout</a>
+                        {/* <a onClick={logoutval}><svg className="icon"><use xlinkHref="#application_status"></use></svg>
+                            Logout</a> */}
 
+                        <a href='/' onClick={logoutval}><svg className="icon"><use xlinkHref="#application_status"></use></svg>
+                            Logout</a>
 
                     </li>
 
