@@ -113,14 +113,14 @@ function SidebarIn() {
                         </svg>
                     </button>
                 </div>
-                <div className="navtitle">School Desk</div>
+                <div className="navtitle">GO4Youth Desk</div>
                 <ul className="list-unstyled">
                     {/* <li className="active"><a href="#"><img src="images/download-icon.png" height="18" alt="" /> School Details</a></li> */}
                     <li className="active">
                         <Link to="/student-Inedit-details">
                             {/* <img src={downloadIcon} height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
-                            School Details
+                            GO4Youth Details
                         </Link>
 
                         <Link to="/student-Inslot">
@@ -176,7 +176,7 @@ function SidebarIn() {
 
                         {/* <Link to="/"> */}
                         {/* <img src="images/download-icon.png" height="18" alt="" /> */}
-                        <a onClick={logoutval}><svg className="icon"><use xlinkHref="#application_status"></use></svg>
+                        <a href='/' onClick={logoutval}><svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Logout</a>
 
                         {/* </Link> */}

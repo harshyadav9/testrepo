@@ -106,6 +106,7 @@ const Error = [
 	{
 		fieldNam: "school",
 		message: "Please enter schoolName",
+		message2: "Please enter College Name",
 		status: false
 	},
 	{

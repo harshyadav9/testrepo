@@ -116,7 +116,7 @@ export default function StudentInHelpdeskTicket() {
                     <div class="col-sm">
                       <div class="form-wrapper">
                         <label>Name</label>
-                        <input type="text" disabled="" value={nameval} placeholder="abcd school" name="schname" required="" />
+                        <input type="text" disabled value={nameval} placeholder="abcd school" name="schname" required="" />
                       </div>
                       {/* <div class="form-wrapper">
                         <label>Email</label>

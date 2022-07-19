@@ -89,7 +89,7 @@ export default function StudentInEditDetails() {
       SetAdd1(studentdetails.data.add1);
       SetPin(studentdetails.data.pin);
       SetSchool(studentdetails.data.school);
-      SetClassCandidate(studentdetails.data.standard || 4);
+      SetClassCandidate(studentdetails.data.standard || 'UG');
       SetSection(studentdetails.data.section);
       SetPgEmail(studentdetails.data.pgEmail);
       SetPgMobile(studentdetails.data.pgMobile);
@@ -235,6 +235,9 @@ export default function StudentInEditDetails() {
       case "city":
       case "add1":
       case "school":
+        if ((value === undefined) || (value === null) || (value.length < 1))
+          err = (errorList.find(item => item.fieldNam === key).message2);
+        break;
       case "pgname":
       case "classcandidate":
       case "section":
@@ -562,16 +565,16 @@ export default function StudentInEditDetails() {
 
 
                 <div class="row">
-                  <div class="col-sm">
+                  {/* <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Level of Exam</label>
                       <input type="text" name="level" placeholder="" style={{ backgroundColor: "#dfdbdb" }}
-                        disabled value={levelexam}
+                        disabled value='12'
 
                         required="" />
                     </div>
-                  </div>
-                  <div class="col-sm">
+                  </div> */}
+                  {/* <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Exam Theme<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="level" placeholder="" style={{ backgroundColor: "#dfdbdb" }}
@@ -579,13 +582,9 @@ export default function StudentInEditDetails() {
 
                         required="" />
 
-                      {/* <select name="examtheme" disabled={slotDisabled} value={examtheme}>
-
-                        <option value="ESD">ESD</option>
-                        <option value="ESDGREEN">ESDGREEN</option>
-                      </select> */}
+                     
                     </div>
-                  </div>
+                  </div> */}
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Mock Test</label>

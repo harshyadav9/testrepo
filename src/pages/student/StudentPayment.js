@@ -135,12 +135,12 @@ export default function StudentPayment() {
                   </div>
 
                   <div class="row">
-                    <div class="col-sm">
+                    {/* <div class="col-sm">
                       <div class="form-wrapper">
                         <label>Level Of Exam</label>
                         <input type="text" placeholder="" value={paymentData?.examLevel} disabled name="city" required="" />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div class="col-sm">
                       <div class="form-wrapper">
@@ -175,7 +175,7 @@ export default function StudentPayment() {
 
                     <div class="col-sm">
                       <div class="form-wrapper">
-                        <label>Demo Slot Time</label>
+                        <label>Mock Slot Time</label>
                         <input type="text" placeholder="" value={`${paymentData?.demoSlotDateTime}`} disabled name="city" required="" />
                       </div>
                     </div>

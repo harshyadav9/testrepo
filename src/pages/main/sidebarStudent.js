@@ -174,7 +174,7 @@ function SidebarStudent() {
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Logout
                         </Link> */}
-                        <a onClick={logoutval}><svg className="icon"><use xlinkHref="#application_status"></use></svg>
+                        <a href='/' onClick={logoutval}><svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Logout</a>
 
 
