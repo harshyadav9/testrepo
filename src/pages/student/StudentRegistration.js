@@ -393,13 +393,16 @@ export default function StudentRegistration({ isLogged }) {
         break;
 
       case "mobile":
-        if (value.length < 1 && isIndain)
+        // if (isIndain) {
+        if (value.length < 1)
           err = (errorList.find(item => item.fieldNam === key).message);
-        if (err === "") {
+        if (err === "" && isIndain) {
           let item = errorList.find(item => item.fieldNam === key);
           let regExp = RegExp(item.regex)
           err = (regExp.test(value) ? "" : item.message2);
         }
+        // }
+
         break;
       case "email":
         if (value.length === 0)
@@ -518,7 +521,9 @@ export default function StudentRegistration({ isLogged }) {
                           }}
 
                           name="mobile" required="" />
-                        <button class="otbutton flex-grow-1 btn btn-accent" style={{ whiteSpace: 'nowrap' }} onClick={generateOtp}>Generate OTP</button>
+                        {isIndain && (
+                          <button class="otbutton flex-grow-1 btn btn-accent" style={{ whiteSpace: 'nowrap' }} onClick={generateOtp}>Generate OTP</button>
+                        )}
                       </div>
                     </div>
                   </div>

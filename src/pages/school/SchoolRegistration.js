@@ -78,16 +78,26 @@ export default function SchoolRegistration({ isLogged }) {
           err = (errorList.find(item => item.fieldNam === key).message);
         break;
       case "mobile":
-        console.log("value", value)
-        if (value.length < 1) {
-          err = (errorList.find(item => item.fieldNam === key).message);
 
-        }
-        if (err === "") {
+        // if (value.length < 1) {
+        //   err = (errorList.find(item => item.fieldNam === key).message);
+
+        // }
+        // if (err === "") {
+        //   let item = errorList.find(item => item.fieldNam === key);
+        //   let regExp = RegExp(item.regex)
+        //   err = (regExp.test(value) ? "" : item.message2);
+        // }
+
+        // if (isIndain) {
+        if (value.length < 1)
+          err = (errorList.find(item => item.fieldNam === key).message);
+        if (err === "" && isIndain) {
           let item = errorList.find(item => item.fieldNam === key);
           let regExp = RegExp(item.regex)
           err = (regExp.test(value) ? "" : item.message2);
         }
+        // }
         break;
       case "email":
         if (value.length === 0)

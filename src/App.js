@@ -128,7 +128,7 @@ function App() {
           )}
 
           {!isLoggedIn && (
-            <>  <Route path="/student-Inforget" element={<SchoolForget />} exact /></>
+            <>  <Route path="/student-Inforget" element={<StudentInforget />} exact /></>
 
           )}
 
