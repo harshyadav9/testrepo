@@ -12,11 +12,12 @@ import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router";
 import Sidebar from "../main/sidebar";
 import { StudentDataContext } from "../context/datacontext";
+import ExportCSV from "../main/excelDownload";
 var md5 = require('md5');
 
 
 const XLSX = require("xlsx");
-const dayjs = require('dayjs')
+const dayjs = require('dayjs');
 
 
 
@@ -249,16 +250,6 @@ export default function SchoolUploadData() {
     });
     console.log("otp", otp);
 
-
-    // console.log(window.URL.createObjectURL(otp));
-
-
-    const url = window.URL.createObjectURL(new Blob([otp]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'file.xlsx'); //or any other extension
-    document.body.appendChild(link);
-    link.click();
   }
 
   const uploadFile = async () => {
@@ -892,7 +883,8 @@ export default function SchoolUploadData() {
 
                     <div className="col-sm-5">
                       <div className="d-flex h-100 flex-column justify-content-around">
-                        <button className="btn btn-primary mb-4 mb-sm-0 w-100" onClick={downloadexcel}>Download Excel Format</button>
+                        <ExportCSV />
+                        {/* <button className="btn btn-primary mb-4 mb-sm-0 w-100" onClick={downloadexcel}>Download Excel Format</button> */}
                         {/* <button className="btn btn-primary w-100 ">Upload Student Data</button> */}
                       </div>
                     </div>
