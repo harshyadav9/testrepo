@@ -764,6 +764,14 @@ td.unpaid {
   background-color: '';
 }
 
+
+.disableRowBtn {
+  background-color: #efefef !important;
+  border-bottom-color: lightgray !important;
+  color: #6c757d !important;
+  pointer-events: none !important;
+}
+
 /* modal design  end */
 
 

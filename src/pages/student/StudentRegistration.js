@@ -91,7 +91,7 @@ export default function StudentRegistration({ isLogged }) {
   const changeCityState = (event) => {
 
     let countryData = JSON.parse(event.target.value);
-
+    console.log("event.target.value", event.target.value)
 
     setCountry(event.target.value);
     if (countryData.countryCode !== "IN") {
@@ -104,6 +104,7 @@ export default function StudentRegistration({ isLogged }) {
     getCityState(countryData.countryCode);
 
   };
+
 
   const getCityState = async (countryCode) => {
     const endPoint = countryCode === 'IN' ? API_END_POINTS.getIndianState : API_END_POINTS.getInternationalCities + `'${countryCode}'`
@@ -300,6 +301,12 @@ export default function StudentRegistration({ isLogged }) {
       if (countryList?.status === 200 && countryList?.data?.status) {
         let list = sortCountryList(countryList.data.list);
         setCountryList(list);
+        //{"countryCode":"IN","countryname":"India"}
+        let obj = JSON.stringify({ countryCode: 'IN', countryname: 'India' });
+        setCountry(obj);
+        setIsIndain(true);
+        getCityState('IN');
+        setCityStateName('Select State');
       } else {
         setCountryList([]);
 
@@ -436,9 +443,6 @@ export default function StudentRegistration({ isLogged }) {
                   <div class="col-sm">
                     <div class="form-wrapper">
                       <label>Country<span style={{ color: 'red' }}>*</span></label>
-
-
-
                       <select value={country} required onChange={changeCityState}>
                         <option value="volvo" id="country_id">Select Country</option>
                         {

@@ -35,23 +35,23 @@ const ExportCSV = ({ fileName = 'Customers_Infomation_xlsx' }) => {
 
     const exportToCSV = (fileName) => {
         let csvData = [{
-            Name: "Tom",
-            DOB: "12-12-1992",
-            Class: "7",
-            Section: "A",
-            ExamTheme: "ESD",
-            DemoExam: "YES"
+            Name: "",
+            DOB: "",
+            Class: "",
+            Section: "",
+            ExamTheme: "",
+            DemoExam: ""
         }];
 
         const wscols = [
-            { wch: Math.max(...csvData.map(customer => customer.Name.length)) },
-            { wch: Math.max(...csvData.map(customer => customer.DOB.length)) },
-            { wch: Math.max(...csvData.map(customer => customer.Class.length)) },
-            { wch: Math.max(...csvData.map(customer => customer.Section.length)) },
+            { wch: Math.max(...csvData.map(customer => customer.Name.length)) + 3 },
+            { wch: Math.max(...csvData.map(customer => customer.DOB.length)) + 3 },
+            { wch: Math.max(...csvData.map(customer => customer.Class.length)) + 3 },
+            { wch: Math.max(...csvData.map(customer => customer.Section.length)) + 3 },
             {
                 wch: Math.max(...csvData.map(customer => customer.ExamTheme.length)) + 3
             },
-            { wch: Math.max(...csvData.map(customer => customer.DemoExam.length)) },
+            { wch: Math.max(...csvData.map(customer => customer.DemoExam.length)) + 3 },
         ];
         const ws = XLSX.utils.json_to_sheet(Heading, {
             header: ["Name", "DOB", "Class", "Section", "ExamTheme", "DemoExam"],

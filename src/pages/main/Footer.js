@@ -49,6 +49,15 @@ export default function Footer() {
     `)
   };
 
+  const contactUs = () => {
+    setIsOpen(true);
+    setModalHeading('Contact Us');
+    setModalText(`Helpdesk Call between 10 am to 5 pm IST 011-46571473 (Sunday Closed)
+    `)
+  };
+
+
+
   const handleClose = () => {
     setIsOpen(false);
   }
@@ -110,6 +119,14 @@ export default function Footer() {
                 Refund & Cancellation Policy
               </NavLink> */}
               <a className="nav-link link-light" onClick={refund}>Refund & Cancellation Policy</a>
+            </li>
+
+            <li className="nav-item">
+
+              {/* <NavLink className="nav-link link-light" activeClassName="active" to="/">
+  Refund & Cancellation Policy
+</NavLink> */}
+              <a className="nav-link link-light" onClick={contactUs}>Contact Us</a>
             </li>
             {/* <li class="nav-item"><a href="#footerModal" role="button" class="nav-link link-light" data-bs-toggle="modal">Privacy Policy</a></li>
             <li class="nav-item"><a href="#footerModal" role="button" class="nav-link link-light" data-bs-toggle="modal">Terms and Conditions</a></li>

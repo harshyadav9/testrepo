@@ -52,6 +52,7 @@ function to_json(workbook) {
 export default function SchoolUploadData() {
   const { state, dispatch } = useContext(StudentDataContext);
   const [file, setFile] = useState(null);
+  const [datePopulate, setDatePopulate] = useState('');
   const [studantData, setStudanntData] = useState([]);
   const [duplicateRows, setDuplicateRows] = useState([]);
   const [headers, setHeaders] = useState([])
@@ -61,14 +62,15 @@ export default function SchoolUploadData() {
   const [stDOB, setDOB] = useState('');
   const [stClass, setClass] = useState('');
   const [stSection, setSection] = useState('');
-  const [examTheme, setexamTheme] = useState('');
-  const [demoExam, setDemoExam] = useState('');
+  const [examTheme, setexamTheme] = useState('ESD');
+  const [demoExam, setDemoExam] = useState('NO');
   const [idCount, setIdCount] = useState(0);
-  const classesdropdown = [4, 5, 6, 7, 8, 9, 10, 11, 12, 'UG', 'PG'];
+  const classesdropdown = [4, 5, 6, 7, 8, 9, 10, 11, 12];
   const examThemedropdown = ['ESD', 'ESDGREEN'];
   const [filename, setFilename] = useState("");
   const [minRecordLimit, setMinRecordsLimit] = useState(0);
-  const [recPresent, setRecPresent] = useState(false);
+  const [dupRecords, setDupRecords] = useState([]);
+  const [dupErr, setDupErr] = useState("");
   const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : "";
   let token = userToken;
   // let decodedSchoolData = token !== "" ? jwt_decode(token) : {};
@@ -97,12 +99,14 @@ export default function SchoolUploadData() {
   // }
 
   const getAppStatus = async () => {
+
     const appStatus = await axios.post(`${API_BASE_URL}${API_END_POINTS.applicationStatus}`, {
       school_code: state.school_code
     });
 
     if (appStatus?.status === 200) {
-      let idVal = JSON.parse(JSON.stringify(idCount));
+      // let idVal = JSON.parse(JSON.stringify(idCount));
+      let idVal = 0;
       let finalArr = [];
       let existingdata = appStatus.data.data;
 
@@ -114,15 +118,12 @@ export default function SchoolUploadData() {
 
         resultset['id'] = idVal++;
         resultset['name'] = existingdata[i]['Name'];
-        console.log("existingdata[i]['DOB']", existingdata[i]['DOB']);
-        console.log("existingdata[i]['DOB']", existingdata[i]['DOB']);
         if (existingdata[i]['DOB'].match(regex) === null) {
           resultset['dob'] = existingdata[i]['DOB'].split('-').reverse().join('-');
         } else {
           resultset['dob'] = existingdata[i]['DOB'];
         }
         // resultset['dob'] = dayjs(new Date(existingdata[i]['DOB'])).format('DD-MM-YYYY');
-        console.log("resultset['dob']", resultset['dob']);
         resultset['className'] = existingdata[i]['Class'];
         resultset['section'] = existingdata[i]['Section'];
         resultset['examTheme'] = existingdata[i]['ExamTheme'];
@@ -131,7 +132,7 @@ export default function SchoolUploadData() {
 
         resultset['DemoSlotDateTime'] = existingdata[i]['DemoSlotDateTime'];
         resultset['ExamSlotDateTime'] = existingdata[i]['ExamSlotDateTime'];
-
+        resultset['StudentID'] = existingdata[i]['StudentID'];
 
         if ((resultset['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(resultset['className'])) === -1) ||
           (examThemedropdown.indexOf(resultset['examTheme']) === -1) || (['YES', 'NO'].indexOf(resultset['demoExam']) === -1)) {
@@ -144,7 +145,8 @@ export default function SchoolUploadData() {
 
         finalArr.push(resultset);
       };
-      setIdCount(prevCount => prevCount + idVal);
+      // setIdCount(prevCount => prevCount + idVal);
+      setIdCount(idVal);
       console.log("appStatus", appStatus);
       setStudanntData([...finalArr]);
     }
@@ -166,6 +168,8 @@ export default function SchoolUploadData() {
       alert("kindly upload some records to save ");
       return;
     }
+    findDuplicates();
+    return
     // if (serverData.length < minRecordLimit) {
     //   // notify(`Studant record minmum of ${MINIMUMROW} rows. Duplicate data in files`, false)
     //   alert(`kindly select ${minRecordLimit} number of records minimum`);
@@ -290,6 +294,7 @@ export default function SchoolUploadData() {
     //   console.log("finalData", finalData);
 
 
+    console.log("finalData", finalData);
     let fileupload = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.uploadApi}`, finalData);
     console.log("fileupload", fileupload);
     navigate("/school-slot");
@@ -303,6 +308,7 @@ export default function SchoolUploadData() {
 
   };
   // Name  DOB  Class   Section ExamTheme MockTest
+
 
   const handleOnChange = e => {
     // console.log(e.target.files[0],'file name');
@@ -325,8 +331,8 @@ export default function SchoolUploadData() {
           }
           setHeaders(arr.shift());
           console.log("arr", arr);
-          correctData = arr.map((exData, i) => [...exData.slice(0, 1), dayjs(new Date(exData.slice(1, 2))).format('DD-MM-YYYY'), ...exData.slice(2, 15)]);
-          // correctData = arr.map((exData, i) => [...exData.slice(0, 1), dayjs(ExcelDateToJSDate(exData[1])).format('DD-MM-YYYY'), ...exData.slice(2, 15)]);
+          // correctData = arr.map((exData, i) => [...exData.slice(0, 1), dayjs(new Date(exData.slice(1, 2))).format('DD-MM-YYYY'), ...exData.slice(2, 15)]);
+          correctData = arr.map((exData, i) => [...exData.slice(0, 1), dayjs(ExcelDateToJSDate(exData[1])).format('DD-MM-YYYY'), ...exData.slice(2, 15)]);
           console.log("correctData", correctData);
 
           let correctDatawithErr = correctData.map((row, i) => [...row, 'valid']);
@@ -347,7 +353,7 @@ export default function SchoolUploadData() {
           for (let i = 0; i < correctData.length; i++) {
             let resultset = {};
             resultset['id'] = idVal++;
-            resultset['name'] = correctData[i][0];
+            resultset['name'] = correctData[i][0].trim();
             resultset['dob'] = correctData[i][1];
             resultset['className'] = correctData[i][2];
             resultset['section'] = correctData[i][3];
@@ -355,9 +361,13 @@ export default function SchoolUploadData() {
             resultset['demoExam'] = correctData[i][5];
             resultset['schoolId'] = state.school_code;
             resultset['error'] = 'valid';
+            resultset['StudentID'] = null;
+            resultset['DemoSlotDateTime'] = null;
+            resultset['ExamSlotDateTime'] = null;
             finalArr.push(resultset);
           };
-          setIdCount(prevCount => prevCount + idVal);
+          setIdCount(idVal);
+          // setIdCount(prevCount => prevCount + idVal);
           console.log("idCount", idCount);
           // setStudanntData(correctDatawithErr);
           setStudanntData([...finalArr]);
@@ -427,10 +437,41 @@ export default function SchoolUploadData() {
     setStudanntData(updatedate)
   }
 
+
+  const findDuplicates = () => {
+    let tempArr = [...studantData];
+
+
+    let arr = Object.values(tempArr.reduce((c, v) => {
+      let k = v.name + '-' + v.dob;
+      c[k] = c[k] || [];
+      c[k].push(v);
+      return c;
+    }, {})).reduce((c, v) => v.length > 1 ? c.concat(v) : c, []);
+
+
+    console.log("arr", arr);
+
+    let str = "";
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i]['StudentID'] === null) {
+        str += arr[i]['id'];
+        str += " ";
+
+      }
+    }
+
+
+    console.log("str", str)
+    setDupErr(`${str} are duplicate records kindly remove them.`);
+  }
+
   const addNewRow = (e) => {
+
+    console.log(stName && stDOB && stClass && stSection && examTheme && demoExam);
     e.preventDefault();
     if (!(stName && stDOB && stClass && stSection && examTheme && demoExam)) {
-      // notify(`Please fill all fields!.`, false)
+
       return
     }
     console.log("idCount", idCount);
@@ -449,6 +490,7 @@ export default function SchoolUploadData() {
     resultset['error'] = 'valid';
     resultset['DemoSlotDateTime'] = null;
     resultset['ExamSlotDateTime'] = null;
+    resultset['StudentID'] = null;
 
 
     const regex = /^\d{2}-\d{2}-\d{4}$/;
@@ -461,20 +503,22 @@ export default function SchoolUploadData() {
       errRows.push(exceldataset.length + 1);
     }
 
-    // notify(`Please correct the respective  columns of row number ${errRows}`, false);
+
     exceldataset.push(resultset);
 
+
+    // findDuplicates(exceldataset);
     setStudanntData([...exceldataset]);
     setIdCount(runningId);
-    // let cpyStudantData = [...studantData, [stName, stDOB, stClass, stSection, examTheme, demoExam, 'valid']];
 
-    setStName('');
-    setDOB('');
-    setClass('');
-    setexamTheme('');
-    setSection('');
-    setDemoExam('');
-    // setStudanntData(cpyStudantData)
+
+    // setStName('');
+    // setDOB('');
+    // setClass('');
+    // setexamTheme('ESD');
+    // setSection('');
+    // setDemoExam('NO');
+    // setDatePopulate('');
 
   }
   return (
@@ -944,14 +988,20 @@ export default function SchoolUploadData() {
                         <td>
                           <div className="form-wrapper">
                             {/* <input type="text" placeholder="02-08-2001" style={{ width: '100px' }} /> */}
-                            <input type="text" name="add1"
+                            <input type="date" placeholder="choose date" value={datePopulate} name="dob" onChange={e => {
+
+                              let newdate = dayjs(new Date(e.target.value)).format('DD-MM-YYYY');
+                              setDOB(newdate);
+                              setDatePopulate(e.target.value);
+                            }} required="" />
+                            {/* <input type="text" name="add1"
 
                               style={{ width: '100px' }}
 
                               onChange={e => setDOB(e.target.value)}
                               value={stDOB}
 
-                            />
+                            /> */}
                           </div>
                         </td>
                         <td>
@@ -982,21 +1032,28 @@ export default function SchoolUploadData() {
                         </td>
                         <td>
                           <div className="form-wrapper">
-                            {/* <input type="text" style={{ width: '150px' }} /> */}
-                            <input type="text" name="add1"
+
+                            {/* <input type="text" name="add1"
 
                               style={{ width: '150px' }}
                               onChange={e => setexamTheme(e.target.value)}
 
                               value={examTheme}
 
-                            />
+                            /> */}
+
+                            <select name="class" value={examTheme} onChange={e => setexamTheme(e.target.value)}>
+
+                              <option value="ESD">ESD</option>
+                              <option value="ESDGREEN">ESDGREEN</option>
+
+                            </select>
                           </div>
                         </td>
                         <td>
                           <div className="form-wrapper">
                             {/* <input type="text" style={{ width: '150px' }} /> */}
-                            <input type="text" name="add1"
+                            {/* <input type="text" name="add1"
 
                               style={{ width: '150px' }}
 
@@ -1005,7 +1062,14 @@ export default function SchoolUploadData() {
 
                               value={demoExam}
 
-                            />
+                            /> */}
+
+                            <select name="class" value={demoExam} onChange={e => setDemoExam(e.target.value)}>
+
+                              <option value="YES">YES</option>
+                              <option value="NO">NO</option>
+
+                            </select>
                           </div>
                         </td>
                         <td>
@@ -1058,7 +1122,7 @@ export default function SchoolUploadData() {
                           console.log("tbData", tbData);
                           return (
                             <tr key={tbData.id} className={tbData['error'] === 'invalid' ? 'invalid' : 'valid'}>
-                              <td>{i + 1}</td>
+                              <td>{tbData.id}</td>
                               <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['name'] ?? ''} style={{
                                 "width": "90%",
                                 "padding": "6px 15px",
@@ -1164,11 +1228,15 @@ export default function SchoolUploadData() {
                                 </button> */}
 
                                 <div className="btn-group btn-group-sm" role="group">
-                                  <button type="button" className="btn btn-link" onClick={(e) => editRow(tbData, i)}><svg className="icon">
-                                    <use xlinkHref="#edit"></use>
-                                  </svg></button>
+                                  <button type="button" className="btn btn-link" disabled={(
+                                    (tbData['StudentID'] !== null) ||
+                                    (tbData['ExamSlotDateTime'] === null && tbData['DemoSlotDateTime'])
+                                  ) ? 'disableRowBtn' : false}
+                                    onClick={(e) => editRow(tbData, i)}><svg className="icon">
+                                      <use xlinkHref="#edit"></use>
+                                    </svg></button>
                                   <div className="vr"></div>
-                                  <button type="button" className="btn btn-link" onClick={(e) => deleteRow(tbData, i)}><svg className="icon">
+                                  <button type="button" className={`btn btn-link ${tbData['StudentID'] !== null ? 'disableRowBtn' : ''} `} disabled={tbData['StudentID'] !== null ? 'disableRowBtn' : ''} onClick={(e) => deleteRow(tbData, i)}><svg className="icon">
                                     <use xlinkHref="#delete"></use>
                                   </svg></button>
                                 </div>
@@ -1192,13 +1260,14 @@ export default function SchoolUploadData() {
                       <li>Date of Birth should be in DD-MM-YYYY format</li>
                       <li>Value of examTheme should be either ESD/ESDGREEN</li>
                       <li>Value of mock test should be either YES/NO</li>
-                      <li>Value of class  should be btween 4,5,6,7,8,9,10,11,12,UG,PG</li>
+                      <li>Value of class  should be btween 4,5,6,7,8,9,10,11,12</li>
                     </ul>
                   </h3>
                 </div>
                 <div className="row my-3">
                   <button className="btn btn-primary mx-auto" style={{ width: '15rem' }} onClick={submitStudantData}>Save Student Data</button>
                 </div>
+                <h2>{dupErr}</h2>
                 {/* <div className="modal" id="myModalexam">
                   <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
