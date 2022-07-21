@@ -396,7 +396,7 @@ export default function StudentInEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>City<span style={{ color: 'red' }}>*</span></label>
+                      <label>Degree<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" placeholder="" value={city} onChange={(e) => {
                         SetCity(e.target.value);
                         formValidate({ 'key': 'city', 'value': e.target.value });
@@ -499,7 +499,7 @@ export default function StudentInEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Class<span style={{ color: 'red' }}>*</span></label>
+                      <label>Course<span style={{ color: 'red' }}>*</span></label>
                       {/* <input type="text" name="class" value={classcandidate} onChange={(e) => {
                         SetClassCandidate(e.target.value);
                       }} */}
@@ -520,7 +520,7 @@ export default function StudentInEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Section<span style={{ color: 'red' }}>*</span></label>
+                      <label>Course<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="section" value={section} onChange={(e) => {
                         SetSection(e.target.value);
                         formValidate({ 'key': 'section', 'value': e.target.value });
@@ -534,7 +534,7 @@ export default function StudentInEditDetails() {
                 <div class="row">
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Name of Professor<span style={{ color: 'red' }}>*</span></label>
+                      <label>Name of Principal / Dean / HOD<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="pname" value={pgname} onChange={(e) => {
                         SetPgName(e.target.value);
                         formValidate({ 'key': 'pgname', 'value': e.target.value });
@@ -544,7 +544,7 @@ export default function StudentInEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Email of Professor<span style={{ color: 'red' }}>*</span></label>
+                      <label>Email of Principal / Dean / HOD<span style={{ color: 'red' }}>*</span></label>
                       <input type="email" name="pemail" value={pgemail} onChange={(e) => {
                         SetPgEmail(e.target.value);
                         formValidate({ 'key': 'pgemail', 'value': e.target.value });
@@ -554,7 +554,7 @@ export default function StudentInEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Mobile of Professor<span style={{ color: 'red' }}>*</span></label>
+                      <label>Mobile of Principal / Dean / HOD<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="pmobile" placeholder="" value={pgemobile} onChange={(e) => {
                         SetPgMobile(e.target.value);
                         formValidate({ 'key': 'pgemobile', 'value': e.target.value });
@@ -599,7 +599,7 @@ export default function StudentInEditDetails() {
                 </div>
 
                 <div class="row my-3">
-                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory!!!</h3>
+                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory</h3>
                   {RegisterationClicked === 1 && error_message && (<div className="alert alert-danger w-100" role="alert">
                     {error_message}
                   </div>)}
