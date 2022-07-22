@@ -211,7 +211,7 @@ export default function SchoolEditDetails() {
 
   const checkAllField = () => {
     let arr = [city, add1, pin, school, classcandidate, section, pgname, pgemail, pgemobile];
-    let arrKey = ['city', 'add1', 'pin', 'school', 'classcandidate', 'section', 'pgname', 'pgemail', 'pgemobile'];
+    let arrKey = ['city', 'add1', 'pin', 'school', 'classcandidate', 'section_c', 'pgname', 'pgemail', 'pgemobile'];
     let err = '';
     arr.forEach((value, index) => {
       if (err === '') {
@@ -330,7 +330,7 @@ export default function SchoolEditDetails() {
             <div class="mybox shadow  mybg-accent-light px-4 py-3 mb-4">
               <div class="row align-items-center">
                 <div class="col-sm">
-                  <p class="mb-0 mb-sm-1">Candidate RollNo.</p>
+                  <p class="mb-0 mb-sm-1">Candidate Roll No.</p>
 
                   <p class="font-bold mb-2 mb-sm-0">{rollnO}</p>
                 </div>
@@ -347,7 +347,7 @@ export default function SchoolEditDetails() {
 
             <div class="section-title mb-4 text-muted">
               <h6 class="font-bold ">Edit Personal Details</h6>
-              <p>Fill this form for registration</p>
+              {/* <p>Fill this form for registration</p> */}
             </div>
 
             <div class="shadow bg-white rounded-16">
@@ -547,8 +547,8 @@ export default function SchoolEditDetails() {
                     <div class="form-wrapper">
                       <label>Email of Parent/Guardian<span style={{ color: 'red' }}>*</span></label>
                       <input type="email" name="pemail" value={pgemail} onChange={(e) => {
-                        SetPgEmail(e.target.value);
-                        formValidate({ 'key': 'pgemail', 'value': e.target.value });
+                        SetPgEmail(e.target.value.toLowerCase());
+                        formValidate({ 'key': 'pgemail', 'value': e.target.value.toLowerCase() });
                       }}
                         placeholder="" required />
                     </div>
@@ -601,7 +601,7 @@ export default function SchoolEditDetails() {
                 </div>
 
                 <div class="row my-3">
-                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory!!!</h3>
+                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory</h3>
                   {RegisterationClicked === 1 && error_message && (<div className="alert alert-danger w-100" role="alert">
                     {error_message}
                   </div>)}

@@ -1,73 +1,40 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
+import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
+import { StudentDataContext } from "../context/datacontext";
 
 export default function SchoolForget() {
 
-  const [emailId, setEmailId] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmpass, setConfirmpass] = useState("");
-  const [errordisp, setErrordisp] = useState("");
-  return (
-    // <div className="container-login">
-    //   <marquee> Welcome to Green Olympiad</marquee>
-    //   <div className="container-inner-area">
-    //     <div className="form-card">
-    //       <div className="imgcontainer">
-    //         <h2>Forgot Password (School)</h2>
-    //       </div>
 
-    //       <div className="">
-    //       <label>Mobile / E-Mail:</label>
-    //         <input
-    //           type="text"
-    //           placeholder="Enter the Mobile / E-Mail"
-    //           name="psw"
-    //           required
-    //         />
-    //         <br />
-    //         <label>OTP:</label>
-    //         <input
-    //           type="text"
-    //           placeholder="Enter the OTP"
-    //           name="psw"
-    //           required
-    //         />
-    //         <p style={{marginBottom: 3, color: "#1560bd", cursor: "pointer"}}>Verify</p>
-    //         <label>Old Password:</label>
-    //         <input
-    //           type="text"
-    //           placeholder="Enter Old Password"
-    //           name="psw"
-    //           required
-    //         />
-    //         <br />
-    //         <label>New Password:</label>
-    //         <input
-    //           type="text"
-    //           placeholder="Enter New Password"
-    //           name="psw"
-    //           required
-    //         />
-    //         <br />
-    //         <label>Confirm Password:</label>
-    //         <input
-    //           type="text"
-    //           placeholder="Enter Confirm Password"
-    //           name="psw"
-    //           required
-    //         />
-    //         <div>
-    //           <Link to="/school-login">
-    //             <button className="main-btn">Submit</button>
-    //           </Link>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
+  const { state, dispatch } = useContext(StudentDataContext);
+
+  const [school_code, setSchoolCode] = useState("");
+  const [errordisp, setErrordisp] = useState("");
+
+  const forget = async () => {
+    if (school_code.trim() === "") {
+      setErrordisp('Please fill all the fields');
+      return;
+    }
+
+
+    const forgetPassDetails = await axios.post(`${API_BASE_URL}${API_END_POINTS.forgetPassword}`, {
+      "school_code": school_code,
+      "roll_no": false
+    });
+    setErrordisp(forgetPassDetails.data.message);
+
+
+    console.log("forgetPassDetails", forgetPassDetails);
+
+
+  };
+
+  return (
+
 
     <div class="container-fluid">
       <div class="row ">
@@ -81,33 +48,19 @@ export default function SchoolForget() {
               <div class="p-4">
 
                 <div class="form-wrapper">
-                  <label>Email id </label>
-                  <input type="password" name="oldpass" value="password" onChange={(password) =>
-                    setPassword(password.target.value)
+                  <label>School Code</label>
+                  <input type="text" name="oldpass" value={school_code} onChange={(school_code) =>
+                    setSchoolCode(school_code.target.value)
                   } id="" />
                 </div>
-                <div class="row">
-                  <div class="col-sm">
-                    <div class="form-wrapper">
-                      <label>New Password</label>
-                      <input type="password" name="newpass" id="" value="password" onChange={(password) =>
-                        setConfirmpass(password.target.value)
-                      } />
-                    </div>
-                  </div>
-                  <div class="col-sm">
-                    <div class="form-wrapper">
-                      <label>Confirm Password</label>
-                      <input type="password" name="confirmpass" id="" value="setConfirmpass" onChange={(confirmpass) =>
-                        setConfirmpass(confirmpass.target.value)
-                      } />
-                    </div>
-                  </div>
-                </div>
+
                 <div class="mt-4 mb-3">
                   <div class="d-flex justify-content-center">
-                    <button class="btn btn-primary " style={{ width: '15rem' }}>Submit</button>
+                    <button class="btn btn-primary " style={{ width: '15rem' }} onClick={forget}>Submit</button>
                   </div>
+                </div>
+                <div>
+                  <h2 style={{ textAlign: 'center' }}>{errordisp}</h2>
                 </div>
               </div>
             </div>

@@ -132,7 +132,8 @@ export default function Home({ isLogged }) {
             <div className="row align-items-center">
               <div className="col">
                 <marquee>
-                  <h1>Welcome to <span>Green Olympiad</span></h1>
+
+                  <h1> Welcome to   <span>GREEN Olympiad </span>Online Registration</h1>
                 </marquee>
 
               </div>
@@ -144,9 +145,9 @@ export default function Home({ isLogged }) {
               <Link to="/school-login" className="box">
                 {/* <a href="#" className="box"> */}
                 <img src={schoolpreview} alt="" />
-                <h4>GREEN Olympiad </h4>
-                <h4>School</h4>
-                <h5>Registration / Login</h5>
+                <h4>Login for School Registration</h4>
+                {/* <h4>School</h4>
+                <h5>Registration / Login</h5> */}
                 <p>STD 4-12</p>
                 {/* </a> */}
               </Link>
@@ -158,9 +159,9 @@ export default function Home({ isLogged }) {
                   <use xlinkHref="#computer-user"></use>
                 </svg> */}
                 <img src={schoolpreview} alt="" />
-                <h4>GREEN Olympiad </h4>
-                <h4>Student</h4>
-                <h5>Registration / Login</h5>
+                <h4>Login for School Student's Registration</h4>
+                {/* <h4>Student</h4>
+                <h5>Registration / Login</h5> */}
                 <p>STD 4-12</p>
                 {/* </a> */}
               </Link>
@@ -171,9 +172,9 @@ export default function Home({ isLogged }) {
                 <img src={schoolpreview} alt="" />
 
 
-                <h4>Go4youth</h4>
-                <h5>Registration / Login</h5>
-                <p>Undergraduate/ Post Graduation</p>
+                <h4>Login for College Student's Registration</h4>
+                {/* <h5>Registration / Login</h5> */}
+                {/* <p>Undergraduate/ Post Graduation</p> */}
                 {/* </a> */}
               </Link>
             </div>

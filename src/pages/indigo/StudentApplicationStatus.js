@@ -76,7 +76,8 @@ export default function StudentInApplicationStatus() {
                           <td>{status.DOB}</td>
                           <td>{status.Class}</td>
                           <td>{status.Section}</td>
-                          <td>{status.ExamTheme}</td>
+                          {/* <td>{status.ExamTheme}</td> */}
+                          <td>{'GO4Youth'}</td>
                           <td>{status.ExamSlotDateTime}</td>
                           <td>{status.DemoExam}</td>
                           <td>{status.DemoSlotDateTime}</td>

@@ -162,7 +162,7 @@ export default function StudentViewHelpdeskTicket() {
                     <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Sno.</th>
+                          <th>S.No.</th>
                           <th>Ticket ID</th>
                           <th>Message</th>
                           <th>Category Name</th>

@@ -79,7 +79,10 @@ export const API_END_POINTS = {
 
 	getHelpdeskTicketDetails: 'terry/getHelpdeskTicketDetails',
 
-	updateHelpdeskTicketDetails: 'terry/updateHelpdeskTicketDetails'
+	updateHelpdeskTicketDetails: 'terry/updateHelpdeskTicketDetails',
+
+	changePassword: 'terry/changePassword',
+	forgetPassword: 'api/forgetPassword'
 	// getCategory: 'api/get-category',
 	// createTicket: 'api/create-help-ticket',
 	// getAllTickets: 'api/get-ticket-by-id'

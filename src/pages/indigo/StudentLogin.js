@@ -9,7 +9,7 @@ import jwt_decode from "jwt-decode";
 import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
 import { StudentDataContext } from "../context/datacontext";
 import { notify } from "../../Utills";
-import file from "../../assets/pdf/guide_individual.pdf";
+import file from "../../assets/pdf/guide_goFor.pdf";
 
 export default function SchoolInLogin({ isLogged }) {
   const { state, dispatch } = useContext(StudentDataContext);
@@ -194,9 +194,12 @@ export default function SchoolInLogin({ isLogged }) {
                           fontSize: '18px',
                           textAlign: 'center'
                         }}>
-                          <a className="link-light" href={file} target="_blank">Guidelines to fill Registration form</a>
+                          <a style={{
+                            fontSize: '20px',
+                            fontWeight: 'bold'
+                          }} className="link-light" href={file} target="_blank">Guidelines to fill Registration form</a>
                           <p style={{
-                            fontSize: '20px', fontWeight: 'bold'
+                            fontSize: '16px'
                           }}>Before filling the form,make sure you read all the instructions</p>
                         </div>
                       </div>
@@ -207,7 +210,7 @@ export default function SchoolInLogin({ isLogged }) {
                   <div className="card shadow p-3 p-md-4">
                     <div className="section-title mb-4 text-muted">
                       <h6 className="font-bold ">Individual Login</h6>
-                      <p>Welcome to Individial login</p>
+                      <p>Welcome to College Students' Online Registration</p>
                     </div>
 
 
@@ -230,7 +233,7 @@ export default function SchoolInLogin({ isLogged }) {
                       </div>
                       <div className="form-wrapper">
                         {/* <input type="password" class="" placeholder="Password" /> */}
-                        <input type="password" placeholder="password" name="psw" required onChange={setPassword} />
+                        <input type="password" placeholder="Password" name="psw" required onChange={setPassword} />
                         <br />
                         {
                           passError?.pass && passError.pass.length > 5 ? <span className="error">{passError.pass}</span> : null

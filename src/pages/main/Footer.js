@@ -4,6 +4,9 @@ import { Colors } from "../../assets/css/color";
 // import "../../assets/css/style.css";
 import "../../assets/css/style_new.css";
 import TermsModal from "./modal/termsModal";
+import file from "../../assets/pdf/faq.pdf";
+
+
 export default function Footer() {
   const [isOpen, setIsOpen] = useState(false);
   const [modalText, setModalText] = useState('');
@@ -58,6 +61,8 @@ export default function Footer() {
 
 
 
+
+
   const handleClose = () => {
     setIsOpen(false);
   }
@@ -90,10 +95,10 @@ export default function Footer() {
           <ul className="nav justify-content-center">
             <li className="nav-item">
               <TermsModal show={isOpen} handleClose={handleClose} modalBody={modalText} modalHeading={modalHeading} />
-              {/* <NavLink className="nav-link link-light" activeClassName="active" to="/"> */}
-              <a className="nav-link link-light" onClick={aboutUs}>About us</a>
 
-              {/* </NavLink> */}
+              {/* <a className="nav-link link-light" onClick={aboutUs}>About us</a> */}
+
+
             </li>
 
             <li className="nav-item">
@@ -128,9 +133,14 @@ export default function Footer() {
 </NavLink> */}
               <a className="nav-link link-light" onClick={contactUs}>Contact Us</a>
             </li>
-            {/* <li class="nav-item"><a href="#footerModal" role="button" class="nav-link link-light" data-bs-toggle="modal">Privacy Policy</a></li>
-            <li class="nav-item"><a href="#footerModal" role="button" class="nav-link link-light" data-bs-toggle="modal">Terms and Conditions</a></li>
-            <li class="nav-item"><a href="#footerModal" role="button" class="nav-link link-light" data-bs-toggle="modal">Refund &amp; Cancellation Policy</a></li> */}
+
+
+            <li className="nav-item">
+              <a className="nav-link link-light" href={file} target="_blank">FAQ</a>
+
+
+            </li>
+
           </ul>
         </footer>
 

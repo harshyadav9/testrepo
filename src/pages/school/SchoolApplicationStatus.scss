@@ -1,4 +1,23 @@
 .application-status {
+    .page-heading {
+        color: var(--text);
+        padding-left: 15px;
+        position: relative;
+        margin-bottom: 45px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            display: block;
+            width: 6px;
+            background: var(--accent);
+            height: 100%;
+            left: 0;
+            top: 0;
+        }
+    }
+
+
     table {
         thead {
             font-size: 90%;

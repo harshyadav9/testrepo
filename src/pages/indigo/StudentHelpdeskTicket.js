@@ -85,7 +85,7 @@ export default function StudentInHelpdeskTicket() {
 
     const data = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.createHelpdeskTicket}`, obj);
 
-
+    navigate('/student-Inview-helpdesk-ticket');
   }
 
 

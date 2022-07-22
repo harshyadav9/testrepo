@@ -1,23 +1,44 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import SidebarStudent from "../main/sidebarStudent";
+import { API_BASE_JAVA_URL, API_END_POINTS } from "../../apis/api";
+import { StudentDataContext } from "../context/datacontext";
 
 export default function StudentChangePassword() {
 
-
+  const { state, dispatch } = useContext(StudentDataContext);
+  const navigate = useNavigate();
   const [oldPss, setOldPss] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errordisp, setErrordisp] = useState("");
 
 
-  const submitpass = () => {
+  const submitpass = async () => {
+    if (confirmPassword.trim() === "" || newPassword.trim() === "" || oldPss.trim() === "") {
+      setErrordisp('Please fill all the fields');
+      return;
+    }
     if (confirmPassword.trim() !== newPassword.trim()) {
       setErrordisp('The new password and confirm password do not match');
+      return;
     }
+
+    const studentdetails = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.changePassword}`, {
+      "individualStudent1": true,
+      "indvRollNumber": state?.roll_no,
+      "isIndividualStudent": "true",
+      "newPassword": newPassword,
+      "schoolId": null
+    });
+
+    console.log("studentdetails", studentdetails);
+    if (studentdetails?.status === 200) {
+      setErrordisp('Your password has been changed successfully');
+    }
+
   }
 
 
@@ -69,7 +90,7 @@ export default function StudentChangePassword() {
                           </div>
                         </div>
                         <div>
-                          <h2>{errordisp}</h2>
+                          <h2 style={{ textAlign: 'center' }}>{errordisp}</h2>
                         </div>
                         <div class="mt-4 mb-3">
                           <div class="d-flex justify-content-center">

@@ -93,6 +93,11 @@ const Error = [
 		status: false
 	},
 	{
+		fieldNam: "pg_name",
+		message: "Please enter Principal / Dean / HOD name",
+		status: false
+	},
+	{
 		fieldNam: "classcandidate",
 		message: "Please enter class",
 		status: false
@@ -100,6 +105,11 @@ const Error = [
 	{
 		fieldNam: "section",
 		message: "Please enter section",
+		status: false
+	},
+	{
+		fieldNam: "section_c",
+		message: "Please enter course",
 		status: false
 	},
 

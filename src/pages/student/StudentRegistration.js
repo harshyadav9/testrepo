@@ -33,7 +33,7 @@ export default function StudentRegistration({ isLogged }) {
   const [mobile, setMobile] = useState("");
 
 
-  const [stateCityName, setCityStateName] = useState('Select State');
+  const [stateCityName, setCityStateName] = useState('Select State/Province');
   const [isIndain, setIsIndain] = useState(true);
   const [cityStateList, setCityStateList] = useState([]);
   const [data, setData] = useState("");
@@ -56,7 +56,7 @@ export default function StudentRegistration({ isLogged }) {
       const otp = await axios.post(`${API_BASE_URL}${API_END_POINTS.generateOtp}`, { mobile: mobile });
       if (otp?.data.status) {
         setMobileOTPValue(otp.data.otp);
-        setMsgText('Your OTP has been send on your registered mobile number');
+        setMsgText('OTP has been sent on your registered mobile number');
         document.getElementsByClassName('modal')[0].style.display = 'block';
       } else {
         setMsgText('Due to some reasons Your OTP culd not be send on your registered email id');
@@ -96,10 +96,10 @@ export default function StudentRegistration({ isLogged }) {
     setCountry(event.target.value);
     if (countryData.countryCode !== "IN") {
       setIsIndain(false)
-      setCityStateName('Select Provinced');
+      setCityStateName('Select State/Province');
     } else {
       setIsIndain(true);
-      setCityStateName('Select State');
+      setCityStateName('Select State/Province');
     }
     getCityState(countryData.countryCode);
 
@@ -145,7 +145,7 @@ export default function StudentRegistration({ isLogged }) {
         console.log("emailvalue", emailvalue);
         if (emailvalue?.data?.status) {
           setEmailOTPValue(emailvalue.data.otp);
-          setMsgText('Your OTP has been send on your registered email id');
+          setMsgText('OTP has been sent on your registered email id');
           document.getElementsByClassName('modal')[0].style.display = 'block';
 
         } else {
@@ -306,7 +306,7 @@ export default function StudentRegistration({ isLogged }) {
         setCountry(obj);
         setIsIndain(true);
         getCityState('IN');
-        setCityStateName('Select State');
+        setCityStateName('Select State/Province');
       } else {
         setCountryList([]);
 
@@ -434,7 +434,7 @@ export default function StudentRegistration({ isLogged }) {
           <main class="p-3 p-sm-4 p-lg-5">
             <div class="section-title mb-4 text-muted">
               <h6 class="font-bold">New Registration</h6>
-              <p>Fill this form for registration</p>
+              {/* <p>Fill this form for registration</p> */}
             </div>
 
             <div class="shadow bg-light rounded-16">
@@ -461,7 +461,7 @@ export default function StudentRegistration({ isLogged }) {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>State/City<span style={{ color: 'red' }}>*</span></label>
+                      <label>State/Province<span style={{ color: 'red' }}>*</span></label>
                       <select
                         className="dropdown"
                         id="cars"
@@ -472,7 +472,7 @@ export default function StudentRegistration({ isLogged }) {
                         value={state || ""}
                       >
 
-                        <option value="volvo">Select State/City</option>
+                        <option value="volvo">State/Province</option>
 
                         {cityStateList && cityStateList.map(ci => {
                           return (
@@ -560,8 +560,8 @@ export default function StudentRegistration({ isLogged }) {
 
                           onChange={(e) => {
 
-                            setEmail(e.target.value);
-                            formValidate({ 'key': 'email', 'value': e.target.value });
+                            setEmail(e.target.value.toLowerCase());
+                            formValidate({ 'key': 'email', 'value': e.target.value.toLowerCase() });
                           }}
 
 
@@ -593,7 +593,7 @@ export default function StudentRegistration({ isLogged }) {
                     <button class="btn btn-primary mx-2 " style={{ minWidth: '10rem' }} onClick={goToHome}>Cancel</button>
                   </div>
                   <div>
-                    <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory!!!</h3>
+                    <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory</h3>
                   </div>
 
                 </div>
@@ -629,7 +629,7 @@ export default function StudentRegistration({ isLogged }) {
                           <div className="modal-body">
                             <div className="table-responsive ">
                               <div className="table-responsive ">
-                                <h3>Registration number is {roll_no} and password is {mobile}</h3>
+                                <h3>Roll number is {roll_no} and password is {mobile}</h3>
                                 <h4>Remember this code and password for logging in future.</h4>
                               </div>
                             </div>

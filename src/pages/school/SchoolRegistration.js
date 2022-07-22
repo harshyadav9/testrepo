@@ -36,7 +36,7 @@ export default function SchoolRegistration({ isLogged }) {
   const [userRegistered, setUserRegistered] = useState(false);
   const [data, setData] = useState("");
   const [countryList, setCountryList] = useState([]);
-  const [stateCityName, setCityStateName] = useState('Select State');
+  const [stateCityName, setCityStateName] = useState('Select State/Province');
   const [cityStateList, setCityStateList] = useState([]);
 
   const [isIndain, setIsIndain] = useState(true);
@@ -281,7 +281,7 @@ export default function SchoolRegistration({ isLogged }) {
       const otp = await axios.post(`${API_BASE_URL}${API_END_POINTS.generateOtp}`, { mobile: mobile });
       if (otp?.data.status) {
         setMobileOTPValue(otp.data.otp);
-        setMsgText('Your OTP has been send on your registered mobile number');
+        setMsgText('OTP has been sent on your registered mobile number');
         document.getElementsByClassName('modal')[0].style.display = 'block';
       } else {
         //  error in generating otp
@@ -310,7 +310,7 @@ export default function SchoolRegistration({ isLogged }) {
 
         setIsIndain(true);
 
-        setCityStateName('Select State');
+        setCityStateName('Select State/Province');
         setData({ "country": 'IN', "state": "" });
 
 
@@ -477,7 +477,7 @@ export default function SchoolRegistration({ isLogged }) {
         console.log("emailvalue", emailvalue);
         if (emailvalue?.data?.status) {
           setEmailOTPValue(emailvalue.data.otp);
-          setMsgText('Your OTP has been send on your registered email id');
+          setMsgText('OTP has been sent on your registered email id');
           document.getElementsByClassName('modal')[0].style.display = 'block';
 
         } else {
@@ -559,10 +559,10 @@ export default function SchoolRegistration({ isLogged }) {
   const changeSearchCountry = (event) => {
     if (event.target.value !== "IN") {
       setIsIndain(false);
-      setCityStateName('Select Province')
+      setCityStateName('Select State/Province')
     } else {
       setIsIndain(true)
-      setCityStateName('Select State')
+      setCityStateName('Select State/Province')
     }
     setSearchCountry(event.target.value);
     getCitySearchState(event.target.value);
@@ -670,10 +670,10 @@ export default function SchoolRegistration({ isLogged }) {
   const setSecondState = (code) => {
     if (code !== "IN") {
       setIsIndain(false)
-      setCityStateName('Select Province');
+      setCityStateName('Select State/Province');
     } else {
       setIsIndain(true);
-      setCityStateName('Select State');
+      setCityStateName('Select State/Province');
     }
     getCityState(code)
   }
@@ -937,7 +937,7 @@ export default function SchoolRegistration({ isLogged }) {
           <main className="p-3 p-sm-4 p-lg-5">
             <div className="section-title mb-4 text-muted">
               <h6 className="font-bold ">School Registration</h6>
-              <p>Fill this form for registration</p>
+              {/* <p>Fill this form for registration</p> */}
             </div>
 
             <div className="shadow mb-5 rounded-16">
@@ -945,7 +945,7 @@ export default function SchoolRegistration({ isLogged }) {
                 <div className="row">
                   <div className="col-sm ">
                     <div className="form-wrapper ">
-
+                      <label>Country:</label>
                       <select required value={searchcountry} onChange={changeSearchCountry}>
                         <option value="volvo" id="country_id">Select Country</option>
                         {
@@ -964,7 +964,7 @@ export default function SchoolRegistration({ isLogged }) {
                   </div>
                   <div className="col-sm ">
                     <div className="form-wrapper ">
-
+                      <label>State/Province:</label>
                       <select className="dropdown" id="cars" value={searchstate} onChange={e => {
                         setSearchState(e.target.value);
                         setStateCity(JSON.parse(e.target.value).stateCity);
@@ -993,11 +993,11 @@ export default function SchoolRegistration({ isLogged }) {
                     <div className="form-wrapper ">
 
                       {/* <input type="number" placeholder="Pin code" required="" /> */}
-
+                      <label>Pin Code:</label>
                       <input
 
                         type="text"
-                        placeholder="Pin code"
+                        placeholder=""
                         name="uname"
                         // required
 
@@ -1029,6 +1029,9 @@ export default function SchoolRegistration({ isLogged }) {
                         }
                         <option value="volvo">Others</option>
                       </select>
+                    </div>
+                    <div>
+                      <h3><span style={{ color: 'red' }}>*</span>If you do not find your school, please choose 'Other' and then the required details</h3>
                     </div>
                   </div>
                 </div>
@@ -1078,7 +1081,7 @@ export default function SchoolRegistration({ isLogged }) {
                   </div>
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>State:<span style={{ color: 'red' }}>*</span></label>
+                      <label>State/Province:<span style={{ color: 'red' }}>*</span></label>
                       {/* <select className="dropdown" id="cars">
                         <option value="volvo">State</option>
                         <option value="volvo">Uttar Pradesh</option>
@@ -1095,7 +1098,7 @@ export default function SchoolRegistration({ isLogged }) {
                           formValidate({ 'key': 'state', 'value': e.target.value });
                         }}
                       >
-                        <option value="volvo">Select State/City</option>
+                        <option value="volvo">Select State/Province</option>
 
                         {cityStateList && cityStateList.map(ci => {
                           return (
@@ -1114,7 +1117,7 @@ export default function SchoolRegistration({ isLogged }) {
                   <div className="col-sm">
                     <div className="form-wrapper">
                       <label>School Name:<span style={{ color: 'red' }}>*</span></label>
-                      <input type="text" placeholder="School name here" name="uname" value={schoolName} required={true}
+                      <input type="text" placeholder="" name="uname" value={schoolName} required={true}
                         onChange={(schoolName) => {
                           setschoolName(schoolName.target.value);
                           formValidate({ 'key': 'schoolName', 'value': schoolName.target.value })
@@ -1132,7 +1135,7 @@ export default function SchoolRegistration({ isLogged }) {
                       {/* <input type="text" placeholder="Principal name here" name="uname" required="" /> */}
                       <input
                         type="text"
-                        placeholder="Principal name here"
+                        placeholder=""
                         name="uname"
                         required
                         onChange={(principalName) => {
@@ -1149,7 +1152,7 @@ export default function SchoolRegistration({ isLogged }) {
                       {/* <input type="text" placeholder="Enter Pin code" name="psw" required="" /> */}
                       <input
                         type="number"
-                        placeholder="Enter Pin code"
+                        placeholder=""
                         name="psw"
                         required
                         onChange={(pinCode) => {
@@ -1189,7 +1192,7 @@ export default function SchoolRegistration({ isLogged }) {
                           type="text"
                           maxLength={10}
                           className="me-3"
-                          placeholder="Mobile (Principal/Teacher)"
+                          placeholder=""
                           name="psw"
                           required={true}
                           onChange={(mobile) => {
@@ -1237,12 +1240,12 @@ export default function SchoolRegistration({ isLogged }) {
                         {/* <input type="text" className="me-3" placeholder="Mobile (Principal/Teacher)" name="psw" required="" /> */}
                         <input
                           type="text"
-                          placeholder="E-mail (Principal/Teacher)"
+                          placeholder=""
                           name="psw"
                           required
                           onChange={(email) => {
-                            setemail(email.target.value);
-                            formValidate({ 'key': 'email', 'value': email.target.value })
+                            setemail(email.target.value.toLowerCase());
+                            formValidate({ 'key': 'email', 'value': email.target.value.toLowerCase() })
                           }}
                         />
                         <button className="otbutton btn btn-accent" style={{ whiteSpace: 'nowrap' }} onClick={semdEmail}>Generate OTP</button>
@@ -1272,7 +1275,7 @@ export default function SchoolRegistration({ isLogged }) {
                   {RegisterationClicked === 1 && error_message && (<div className="alert alert-danger w-100" role="alert">
                     {error_message}
                   </div>)}
-                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory!!!</h3>
+                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory</h3>
                   <div className="d-flex justify-content-center">
                     {/* <button className="btn btn-primary w-50" type="submit">Registration</button> */}
                     <button className="btn btn-primary w-50" onClick={RegisterationApi}>Register</button>
@@ -1309,7 +1312,7 @@ export default function SchoolRegistration({ isLogged }) {
                             <div className="table-responsive ">
 
 
-                              <h3>Registration number is {schoolcode} and password is {mobile}</h3>
+                              <h3>School Code is {schoolcode} and password is {mobile}</h3>
                               <h4>Remember this code and password for logging in future.</h4>
                             </div>
                           </div>

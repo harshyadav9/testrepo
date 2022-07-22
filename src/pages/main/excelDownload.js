@@ -29,7 +29,7 @@ const ExportCSV = ({ fileName = 'Customers_Infomation_xlsx' }) => {
             Class: "Class",
             Section: "Section",
             ExamTheme: "ExamTheme",
-            DemoExam: "DemoExam"
+            MockExam: "MockExam"
         }
     ];
 
@@ -40,7 +40,7 @@ const ExportCSV = ({ fileName = 'Customers_Infomation_xlsx' }) => {
             Class: "",
             Section: "",
             ExamTheme: "",
-            DemoExam: ""
+            MockExam: ""
         }];
 
         const wscols = [
@@ -51,16 +51,16 @@ const ExportCSV = ({ fileName = 'Customers_Infomation_xlsx' }) => {
             {
                 wch: Math.max(...csvData.map(customer => customer.ExamTheme.length)) + 3
             },
-            { wch: Math.max(...csvData.map(customer => customer.DemoExam.length)) + 3 },
+            { wch: Math.max(...csvData.map(customer => customer.MockExam.length)) + 3 },
         ];
         const ws = XLSX.utils.json_to_sheet(Heading, {
-            header: ["Name", "DOB", "Class", "Section", "ExamTheme", "DemoExam"],
+            header: ["Name", "DOB", "Class", "Section", "ExamTheme", "MockExam"],
             skipHeader: true,
             origin: 0 //ok
         });
         ws["!cols"] = wscols;
         XLSX.utils.sheet_add_json(ws, csvData, {
-            header: ["Name", "DOB", "Class", "Section", "ExamTheme", "DemoExam"],
+            header: ["Name", "DOB", "Class", "Section", "ExamTheme", "MockExam"],
             skipHeader: true,
             origin: -1 //ok
         });

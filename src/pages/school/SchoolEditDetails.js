@@ -372,7 +372,7 @@ export default function SchoolEditDetails() {
           <main className="p-md-5 p-2">
             <div className="section-title mb-4 text-muted">
               <h6 className="font-bold ">Edit School Registration</h6>
-              <p>Fill this form for registration</p>
+              {/* <p>Fill this form for registration</p> */}
             </div>
             <div className="shadow  rounded-16">
               <div className="p-4 ">
@@ -557,8 +557,8 @@ export default function SchoolEditDetails() {
                       <label >Email of the Coordinate Teacher<span style={{ color: 'red' }}>*</span></label>
                       <input type="email" name="coemail" value={coordinatingTeacherEmail} placeholder="email@techer.in"
                         onChange={(coordinatingTeacherEmail) => {
-                          setcoordinatingTeacherEmail(coordinatingTeacherEmail.target.value);
-                          formValidate({ 'key': 'coordinatingTeacherEmail', 'value': coordinatingTeacherEmail.target.value })
+                          setcoordinatingTeacherEmail(coordinatingTeacherEmail.target.value.toLowerCase());
+                          formValidate({ 'key': 'coordinatingTeacherEmail', 'value': coordinatingTeacherEmail.target.value.toLowerCase() })
                         }}
                         required />
                     </div>
@@ -584,7 +584,7 @@ export default function SchoolEditDetails() {
                   </div>
                 </div>
                 <div>
-                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory!!!</h3>
+                  <h3>All fields marked with <span style={{ color: 'red' }}>*</span> are mandatory</h3>
                 </div>
               </div>
             </div>

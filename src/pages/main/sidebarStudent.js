@@ -113,7 +113,7 @@ function SidebarStudent() {
                         </svg>
                     </button>
                 </div>
-                <div className="navtitle">Student Desk</div>
+                <div className="navtitle">Student</div>
                 <ul className="list-unstyled">
                     {/* <li className="active"><a href="#"><img src="images/download-icon.png" height="18" alt="" /> School Details</a></li> */}
                     <li className="active">

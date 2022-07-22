@@ -44,6 +44,7 @@ export default function SchoolApplicationStatus() {
             <h4>Application Status</h4>
             {/* <p>Check Payment details</p> */}
           </div>
+
           <div className="shadow-lg p-4 bg-body rounded">
             <table className="table table-striped">
               <thead>

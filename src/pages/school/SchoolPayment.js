@@ -207,9 +207,9 @@ export default function SchoolPayment() {
 
       <div className="col-lg-9 ">
         <div className={`make-payment p-5 ${err.length > 0 ? 'hidepayment' : 'showpayment'}`}>
-          <div className="page-heading">
-            <h4>Make Payment</h4>
-            <p>Check Payment details</p>
+          <div class="section-title mb-4 text-muted">
+            <h6 class="font-bold ">Submit registration fee</h6>
+            {/* <p>Pay after click make payment button</p> */}
           </div>
           <div className="shadow-lg p-4 bg-body rounded">
             <div className="table-bordered">
@@ -297,7 +297,7 @@ export default function SchoolPayment() {
           <div className="btnmain">
             {state?.mode === 'ONLINE' && (
               <a> <button className="btn btn-primary" onClick={makePayment}>
-                Make Payment
+                Save & Proceed
               </button></a>
             )}
 

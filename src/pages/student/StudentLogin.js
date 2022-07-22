@@ -11,6 +11,7 @@ import { StudentDataContext } from "../context/datacontext";
 import { notify } from "../../Utills";
 import file from "../../assets/pdf/guide_individual.pdf";
 
+
 export default function SchoolLogin({ isLogged }) {
   const { state, dispatch } = useContext(StudentDataContext);
   const [user, setUser] = useState('');
@@ -107,7 +108,7 @@ export default function SchoolLogin({ isLogged }) {
   console.log("===user error", userError, passError)
   return (
     <div className="container-login">
-      <marquee> Welcome to Green Olympiad</marquee>
+      <marquee> Welcome to GREEN Olympiad</marquee>
       {/* <div className="container-inner-area">
         <Link to="/school-registration">
           <div className="smallcards-login">
@@ -192,9 +193,12 @@ export default function SchoolLogin({ isLogged }) {
                           fontSize: '18px',
                           textAlign: 'center'
                         }}>
-                          <a className="link-light" href={file} target="_blank">Guidelines to fill Registration form</a>
+                          <a style={{
+                            fontSize: '20px',
+                            fontWeight: 'bold'
+                          }} className="link-light" href={file} target="_blank">Guidelines to fill Registration form</a>
                           <p style={{
-                            fontSize: '20px', fontWeight: 'bold'
+                            fontSize: '16px'
                           }}>Before filling the form,make sure you read all the instructions</p>
                         </div>
                       </div>
@@ -228,14 +232,14 @@ export default function SchoolLogin({ isLogged }) {
                       </div>
                       <div className="form-wrapper">
                         {/* <input type="password" class="" placeholder="Password" /> */}
-                        <input type="password" placeholder="password" name="psw" required onChange={setPassword} />
+                        <input type="password" placeholder="Password" name="psw" required onChange={setPassword} />
                         <br />
                         {
                           passError?.pass && passError.pass.length > 5 ? <span className="error">{passError.pass}</span> : null
                         }
                         <div className="text-end mt-3">
                           {/* <a href="forget-password.html" class="forgetpwd">Forgot Password</a> */}
-                          <Link to="/school-forget" className="forget">
+                          <Link to="/student-forget" className="forget">
                             Forgot password?
                           </Link>
                         </div>

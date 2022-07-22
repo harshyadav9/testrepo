@@ -481,8 +481,8 @@ export default function SchoolSlot() {
           <main className="content ">
             <div className="container-fluid ps-md-4 ps-lg-5 pe-md-4 py-5">
               <div className="section-title mb-4 text-muted">
-                <h6 className="font-bold ">Select Slot for Exam/Mock Test</h6>
-                <p>Slot selection for exam</p>
+                <h6 className="font-bold ">GREEN Olympiad Examination and Mock Test</h6>
+                {/* <p>Slot selection for exam</p> */}
               </div>
               <div className="shadow bg-white rounded-16">
                 <div className="p-4 " >
@@ -677,6 +677,9 @@ export default function SchoolSlot() {
                     </div>
                     <div>
                       <h2>{showSlotErr}</h2>
+                    </div>
+                    <div>
+                      <h2>Slots once booked cannot be released.</h2>
                     </div>
                   </div>)}
                   {/* <Slotmodal show={show} /> */}

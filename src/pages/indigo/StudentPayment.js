@@ -112,8 +112,8 @@ export default function StudentInPayment() {
 
 
               <div class="section-title mb-4 text-muted">
-                <h6 class="font-bold ">Make Payment</h6>
-                <p>Pay after click make payment button</p>
+                <h6 class="font-bold ">Submit Registeration Fees</h6>
+                {/* <p>Pay after click make payment button</p> */}
               </div>
 
               <div class="shadow bg-white rounded-16">
@@ -147,7 +147,8 @@ export default function StudentInPayment() {
                     <div class="col-sm">
                       <div class="form-wrapper">
                         <label>Topic of exam</label>
-                        <input type="text" placeholder="" value={paymentData?.examTheme} disabled name="city" required="" />
+                        {/* <input type="text" placeholder=""  value={paymentData?.examTheme} disabled name="city" required="" /> */}
+                        <input type="text" placeholder="" GO4U value={'GO4Youth'} disabled name="city" required="" />
                       </div>
                     </div>
                   </div>
@@ -178,14 +179,14 @@ export default function StudentInPayment() {
                     <div class="col-sm">
                       <div class="form-wrapper">
                         <label>Mock Slot Time</label>
-                        <input type="text" placeholder="" value={`${paymentData?.demoSlotDateTime}`} disabled name="city" required="" />
+                        <input type="text" placeholder="" value={`${paymentData?.demoSlotDateTime === null ? '' : paymentData?.demoSlotDateTime}`} disabled name="city" required="" />
                       </div>
                     </div>
                   </div>
                   <div className="row my-3">
                     <div className="text-center">
 
-                      <button class={`btn btn-primary mx-auto ${paymentstatus === 'paid' ? 'paidcls' : 'unpaidcls'}`} onClick={makePayment}>Make Payment</button>
+                      <button class={`btn btn-primary mx-auto ${paymentstatus === 'paid' ? 'paidcls' : 'unpaidcls'}`} onClick={makePayment}>Save & Proceed</button>
                       {/* <button className={({ 'paidcls': paymentstatus === 'paid', 'unpaidcls': paymentstatus !== 'paid', 'btn': true, 'btn-primary': true, 'mx-auto': true })} onClick={makePayment}>Make Payment</button> */}
                     </div>
                     <div>

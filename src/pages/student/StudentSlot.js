@@ -653,6 +653,10 @@ export default function StudentSlot() {
                           <button className="btn btn-primary mx-auto" onClick={submitSlots}>Book slot for exam and mock test</button>
                         </div>
 
+                        <div>
+                          <h2>Slots once booked cannot be released.</h2>
+                        </div>
+
                         {showSlotErr.length > 0 && (
                           <div>
                             <h2> {showSlotErr}</h2>
@@ -663,9 +667,9 @@ export default function StudentSlot() {
 
 
                       </div>
-                      <div>
+                      {/* <div>
                         <h2 style={{ color: 'red' }}>Slot once booked cannot be changed again.</h2>
-                      </div>
+                      </div> */}
                     </>
                   )}
 

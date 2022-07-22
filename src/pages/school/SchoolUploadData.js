@@ -64,7 +64,7 @@ export default function SchoolUploadData() {
   const [stSection, setSection] = useState('');
   const [examTheme, setexamTheme] = useState('ESD');
   const [demoExam, setDemoExam] = useState('NO');
-  const [idCount, setIdCount] = useState(0);
+  const [idCount, setIdCount] = useState(1);
   const classesdropdown = [4, 5, 6, 7, 8, 9, 10, 11, 12];
   const examThemedropdown = ['ESD', 'ESDGREEN'];
   const [filename, setFilename] = useState("");
@@ -106,7 +106,7 @@ export default function SchoolUploadData() {
 
     if (appStatus?.status === 200) {
       // let idVal = JSON.parse(JSON.stringify(idCount));
-      let idVal = 0;
+      let idVal = 1;
       let finalArr = [];
       let existingdata = appStatus.data.data;
 
@@ -132,7 +132,7 @@ export default function SchoolUploadData() {
 
         resultset['DemoSlotDateTime'] = existingdata[i]['DemoSlotDateTime'];
         resultset['ExamSlotDateTime'] = existingdata[i]['ExamSlotDateTime'];
-        resultset['StudentID'] = existingdata[i]['StudentID'];
+        resultset['studentId'] = existingdata[i]['StudentID'];
 
         if ((resultset['dob'].match(regex) === null) || (classesdropdown.indexOf(parseInt(resultset['className'])) === -1) ||
           (examThemedropdown.indexOf(resultset['examTheme']) === -1) || (['YES', 'NO'].indexOf(resultset['demoExam']) === -1)) {
@@ -168,8 +168,10 @@ export default function SchoolUploadData() {
       alert("kindly upload some records to save ");
       return;
     }
-    findDuplicates();
-    return
+    let dupes = findDuplicates();
+    if (dupes) {
+      return;
+    }
     // if (serverData.length < minRecordLimit) {
     //   // notify(`Studant record minmum of ${MINIMUMROW} rows. Duplicate data in files`, false)
     //   alert(`kindly select ${minRecordLimit} number of records minimum`);
@@ -291,7 +293,6 @@ export default function SchoolUploadData() {
       delete finalData[i]['id'];
       delete finalData[i]['error'];
     }
-    //   console.log("finalData", finalData);
 
 
     console.log("finalData", finalData);
@@ -361,7 +362,7 @@ export default function SchoolUploadData() {
             resultset['demoExam'] = correctData[i][5];
             resultset['schoolId'] = state.school_code;
             resultset['error'] = 'valid';
-            resultset['StudentID'] = null;
+            resultset['studentId'] = null;
             resultset['DemoSlotDateTime'] = null;
             resultset['ExamSlotDateTime'] = null;
             finalArr.push(resultset);
@@ -454,7 +455,7 @@ export default function SchoolUploadData() {
 
     let str = "";
     for (let i = 0; i < arr.length; i++) {
-      if (arr[i]['StudentID'] === null) {
+      if (arr[i]['studentId'] === null) {
         str += arr[i]['id'];
         str += " ";
 
@@ -462,8 +463,16 @@ export default function SchoolUploadData() {
     }
 
 
-    console.log("str", str)
-    setDupErr(`${str} are duplicate records kindly remove them.`);
+    console.log("str", str);
+    if (str === "") {
+
+      return false;
+    } else {
+      setDupErr(`Row number ${str} are duplicate records kindly remove them.`);
+      return true;
+    }
+    // if (str === "" ? false : true);
+
   }
 
   const addNewRow = (e) => {
@@ -490,7 +499,7 @@ export default function SchoolUploadData() {
     resultset['error'] = 'valid';
     resultset['DemoSlotDateTime'] = null;
     resultset['ExamSlotDateTime'] = null;
-    resultset['StudentID'] = null;
+    resultset['studentId'] = null;
 
 
     const regex = /^\d{2}-\d{2}-\d{4}$/;
@@ -894,8 +903,8 @@ export default function SchoolUploadData() {
           <main className="content ">
             <div className="container-fluid ps-md-4 ps-lg-5 pe-md-4 py-5">
               <div className="section-title mb-4 text-muted">
-                <h6 className="font-bold ">Upload Student Data</h6>
-                <p>Upload Student Data from Excel</p>
+                <h6 className="font-bold ">Upload Students Information</h6>
+                <p>Schools have an option to upload students information by downloadable excel sheet OR through a form</p>
               </div>
 
 
@@ -1006,15 +1015,28 @@ export default function SchoolUploadData() {
                         </td>
                         <td>
                           <div className="form-wrapper">
-                            {/* <input type="text" placeholder="V" style={{ width: '60px' }} /> */}
-                            <input type="text" name="add1"
+
+                            {/* <input type="text" name="add1"
                               style={{ width: '60px' }}
 
                               onChange={e => setClass(e.target.value)}
                               value={stClass}
 
 
-                            />
+                            /> */}
+
+                            <select name="class" value={stClass} onChange={e => setClass(e.target.value)}>
+
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                              <option value="7">7</option>
+                              <option value="8">8</option>
+                              <option value="9">9</option>
+                              <option value="10">10</option>
+                              <option value="11">11</option>
+                              <option value="12">12</option>
+                            </select>
                           </div>
                         </td>
                         <td>
@@ -1124,7 +1146,7 @@ export default function SchoolUploadData() {
                             <tr key={tbData.id} className={tbData['error'] === 'invalid' ? 'invalid' : 'valid'}>
                               <td>{tbData.id}</td>
                               <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['name'] ?? ''} style={{
-                                "width": "90%",
+                                // "width": "90%",
                                 "padding": "6px 15px",
                                 "margin": "0px",
                                 display: "inline-block",
@@ -1140,7 +1162,7 @@ export default function SchoolUploadData() {
                               <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['dob'] ?? ''}
 
                                 style={{
-                                  "width": "100%",
+                                  // "width": "100%",
                                   "padding": "6px 15px",
                                   "margin": "0px",
                                   display: "inline-block",
@@ -1227,16 +1249,19 @@ export default function SchoolUploadData() {
                                   <i className="fa fa-trash"></i>
                                 </button> */}
 
+                                {/* student id not null  =>. not first time*/}
+                                {/* ExamSlotDateTime not null already inserted */}
+                                {/* DemoSlotDateTime not null already inserted */}
                                 <div className="btn-group btn-group-sm" role="group">
                                   <button type="button" className="btn btn-link" disabled={(
-                                    (tbData['StudentID'] !== null) ||
-                                    (tbData['ExamSlotDateTime'] === null && tbData['DemoSlotDateTime'])
-                                  ) ? 'disableRowBtn' : false}
+                                    (tbData['studentId'] !== null && tbData['ExamSlotDateTime'] !== null)
+                                  ) ? true : false}
+
                                     onClick={(e) => editRow(tbData, i)}><svg className="icon">
                                       <use xlinkHref="#edit"></use>
                                     </svg></button>
                                   <div className="vr"></div>
-                                  <button type="button" className={`btn btn-link ${tbData['StudentID'] !== null ? 'disableRowBtn' : ''} `} disabled={tbData['StudentID'] !== null ? 'disableRowBtn' : ''} onClick={(e) => deleteRow(tbData, i)}><svg className="icon">
+                                  <button type="button" className={`btn btn-link ${tbData['studentId'] !== null ? 'disableRowBtn' : ''} `} disabled={tbData['studentId'] !== null ? 'disableRowBtn' : ''} onClick={(e) => deleteRow(tbData, i)}><svg className="icon">
                                     <use xlinkHref="#delete"></use>
                                   </svg></button>
                                 </div>
@@ -1257,10 +1282,18 @@ export default function SchoolUploadData() {
                 <div>
                   <h3>Points to keep in mind
                     <ul>
-                      <li>Date of Birth should be in DD-MM-YYYY format</li>
-                      <li>Value of examTheme should be either ESD/ESDGREEN</li>
-                      <li>Value of mock test should be either YES/NO</li>
-                      <li>Value of class  should be btween 4,5,6,7,8,9,10,11,12</li>
+                      <li>The name of the students should be in capital letters.</li>
+                      <li>Date of Birth (DOB) should be in DD-MM-YYYY format</li>
+                      <li>Class should be in numeral format from 4 - 12. Section is optional</li>
+                      <li>For exam theme, following code should be used:
+                        <li>
+                          Theme 1: Environment & Sustainable Development: ESD
+                        </li>
+                        <li>
+                          Theme 2: Environment & Sustainable Development and Green Skills: ESDGREEN
+                        </li>
+                      </li>
+                      <li>Response for mock test is either a YES or a NO (in capital letters)</li>
                     </ul>
                   </h3>
                 </div>

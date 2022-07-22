@@ -15,6 +15,7 @@ export default function SchoolLogin({ isLogged }) {
   const { state, dispatch } = useContext(StudentDataContext);
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
+  const [loginErr, setLoginErr] = useState('');
   const initialState = {
     schoolname: '', country: '', state: '', pincode: "", postal_address: "", phonestd: "", mobile: "", principal_name: "",
     email: "", district: "", coordinating_teacher: "", school_code: "", email_coordinator: "", mobile_coordinator: "", mode: "", allow_School_slotting: false, student: { Class: 4 },
@@ -27,7 +28,7 @@ export default function SchoolLogin({ isLogged }) {
   const setUserName = e => {
     let val = e.target.value
     if (val === '') {
-      setUserError({ user: 'please enter school code' })
+      setUserError({ user: 'Please enter School code' })
     } else {
       setUserError({ user: '' })
     }
@@ -47,7 +48,7 @@ export default function SchoolLogin({ isLogged }) {
   const setPassword = e => {
     let val = e.target.value;
     if (val === '') {
-      setPassError({ pass: 'please enter password' })
+      setPassError({ pass: 'Please enter Password' })
     } else {
       setPassError({ pass: '' })
     }
@@ -57,11 +58,11 @@ export default function SchoolLogin({ isLogged }) {
     e.preventDefault()
     if (!(user && pass)) {
       if (user === '') {
-        setUserError({ user: 'please enter school code' })
+        setUserError({ user: 'Please enter School code' })
 
       }
       if (pass === '') {
-        setPassError({ pass: 'please enter password' })
+        setPassError({ pass: 'Please enter Password' })
 
       }
       return;
@@ -71,12 +72,12 @@ export default function SchoolLogin({ isLogged }) {
         "username": user,
         "password": pass
       }
-      console.log("serverData", serverData)
+
       axios
         .post(`${API_BASE_URL}${API_END_POINTS?.login}`, serverData)
         //.post(`${API_END_POINTS?.login}`, serverData)
         .then((res) => {
-          if (res.data) {
+          if (res.data && res?.data?.data) {
             const { data: {
               schoolsCode,
               principalname,
@@ -87,7 +88,7 @@ export default function SchoolLogin({ isLogged }) {
               mobile,
               email
             } } = res.data;
-
+            console.log("res.data", res.data)
             isLogged(true);
             navigate("/school-edit-details");
             // alert("login successfull!");
@@ -119,7 +120,8 @@ export default function SchoolLogin({ isLogged }) {
 
 
           } else {
-            alert("something is rong");
+            // alert("something is rong");
+            setLoginErr('Either your login id or password do not match');
           }
         })
         .catch((error) => {
@@ -131,7 +133,7 @@ export default function SchoolLogin({ isLogged }) {
   console.log("===user error", userError, passError)
   return (
     <div className="container-login">
-      <marquee> Welcome to Green Olympiad</marquee>
+      <marquee> Welcome to GREEN Olympiad</marquee>
       {/* <div className="container-inner-area">
         <Link to="/school-registration">
           <div className="smallcards-login">
@@ -217,9 +219,12 @@ export default function SchoolLogin({ isLogged }) {
                           fontSize: '18px',
                           textAlign: 'center'
                         }}>
-                          <a className="link-light" href={file} target="_blank">Guidelines to fill Registration form</a>
+                          <a style={{
+                            fontSize: '20px',
+                            fontWeight: 'bold'
+                          }} className="link-light" href={file} target="_blank">Guidelines to fill Registration form</a>
                           <p style={{
-                            fontSize: '20px', fontWeight: 'bold'
+                            fontSize: '16px'
                           }}>Before filling the form,make sure you read all the instructions</p>
                         </div>
                       </div>
@@ -230,7 +235,7 @@ export default function SchoolLogin({ isLogged }) {
                   <div className="card shadow p-3 p-md-4">
                     <div className="section-title mb-4 text-muted">
                       <h6 className="font-bold ">School Login</h6>
-                      <p>Welcome to school login</p>
+                      <p>Welcome to school online registration</p>
                     </div>
 
                     <div className="">
@@ -238,7 +243,7 @@ export default function SchoolLogin({ isLogged }) {
                         {/* <input type="text" className="" placeholder="School Code" /> */}
                         <input
                           type="text"
-                          placeholder="school code"
+                          placeholder="School code"
                           name="uname"
                           required
                           onChange={setUserName}
@@ -250,7 +255,7 @@ export default function SchoolLogin({ isLogged }) {
                       </div>
                       <div className="form-wrapper">
                         {/* <input type="password" class="" placeholder="Password" /> */}
-                        <input type="password" placeholder="password" name="psw" required onChange={setPassword} />
+                        <input type="password" placeholder="Password" name="psw" required onChange={setPassword} />
                         <br />
                         {
                           passError?.pass && passError.pass.length > 5 ? <span className="error">{passError.pass}</span> : null
@@ -265,6 +270,7 @@ export default function SchoolLogin({ isLogged }) {
                       <div className="text-sm-center mt-4 mt-md-5">
                         <button className="btn btn-primary btnReg w-100" onClick={handleSubmit}>Login</button>
                       </div>
+                      <h4 style={{ textAlign: 'center' }}>{loginErr}</h4>
                     </div>
                   </div>
                 </div>

@@ -212,7 +212,7 @@ export default function StudentInEditDetails() {
 
   const checkAllField = () => {
     let arr = [city, add1, pin, school, classcandidate, section, pgname, pgemail, pgemobile];
-    let arrKey = ['city', 'add1', 'pin', 'school', 'classcandidate', 'section', 'pgname', 'pgemail', 'pgemobile'];
+    let arrKey = ['city', 'add1', 'pin', 'school', 'classcandidate', 'section_c', 'pg_name', 'pgemail', 'pgemobile'];
     let err = '';
     arr.forEach((value, index) => {
       if (err === '') {
@@ -233,13 +233,34 @@ export default function StudentInEditDetails() {
     switch (key) {
 
       case "city":
+        if ((value === undefined) || (value === null) || (value.length < 1))
+          err = (errorList.find(item => item.fieldNam === key).message);
+        break;
       case "add1":
+        if ((value === undefined) || (value === null) || (value.length < 1))
+          err = (errorList.find(item => item.fieldNam === key).message);
+        break;
       case "school":
         if ((value === undefined) || (value === null) || (value.length < 1))
           err = (errorList.find(item => item.fieldNam === key).message2);
         break;
-      case "pgname":
+      case "pg_name":
+        if ((value === undefined) || (value === null) || (value.length < 1) || (value === "")) {
+          err = "Please enter Principal / Dean / HOD name";
+        }
+        break;
+
       case "classcandidate":
+        if ((value === undefined) || (value === null) || (value.length < 1))
+          err = (errorList.find(item => item.fieldNam === key).message);
+        break;
+
+      case "section_c":
+        if ((value === undefined) || (value === null) || (value.length < 1))
+          err = (errorList.find(item => item.fieldNam === key).message);
+        break;
+
+
       case "section":
         if ((value === undefined) || (value === null) || (value.length < 1))
           err = (errorList.find(item => item.fieldNam === key).message);
@@ -335,7 +356,7 @@ export default function StudentInEditDetails() {
             <div class="mybox shadow  mybg-accent-light px-4 py-3 mb-4">
               <div class="row align-items-center">
                 <div class="col-sm">
-                  <p class="mb-0 mb-sm-1">Candidate RollNo.</p>
+                  <p class="mb-0 mb-sm-1">Candidate Roll No.</p>
 
                   <p class="font-bold mb-2 mb-sm-0">{rollnO}</p>
                 </div>
@@ -352,7 +373,7 @@ export default function StudentInEditDetails() {
 
             <div class="section-title mb-4 text-muted">
               <h6 class="font-bold ">Edit Personal Details</h6>
-              <p>Fill this form for registration</p>
+              {/* <p>Fill this form for registration</p> */}
             </div>
 
             <div class="shadow bg-white rounded-16">
@@ -396,7 +417,7 @@ export default function StudentInEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Degree<span style={{ color: 'red' }}>*</span></label>
+                      <label>City<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" placeholder="" value={city} onChange={(e) => {
                         SetCity(e.target.value);
                         formValidate({ 'key': 'city', 'value': e.target.value });
@@ -499,7 +520,7 @@ export default function StudentInEditDetails() {
                   </div>
                   <div class="col-sm">
                     <div class="form-wrapper">
-                      <label>Course<span style={{ color: 'red' }}>*</span></label>
+                      <label>Degree<span style={{ color: 'red' }}>*</span></label>
                       {/* <input type="text" name="class" value={classcandidate} onChange={(e) => {
                         SetClassCandidate(e.target.value);
                       }} */}
@@ -509,10 +530,10 @@ export default function StudentInEditDetails() {
                         SetClassCandidate(e.target.value);
                         formValidate({ 'key': 'classcandidate', 'value': e.target.value });
                       }}>
-
                         <option value="UG">UG</option>
                         <option value="PG">PG</option>
-
+                        <option value="Diploma">Diploma</option>
+                        <option value="Certificate">Certificate</option>
                       </select>
 
                       {/* placeholder="V" required /> */}
@@ -523,7 +544,7 @@ export default function StudentInEditDetails() {
                       <label>Course<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="section" value={section} onChange={(e) => {
                         SetSection(e.target.value);
-                        formValidate({ 'key': 'section', 'value': e.target.value });
+                        formValidate({ 'key': 'section_c', 'value': e.target.value });
                       }}
                         placeholder="" required />
                     </div>
@@ -537,7 +558,7 @@ export default function StudentInEditDetails() {
                       <label>Name of Principal / Dean / HOD<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="pname" value={pgname} onChange={(e) => {
                         SetPgName(e.target.value);
-                        formValidate({ 'key': 'pgname', 'value': e.target.value });
+                        formValidate({ 'key': 'pg_name', 'value': e.target.value });
                       }}
                         placeholder="" required="" />
                     </div>
@@ -546,8 +567,9 @@ export default function StudentInEditDetails() {
                     <div class="form-wrapper">
                       <label>Email of Principal / Dean / HOD<span style={{ color: 'red' }}>*</span></label>
                       <input type="email" name="pemail" value={pgemail} onChange={(e) => {
-                        SetPgEmail(e.target.value);
-                        formValidate({ 'key': 'pgemail', 'value': e.target.value });
+
+                        SetPgEmail(e.target.value.toLowerCase());
+                        formValidate({ 'key': 'pgemail', 'value': e.target.value.toLowerCase() });
                       }}
                         placeholder="" required />
                     </div>

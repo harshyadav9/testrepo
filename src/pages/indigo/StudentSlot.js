@@ -470,7 +470,7 @@ export default function StudentInSlot() {
                       (
                         <div className="col-sm">
                           <div className="form-wrapper">
-                            <label>Slot for GO4U Exam</label>
+                            <label>Time Slot for GO4Youth Exam</label>
 
 
                             <select onChange={e => {
@@ -516,7 +516,7 @@ export default function StudentInSlot() {
                         <div className="col-sm">
                           <div className="form-wrapper">
                             <div className="form-wrapper">
-                              <label>Slot for MOCKGO4U Exam</label>
+                              <label>Mock Exam</label>
 
                               <select class="dropdown-school" id="cars" onChange={e => {
                                 chooseSlot('MOCKGO4U', e.target.value);
@@ -566,6 +566,10 @@ export default function StudentInSlot() {
                           <button className="btn btn-primary mx-auto" onClick={submitSlots}>Book slot for exam and mock test</button>
                         </div>
 
+                        <div>
+                          <h2>Slots once booked cannot be released.</h2>
+                        </div>
+
                         {showSlotErr.length > 0 && (
                           <div>
                             <h2> {showSlotErr}</h2>
@@ -576,9 +580,9 @@ export default function StudentInSlot() {
 
 
                       </div>
-                      <div>
-                        <h2 style={{ color: 'red' }}>Slot once booked cannot be changed again.</h2>
-                      </div>
+                      {/* <div>
+                        <h4 style={{ color: 'red', textAlign: 'center' }}>Slot once booked cannot be changed again.</h4>
+                      </div> */}
                     </>
                   )}
 
