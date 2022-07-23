@@ -57,6 +57,7 @@ export default function SchoolRegistration({ isLogged }) {
   const [msgText, setMsgText] = useState("");
   const [emailOTPValue, setEmailOTPValue] = useState("");
 
+  const [address, setAddress] = useState('');
   const handleChange = (a, k) => {
     setData((prevvalue) => { return { ...prevvalue, [k]: a } });
   };
@@ -404,7 +405,8 @@ export default function SchoolRegistration({ isLogged }) {
       emailverify: emailverify ?? false,
       isLocal: isIndain,
       stateCityCode: stateCityCode ? stateCityCode : country_.code === "IN" ? statecityCode?.srn : statecityCode?.citycode,
-      countryCode: data.country
+      countryCode: data.country,
+      address: address || ""
     };
     axios
       .post(`${API_BASE_URL}${API_END_POINTS?.saveNewSchool}`, RegisterationOptions)
@@ -421,13 +423,13 @@ export default function SchoolRegistration({ isLogged }) {
             country: RegisterationOptions.country,
             state: RegisterationOptions.state,
             pincode: RegisterationOptions.pincode,
-            postal_address: '',
             phonestd: '',
             mobile: RegisterationOptions.mobile,
             principal_name: RegisterationOptions.principalname,
             email: RegisterationOptions.email,
             district: '',
-            mode: 'ONLINE'
+            mode: 'ONLINE',
+            postal_address: RegisterationOptions.address
           });
 
           setMsgText("");
@@ -614,7 +616,9 @@ export default function SchoolRegistration({ isLogged }) {
     // setpinCode(searchPin);
   }
   const getSchoolDetail = async (event) => {
-    const schoolcode = event.target.value;
+    const schoolChangeValue = JSON.parse(event.target.value);
+    const schoolcode = schoolChangeValue.schoolcode;
+    setAddress(schoolChangeValue.address);
     const serverData = {
       schoolscode: schoolcode,
       isLocal: isIndain
@@ -1035,7 +1039,8 @@ export default function SchoolRegistration({ isLogged }) {
                         {
                           existingSchool && existingSchool.map(school => {
                             return (
-                              <option value={school?.schoolcode} key={school?.schoolcode}>{school?.schoolName}</option>
+                              // <option value={school?.schoolcode} key={school?.schoolcode}>{school?.schoolName}/{school?.address}</option>
+                              <option value={JSON.stringify(school)} key={school?.schoolcode}>{school?.schoolName}/{school?.address}</option>
                             )
                           })
                         }
