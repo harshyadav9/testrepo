@@ -439,17 +439,15 @@ export default function SchoolRegistration({ isLogged }) {
 
           // notify(`School has been registered successfully!.`, true);
 
-
+          sendConfirmationMail(RegisterationOptions, res)
 
           // localStorage.setItem("PrincipalName", principalName);
           // localStorage.setItem("PrincipalMobile", mobile);
           // localStorage.setItem("PrincipalEmail", email);
-          axios.post(`${API_BASE_URL}${API_END_POINTS.sendEmail}`, {
-            roll_no: res.data.data, pass: RegisterationOptions.mobile, textheader: 'SCHOOL  CODE :', email: RegisterationOptions.email
-          });
 
 
-          setUserRegistered(true);
+
+
         } else {
           alert("something is rong");
         }
@@ -461,6 +459,20 @@ export default function SchoolRegistration({ isLogged }) {
         setUserRegistered(false);
       });
   };
+  // sendconfirmationToStudent
+
+
+  const sendConfirmationMail = async (RegisterationOptions, res) => {
+    setUserRegistered(true);
+    await axios.post(`${API_BASE_URL}${API_END_POINTS.sendEmail}`, {
+      roll_no: res.data.data, pass: RegisterationOptions.mobile, textheader: 'SCHOOL  CODE :', email: RegisterationOptions.email
+    });
+
+    await axios.post(`${API_BASE_URL}${API_END_POINTS.sendconfirmationToStudent}`, {
+      login_id: res.data.data, password: RegisterationOptions.mobile, mobile: RegisterationOptions.mobile
+    });
+
+  }
 
   const semdEmail = async () => {
     // setIsfade(false);
@@ -471,7 +483,7 @@ export default function SchoolRegistration({ isLogged }) {
           //let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
           params: {
             email: `${email}`,
-            email_header: 'New Individual User'
+            email_header: 'New User'
           }
         });
         console.log("emailvalue", emailvalue);

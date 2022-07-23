@@ -139,7 +139,7 @@ export default function StudentRegistration({ isLogged }) {
           //let response = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getslots}`, {
           params: {
             email: `${email}`,
-            email_header: 'New Individual User'
+            email_header: 'New User'
           }
         });
         console.log("emailvalue", emailvalue);
@@ -262,6 +262,11 @@ export default function StudentRegistration({ isLogged }) {
       const mail = await axios.post(`${API_BASE_URL}${API_END_POINTS.sendEmail}`, {
         roll_no: reg_res?.data, pass: mobile, textheader: 'ROLL NO :', email
       });
+
+      await axios.post(`${API_BASE_URL}${API_END_POINTS.sendconfirmationToStudent}`, {
+        login_id: reg_res?.data, password: mobile, mobile: mobile
+      });
+
       if (mail?.status) {
         console.log("mail");
       }

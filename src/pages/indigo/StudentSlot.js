@@ -590,7 +590,7 @@ export default function StudentInSlot() {
                   {
                     (isthemeChoosen !== true) && (
                       <div>
-                        <h2>Choose your theme or demo exam.</h2>
+                        <h2>Choose your mock exam.</h2>
                       </div>
                     )
                   }
