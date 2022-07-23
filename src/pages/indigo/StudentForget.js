@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { API_BASE_URL, API_END_POINTS } from "../../apis/api";
 import { StudentDataContext } from "../context/datacontext";
 
@@ -10,6 +10,7 @@ export default function StudentInForget() {
   const { state, dispatch } = useContext(StudentDataContext);
 
   const [roll_no, setRollNo] = useState("");
+  const navigate = useNavigate();
   const [errordisp, setErrordisp] = useState("");
 
   const forget = async () => {
@@ -24,7 +25,7 @@ export default function StudentInForget() {
       "roll_no": roll_no
     });
     setErrordisp(forgetPassDetails.data.message);
-
+    navigate('/student-Inlogin');
 
     console.log("forgetPassDetails", forgetPassDetails);
 

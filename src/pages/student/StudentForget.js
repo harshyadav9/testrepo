@@ -8,7 +8,7 @@ import { StudentDataContext } from "../context/datacontext";
 
 export default function StudentForget() {
   const { state, dispatch } = useContext(StudentDataContext);
-
+  const navigate = useNavigate();
   const [roll_no, setRollNo] = useState("");
   const [errordisp, setErrordisp] = useState("");
 
@@ -24,7 +24,7 @@ export default function StudentForget() {
       "roll_no": roll_no
     });
     setErrordisp(forgetPassDetails.data.message);
-
+    navigate('/student-login');
 
     console.log("forgetPassDetails", forgetPassDetails);
 

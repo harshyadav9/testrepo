@@ -31,8 +31,9 @@ export default function TermsModal({ show, handleClose, modalBody, modalHeading 
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={hideModal}></button>
                     </div>
                     <div className="modal-body">
-                        <p>{modalBody}
-                        </p>
+                        <p dangerouslySetInnerHTML={{ __html: modalBody }}></p>
+                        {/* <p>{modalBody}
+                        </p> */}
                     </div>
                     {/* <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={hideModal}>Close</button>

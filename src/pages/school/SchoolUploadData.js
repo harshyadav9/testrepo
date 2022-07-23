@@ -521,12 +521,12 @@ export default function SchoolUploadData() {
     setIdCount(runningId);
 
 
-    // setStName('');
-    // setDOB('');
-    // setClass('');
-    // setexamTheme('ESD');
-    // setSection('');
-    // setDemoExam('NO');
+    setStName('');
+    setDOB('');
+    setClass('');
+    setexamTheme('ESD');
+    setSection('');
+    setDemoExam('NO');
     // setDatePopulate('');
 
   }
@@ -1294,6 +1294,8 @@ export default function SchoolUploadData() {
                         </li>
                       </li>
                       <li>Response for mock test is either a YES or a NO (in capital letters)</li>
+                      <li>Kindly check students’ details before submitting. System will allow you to add more names for participation in GREEN Olympiad.
+                        However, there will be no option to edit / delete the names of participants once saved in our database.</li>
                     </ul>
                   </h3>
                 </div>

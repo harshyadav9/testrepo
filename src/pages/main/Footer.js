@@ -29,15 +29,13 @@ export default function Footer() {
   const privacy = () => {
     setIsOpen(true);
     setModalHeading('Privacy Policy');
-    setModalText(`We collect no personal information, like names or addresses, when you visit our website. If you choose to provide that information to us, it is only used to fulfill your request for information.
-    Our website never collects information or creates individual profiles for commercial marketing.`)
+    setModalText(`All information collected from schools/colleges/students will be used for official purpose only.`)
   };
 
   const refund = () => {
     setIsOpen(true);
     setModalHeading('Refund & Cancellation Policy');
-    setModalText(`Cancellations will be considered only if the request is made within 24 hours of Registration and the Registration data would be deleted ASAP. In case of receipt of damaged deliverable like Certificates etc.,
-     Please get in touch with the help-desk team.Fees once submitted shall not be refunded.
+    setModalText(`Registration fee is non-refundable.
     `)
   };
 
@@ -55,7 +53,16 @@ export default function Footer() {
   const contactUs = () => {
     setIsOpen(true);
     setModalHeading('Contact Us');
-    setModalText(`Helpdesk Call between 10 am to 5 pm IST 011-46571473 (Sunday Closed)
+    setModalText(`Call helpdesk between 10 am to 5 pm: IST 011-46571473 (Sunday Closed)
+    OR
+    Write to us at: 
+    GREEN Olympiad Secretariat
+    Environment Education & Awareness Area (EEA)
+    The Energy and Resources Institute (TERI)
+    Darbari Seth Block, India Habitat Centre
+    Lodhi Road, New Delhi-110 003
+    Schools can contact at go@teri.res.in
+    Colleges can contact at go4youth@teri.res.in
     `)
   };
 

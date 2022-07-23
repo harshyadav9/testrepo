@@ -10,7 +10,7 @@ export default function SchoolForget() {
 
 
   const { state, dispatch } = useContext(StudentDataContext);
-
+  const navigate = useNavigate();
   const [school_code, setSchoolCode] = useState("");
   const [errordisp, setErrordisp] = useState("");
 
@@ -26,7 +26,7 @@ export default function SchoolForget() {
       "roll_no": false
     });
     setErrordisp(forgetPassDetails.data.message);
-
+    navigate('/school-login');
 
     console.log("forgetPassDetails", forgetPassDetails);
 

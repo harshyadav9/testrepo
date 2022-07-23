@@ -295,7 +295,7 @@ export default function StudentInEditDetails() {
       case "pgemail":
         if (!value || (value.length < 1))
           err = (errorList.find(item => item.fieldNam === key).message);
-        if (err === '') {
+        if (err === '' && isIndain) {
           let item = errorList.find(item => item.fieldNam === key);
           let regExp = RegExp(item.regex)
           err = (regExp.test(value) ? "" : item.message2);

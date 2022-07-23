@@ -372,7 +372,7 @@ export default function SchoolEditDetails() {
           <main className="p-md-5 p-2">
             <div className="section-title mb-4 text-muted">
               <h6 className="font-bold ">Edit School Registration</h6>
-              {/* <p>Fill this form for registration</p> */}
+              <p>Complete all school details appearing in the left hand bar and register your students for GREEN Olympiad</p>
             </div>
             <div className="shadow  rounded-16">
               <div className="p-4 ">

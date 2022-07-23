@@ -25,11 +25,21 @@ export default function StudentInPayment() {
 
   const makePayment = async () => {
 
-    const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, {
+    let obj = {
       amount: paymentData?.totalFees,
       type: 'INDV',
-      email: state?.student.email, phone: state?.student.mobile, name: state?.student.name, productinfo: state.roll_no
-    });
+      email: state?.student.email, phone: "", name: state?.student.name, productinfo: state.roll_no
+    };
+
+    if (state?.country === 'India') {
+      obj.phone = state?.student.mobile;
+    } else {
+      obj.phone = '9818542645';
+    }
+
+
+
+    const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, obj);
     //const payment = await axios.get(`${API_END_POINTS.payment}`);
 
     if (payment?.data?.status === 200) {

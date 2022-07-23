@@ -169,7 +169,7 @@ export default function StudentInViewHelpdeskTicket() {
                           <th>Category Name</th>
                           <th>Subject</th>
                           <th>Status</th>
-                          <th>Reply</th>
+                          {/* <th>Reply</th> */}
                         </tr>
                       </thead>
                       <tbody>
@@ -186,12 +186,12 @@ export default function StudentInViewHelpdeskTicket() {
                                 <td>{ticket?.categoryName}</td>
                                 <td>{ticket?.subject}</td>
                                 <td>{ticket?.statusName}</td>
-                                <td> <button className="btn btn-outline-secondary"><svg className="icon align-middle me-1">
+                                {/* <td> <button className="btn btn-outline-secondary"><svg className="icon align-middle me-1">
                                   <use xlinkHref="#add-plus"></use>
                                 </svg> <span className="align-middle" onClick={e => {
                                   setTicketDetail(ticket);
                                   document.getElementsByClassName('modal')[0].style.display = 'block';
-                                }}>Reply</span></button></td>
+                                }}>Reply</span></button></td> */}
 
 
                               </tr>

@@ -170,12 +170,19 @@ export default function SchoolPayment() {
 
 
   const makePayment = async () => {
-
-    const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, {
+    let obj = {
       type: 'SCHOOL',
       amount: totalThemeExamPay + tMockStu * mockFee,
-      email: state.email, phone: state.mobile, name: state.schoolname, productinfo: state.school_code
-    });
+      email: state.email, phone: "", name: state.schoolname, productinfo: state.school_code
+    };
+
+    if (state?.country === 'India') {
+      obj.phone = state.mobile;
+    } else {
+      obj.phone = '9818542645';
+    }
+
+    const payment = await axios.post(`${API_BASE_URL}${API_END_POINTS.payment}`, obj);
     //const payment = await axios.get(`${API_END_POINTS.payment}`);
 
     if (payment?.data?.status === 200) {
