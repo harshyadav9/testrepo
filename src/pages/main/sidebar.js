@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import downloadIcon from "../../assets/icons/download-icon.png";
 import { StudentDataContext } from '../context/datacontext';
 import { useNavigate } from "react-router";
@@ -117,30 +117,30 @@ function Sidebar() {
                 <ul className="list-unstyled">
                     {/* <li className="active"><a href="#"><img src="images/download-icon.png" height="18" alt="" /> School Details</a></li> */}
                     <li className="active">
-                        <Link to="/school-edit-details">
+                        <NavLink activeClassName="active" to="/school-edit-details">
                             {/* <img src={downloadIcon} height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
                             School Details
-                        </Link>
-                        <Link to="/school-upload-data">
+                        </NavLink>
+                        <NavLink activeClassName="active" to="/school-upload-data">
                             <svg className="icon"><use xlinkHref="#upload-data-to-cloud"></use></svg>
 
                             Student Upload
 
                             {/* <li ><a href="#"><svg className="icon"><use xlinkHref="#upload-data-to-cloud"></use></svg> Upload Students Data</a></li> */}
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/school-slot">
+                        <NavLink activeClassName="active" to="/school-slot">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
                             Select Slot Details
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/school-payment">
+                        <NavLink activeClassName="active" to="/school-payment">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#online-payment-method"></use></svg>
                             Payment
-                        </Link>
+                        </NavLink>
 
                         {/* <Link to="/school-rollNo">
                           
@@ -150,23 +150,23 @@ function Sidebar() {
 
 
 
-                        <Link to="/school-application-status">
+                        <NavLink activeClassName="active" to="/school-application-status">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Application Status
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/school-helpdesk-ticket">
+                        <NavLink activeClassName="active" to="/school-helpdesk-ticket">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Submit Helpdesk Ticket
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/school-view-helpdesk-ticket">
+                        <NavLink activeClassName="active" to="/school-view-helpdesk-ticket">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             View helpdesk Ticket
-                        </Link>
+                        </NavLink>
 
                         {/* <Link to="/school-certificate">
                           
@@ -174,11 +174,11 @@ function Sidebar() {
                             Download Certificate
                         </Link> */}
 
-                        <Link to="/school-change-password">
+                        <NavLink activeClassName="active" to="/school-change-password">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Change Password
-                        </Link>
+                        </NavLink>
 
 
                         {/* <Link to="/">

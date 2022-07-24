@@ -27,6 +27,7 @@ export default function StudentPayment() {
     let obj = {
       amount: paymentData?.totalFees,
       type: 'INDV',
+      idval: state.roll_no,
       email: state?.student.email, phone: "", name: state?.student.name, productinfo: state.roll_no
     };
 

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import downloadIcon from "../../assets/icons/download-icon.png";
 import { StudentDataContext } from '../context/datacontext';
 import { useNavigate } from "react-router";
@@ -117,23 +117,23 @@ function SidebarIn() {
                 <ul className="list-unstyled">
                     {/* <li className="active"><a href="#"><img src="images/download-icon.png" height="18" alt="" /> School Details</a></li> */}
                     <li className="active">
-                        <Link to="/student-Inedit-details">
+                        <NavLink activeClassName="active" to="/student-Inedit-details">
                             {/* <img src={downloadIcon} height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
                             GO4Youth Details
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/student-Inslot">
+                        <NavLink activeClassName="active" to="/student-Inslot">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
                             Select Slot Details
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/student-Inpayment">
+                        <NavLink activeClassName="active" to="/student-Inpayment">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#online-payment-method"></use></svg>
                             Payment
-                        </Link>
+                        </NavLink>
 
                         {/* <Link to="/school-rollNo">
                           
@@ -143,23 +143,23 @@ function SidebarIn() {
 
 
 
-                        <Link to="/student-Inapplication-status">
+                        <NavLink activeClassName="active" to="/student-Inapplication-status">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Application Status
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/student-Inhelpdesk-ticket">
+                        <NavLink activeClassName="active" to="/student-Inhelpdesk-ticket">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Submit Helpdesk Ticket
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/student-Inview-helpdesk-ticket">
+                        <NavLink activeClassName="active" to="/student-Inview-helpdesk-ticket">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             View helpdesk Ticket
-                        </Link>
+                        </NavLink>
 
                         {/* <Link to="/school-certificate">
                           
@@ -167,11 +167,11 @@ function SidebarIn() {
                             Download Certificate
                         </Link> */}
 
-                        <Link to="/student-Inchange-password">
+                        <NavLink activeClassName="active" to="/student-Inchange-password">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Change Password
-                        </Link>
+                        </NavLink>
 
 
                         {/* <Link to="/"> */}

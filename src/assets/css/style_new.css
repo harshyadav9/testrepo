@@ -772,6 +772,17 @@ td.unpaid {
   pointer-events: none !important;
 }
 
+.list-unstyled li a.active {
+  border: 2px solid var(--primary);
+  background: var(--primary);
+  color: var(--primary-light) !important;
+}
+
+.list-unstyled li a>svg {
+
+  fill: var(--primary-light);
+}
+
 /* modal design  end */
 
 

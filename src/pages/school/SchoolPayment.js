@@ -172,7 +172,9 @@ export default function SchoolPayment() {
   const makePayment = async () => {
     let obj = {
       type: 'SCHOOL',
-      amount: totalThemeExamPay + tMockStu * mockFee,
+      // amount: totalThemeExamPay + tMockStu * mockFee,
+      amount: tFee,
+      idval: state.school_code,
       email: state.email, phone: "", name: state.schoolname, productinfo: state.school_code
     };
 

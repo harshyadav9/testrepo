@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import downloadIcon from "../../assets/icons/download-icon.png";
 import { StudentDataContext } from '../context/datacontext';
 import { useNavigate } from "react-router";
@@ -117,44 +117,44 @@ function SidebarStudent() {
                 <ul className="list-unstyled">
                     {/* <li className="active"><a href="#"><img src="images/download-icon.png" height="18" alt="" /> School Details</a></li> */}
                     <li className="active">
-                        <Link to="/student-edit-details">
+                        <NavLink to="/student-edit-details">
                             {/* <img src={downloadIcon} height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
                             Student Details
-                        </Link>
+                        </NavLink>
 
 
-                        <Link to="/student-slot">
+                        <NavLink to="/student-slot">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
                             Select Slot Details
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/student-payment">
+                        <NavLink to="/student-payment">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#online-payment-method"></use></svg>
                             Payment
-                        </Link>
+                        </NavLink>
 
 
 
-                        <Link to="/student-application-status">
+                        <NavLink to="/student-application-status">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Application Status
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/student-helpdesk-ticket">
+                        <NavLink to="/student-helpdesk-ticket">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Submit Helpdesk Ticket
-                        </Link>
+                        </NavLink>
 
-                        <Link to="/student-view-helpdesk-ticket">
+                        <NavLink to="/student-view-helpdesk-ticket">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             View helpdesk Ticket
-                        </Link>
+                        </NavLink>
 
                         {/* <Link to="/school-certificate">
                           
@@ -162,11 +162,11 @@ function SidebarStudent() {
                             Download Certificate
                         </Link> */}
 
-                        <Link to="/student-change-password">
+                        <NavLink to="/student-change-password">
                             {/* <img src="images/download-icon.png" height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Change Password
-                        </Link>
+                        </NavLink>
 
 
                         {/* <Link to="/">

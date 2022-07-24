@@ -80,7 +80,7 @@ export default function SchoolApplicationStatus() {
                         <td>{status.DemoSlotDateTime}</td>
 
                         <td>{status.Rollno === 0 ? 0 : status.Rollno}</td>
-                        <td>{status.Fee}</td>
+                        <td>{state?.country === 'India' ? 'INR' : '$'} {status.Fee}</td>
                         <td className={status.PaymentStatus === 1 ? 'paid' : 'unpaid'}>{status.PaymentStatus === 1 ? 'PAID' : 'UNPAID'}</td>
                       </tr>
                     )
