@@ -1177,7 +1177,7 @@ export default function SchoolUploadData() {
                               /></td>
                               <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['className'] ?? ''}
                                 style={{
-                                  "width": "90%",
+                                  // "width": "90%",
                                   "padding": "6px 15px",
                                   "margin": "0px",
                                   display: "inline-block",
@@ -1192,7 +1192,7 @@ export default function SchoolUploadData() {
                               /></td>
                               <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['section'] ?? ''}
                                 style={{
-                                  "width": "90%",
+                                  // "width": "90%",
                                   "padding": "6px 15px",
                                   "margin": "0px",
                                   display: "inline-block",
@@ -1208,7 +1208,7 @@ export default function SchoolUploadData() {
                               <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['examTheme'] ?? ''}
 
                                 style={{
-                                  "width": "90%",
+                                  // "width": "90%",
                                   "padding": "6px 15px",
                                   "margin": "0px",
                                   display: "inline-block",
@@ -1224,7 +1224,7 @@ export default function SchoolUploadData() {
                               <td contenteditable="true"><input type="text" name="add1" defaultValue={tbData['demoExam'] ?? ''}
 
                                 style={{
-                                  "width": "90%",
+                                  // "width": "90%",
                                   "padding": "6px 15px",
                                   "margin": "0px",
                                   display: "inline-block",
