@@ -43,6 +43,9 @@ import StudentInHelpdeskTicket from "./pages/indigo/StudentHelpdeskTicket";
 import StudentInViewHelpdeskTicket from "./pages/indigo/StudentViewHelpdeskTicket";
 import StudentInChangePassword from "./pages/indigo/StudentChangePassword";
 import StudentInforget from "./pages/indigo/StudentForget";
+import HomeAdmin from "./pages/admin/main";
+import AdminLogin from "./pages/admin/adminLogin";
+import AdminPayment from "./pages/admin/adminPayment";
 function App() {
 
 
@@ -50,17 +53,33 @@ function App() {
   // console.log("login", login);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState({});
   const navigate = useNavigate();
   const handleLogged = (flag) => {
-    console.log("flag", flag)
+    console.log("handleLogged", flag)
     setIsLoggedIn(flag);
   }
 
+  const handeAdmin = (obj) => {
+    console.log("handeAdmin", obj)
+    setIsAdmin((prevObj) => { return { ...prevObj, ...obj } });
+  }
+
   useEffect(() => {
+    console.log("isLoggedIn", isLoggedIn)
     if (!isLoggedIn) {
       navigate("/");
     }
+
   }, []);
+
+
+  useEffect(() => {
+    if (isAdmin.isLoggedIn) {
+      navigate(`/${isAdmin.page}`);
+    }
+
+  }, [isAdmin]);
 
 
   return (
@@ -89,6 +108,43 @@ function App() {
             <>   <Route path="/student-Inlogin" element={<SchoolInLogin isLogged={handleLogged} />} exact /></>
 
           )}
+
+
+          <>   <Route path="/admin" element={<HomeAdmin isLogged={handeAdmin} />} exact /></>
+
+
+
+          {(isAdmin.page === 'admin-login' && isAdmin.isLoggedIn === true) && (
+            <>   <Route
+              path="/admin-login"
+              element={<AdminLogin isLogged={handeAdmin} />}
+              exact
+            /></>
+
+          )}
+
+          {(isAdmin.page === 'admin-payment' && isAdmin.isLoggedIn === true) && (
+            <>   <Route
+              path="/admin-payment"
+              element={<AdminPayment isLogged={handeAdmin} />}
+              exact
+            /></>
+
+          )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           {!isLoggedIn && (
             <>   <Route
