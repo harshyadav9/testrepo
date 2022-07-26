@@ -86,7 +86,8 @@ export const API_END_POINTS = {
 	// getCategory: 'api/get-category',
 	// createTicket: 'api/create-help-ticket',
 	// getAllTickets: 'api/get-ticket-by-id'
-	paymentTrackerHelpDesk: 'api/paymentTrackerHelpDesk'
+	paymentTrackerHelpDesk: 'api/paymentTrackerHelpDesk',
+	getHelpdeskTicketDetailsForAdmin: 'terry/getHelpdeskTicketDetailsForAdmin'
 
 
 

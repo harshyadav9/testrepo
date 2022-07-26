@@ -38,6 +38,12 @@ function AdminSidebar() {
                             Payments Details
                         </NavLink>
 
+                        <NavLink activeClassName="active" to="/admin-helpdesk">
+                            {/* <img src={downloadIcon} height="18" alt="" /> */}
+                            <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
+                            Helpdesk Details
+                        </NavLink>
+
 
                         <a href='/' onClick={logoutval}><svg className="icon"><use xlinkHref="#application_status"></use></svg>
                             Logout</a>

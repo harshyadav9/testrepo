@@ -46,6 +46,7 @@ import StudentInforget from "./pages/indigo/StudentForget";
 import HomeAdmin from "./pages/admin/main";
 import AdminLogin from "./pages/admin/adminLogin";
 import AdminPayment from "./pages/admin/adminPayment";
+import HelpDeskViewHelpdeskTicket from "./pages/admin/ViewHelpdesk";
 function App() {
 
 
@@ -128,6 +129,16 @@ function App() {
             <>   <Route
               path="/admin-payment"
               element={<AdminPayment isLogged={handeAdmin} />}
+              exact
+            /></>
+
+          )}
+
+
+          {(isAdmin.isLoggedIn === true) && (
+            <>   <Route
+              path="/admin-helpdesk"
+              element={<HelpDeskViewHelpdeskTicket isLogged={handeAdmin} />}
               exact
             /></>
 
