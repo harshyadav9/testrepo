@@ -534,7 +534,7 @@ export default function SchoolEditDetails() {
                   </div>
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label>Name of the Coordinate Teacher<span style={{ color: 'red' }}>*</span></label>
+                      <label>Name of the Coordinating Teacher<span style={{ color: 'red' }}>*</span></label>
                       {/* <input type="text" placeholder="Coordinating Teacher Name" name="coname" required="" /> */}
                       <input
                         type="text"
@@ -554,7 +554,7 @@ export default function SchoolEditDetails() {
                 <div className="row">
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label >Email of the Coordinate Teacher<span style={{ color: 'red' }}>*</span></label>
+                      <label >Email of the Coordinating Teacher<span style={{ color: 'red' }}>*</span></label>
                       <input type="email" name="coemail" value={coordinatingTeacherEmail} placeholder="email@techer.in"
                         onChange={(coordinatingTeacherEmail) => {
                           setcoordinatingTeacherEmail(coordinatingTeacherEmail.target.value.toLowerCase());
@@ -565,7 +565,7 @@ export default function SchoolEditDetails() {
                   </div>
                   <div className="col-sm">
                     <div className="form-wrapper">
-                      <label >Mobile of the Coordinate Teacher<span style={{ color: 'red' }}>*</span></label>
+                      <label >Mobile of the Coordinating Teacher<span style={{ color: 'red' }}>*</span></label>
                       <input type="text" name="comobile" value={coordinatingTeacherMobile} placeholder="9xxxxxxxxx"
                         onChange={(coordinatingTeacherMobile) => {
                           setcoordinatingTeacherMobile(coordinatingTeacherMobile.target.value);

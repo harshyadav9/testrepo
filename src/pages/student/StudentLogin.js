@@ -170,6 +170,7 @@ export default function SchoolLogin({ isLogged }) {
                     <div className="loginbox w-100">
                       <div className="loginInner">
                         <h3>Student</h3>
+                        <h4>As a FIRST STEP, click on the 'Registration' link below and proceed further</h4>
                         <div className="newSchool text-center">
                           <img src="images/new-school.png" alt="" />
                           {/* <h4>New School</h4> */}
@@ -209,7 +210,7 @@ export default function SchoolLogin({ isLogged }) {
                   <div className="card shadow p-3 p-md-4">
                     <div className="section-title mb-4 text-muted">
                       <h6 className="font-bold ">Individual Login</h6>
-                      <p>Welcome to Individial login</p>
+                      <p>Welcome to Individual login</p>
                     </div>
 
 
