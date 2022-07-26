@@ -166,6 +166,7 @@ export default function HelpDeskViewHelpdeskTicket() {
                                             <thead>
                                                 <tr>
                                                     <th>S.No.</th>
+                                                    <th>Created By</th>
                                                     <th>Ticket ID</th>
                                                     <th>Message</th>
                                                     <th>Category Name</th>
@@ -183,17 +184,16 @@ export default function HelpDeskViewHelpdeskTicket() {
                                                             <tr>
                                                                 {/* <td>{ticket}</td> */}
                                                                 <td>{i + 1}</td>
+                                                                <td>{ticket?.createdBy}</td>
                                                                 <td>{ticket?.ticketID}</td>
                                                                 <td dangerouslySetInnerHTML={{ __html: ticket?.message }}></td>
                                                                 <td>{ticket?.categoryName}</td>
                                                                 <td>{ticket?.subject}</td>
                                                                 <td>{ticket?.statusName}</td>
-                                                                <td> <button className="btn btn-outline-secondary"><svg className="icon align-middle me-1">
-                                                                    <use xlinkHref="#add-plus"></use>
-                                                                </svg> <span className="align-middle" onClick={e => {
+                                                                <td> <button className="btn btn-outline-secondary" onClick={e => {
                                                                     setTicketDetail(ticket);
                                                                     document.getElementsByClassName('modal')[0].style.display = 'block';
-                                                                }}>Reply</span></button></td>
+                                                                }}>Reply</button></td>
 
 
                                                             </tr>

@@ -125,7 +125,8 @@ function App() {
           )}
 
 
-          {(isAdmin.page === 'admin-payment' && isAdmin.isLoggedIn === true) && (
+          {/* {(isAdmin.page === 'admin-payment' && isAdmin.isLoggedIn === true) && ( */}
+          {(isAdmin.isLoggedIn === true) && (
             <>   <Route
               path="/admin-payment"
               element={<AdminPayment isLogged={handeAdmin} />}

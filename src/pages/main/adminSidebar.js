@@ -32,7 +32,7 @@ function AdminSidebar() {
                 <ul className="list-unstyled">
                     {/* <li className="active"><a href="#"><img src="images/download-icon.png" height="18" alt="" /> School Details</a></li> */}
                     <li className="active">
-                        <NavLink activeClassName="active" to="/helpdesk-payment">
+                        <NavLink activeClassName="active" to="/admin-payment">
                             {/* <img src={downloadIcon} height="18" alt="" /> */}
                             <svg className="icon"><use xlinkHref="#check-to-slot"></use></svg>
                             Payments Details
