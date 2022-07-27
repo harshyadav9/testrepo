@@ -42,7 +42,7 @@ export default function HelpDeskViewHelpdeskTicket() {
         const submitReply = await axios.post(`${API_BASE_JAVA_URL}${API_END_POINTS.updateHelpdeskTicketDetails}`, {
             "categoryID": null,
             "createdBy": ticketDetail.createdBy,
-            "message": messageReply,
+            "message": `<b>From Admin</b>: ${messageReply}`,
             "modifiedBy": ticketDetail.createdBy,
             "schoolID_RollNo": ticketDetail.createdBy,
             "statusID": replyStatus,
@@ -70,16 +70,12 @@ export default function HelpDeskViewHelpdeskTicket() {
 
     const getTickets = async () => {
         console.log("state", state)
-        const getAllTickets = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getHelpdeskTicketDetailsForAdmin}`, {
-            params: {
-                school_roll_id: state.school_code
-            }
-        });
+        const getAllTickets = await axios.get(`${API_BASE_JAVA_URL}${API_END_POINTS.getHelpdeskTicketDetailsForAdmin}`);
 
         if (getAllTickets?.status === 200) {
             console.log("getAllTickets.data", getAllTickets.data)
-            setTickets(getAllTickets.data);
-            setFilteredTickets(getAllTickets.data);
+            setTickets([...getAllTickets.data]);
+            setFilteredTickets([...getAllTickets.data]);
         }
 
         console.log("getAllTickets", getAllTickets);
@@ -93,20 +89,7 @@ export default function HelpDeskViewHelpdeskTicket() {
     }, []);
 
     console.log('tickets', tickets)
-    const filterTicket = (e) => {
-        console.log("====event ", e.target.value)
-        let filkey = ''
-        if (e.target.value === 'Open') {
-            filkey = 'open'
-        } else {
-            filkey = 'close'
-        }
-        let va = e.target.value.toLowerCase()
 
-        let cpy = [...savedCopy];
-        // setTicket(cpy.filter(t => t.status === filkey))
-
-    }
 
     return (
 
@@ -187,9 +170,11 @@ export default function HelpDeskViewHelpdeskTicket() {
 
 
                                                 {filteredTickets.map((ticket, i) => {
+                                                    console.log("ticket", ticket)
                                                     return (
                                                         <>
-                                                            <tr>
+
+                                                            <tr index={i}>
                                                                 {/* <td>{ticket}</td> */}
                                                                 <td>{i + 1}</td>
                                                                 <td style={{ padding: '18px' }}>{ticket?.createdBy}</td>
@@ -202,7 +187,6 @@ export default function HelpDeskViewHelpdeskTicket() {
 
                                                                     </div>
                                                                 </td>
-                                                                <td></td>
                                                                 <td>{ticket?.categoryName}</td>
                                                                 <td>{ticket?.subject}</td>
                                                                 <td>{ticket?.statusName}</td>
@@ -250,7 +234,7 @@ export default function HelpDeskViewHelpdeskTicket() {
                                                 <div class="col-12">
                                                     <div class="form-wrapper">
                                                         <label>Message</label>
-                                                        <textarea name="" value={messageReply} onChange={e => setMsgReply(e.target.value)} placeholder="Please enter message" cols="30" rows="2"></textarea>
+                                                        <textarea name="" value={messageReply} onChange={e => setMsgReply(e.target.value)} placeholder="" cols="30" rows="2"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-8">
