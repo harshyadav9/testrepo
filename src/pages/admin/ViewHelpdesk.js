@@ -24,7 +24,7 @@ export default function HelpDeskViewHelpdeskTicket() {
     let [savedCopy, setSavedCopy] = useState([]);
     let [replyStatus, setReplystatus] = useState(1);
     let [messageReply, setMsgReply] = useState("");
-    let [radioVal, setRadioVal] = useState("");
+    let [radioVal, setRadioVal] = useState("All");
     let [ticketDetail, setTicketDetail] = useState({});
 
 
@@ -52,6 +52,7 @@ export default function HelpDeskViewHelpdeskTicket() {
         });
         document.getElementsByClassName('modal')[0].style.display = 'none';
         await getTickets();
+        setMsgReply("");
         filterData('All');
     }
 
@@ -132,30 +133,34 @@ export default function HelpDeskViewHelpdeskTicket() {
 
                                                 {/* <div class="form-check form-check-inline"> */}
                                                 {/* <label class="form-check-label"> */}
-                                                <input class="form-check-input" type="radio" name="query" onChange={e => {
-                                                    filterData(e.currentTarget.value);
+                                                <input class="form-check-input" type="radio" checked={radioVal === 'All'} value={radioVal} name="query" onChange={e => {
+
+                                                    setRadioVal('All');
+                                                    filterData('All');
                                                 }}
-                                                    value="All" />All
+                                                />All
                                             </label>
                                         </div>
 
                                         <div class="form-check form-check-inline">
                                             <label class="form-check-label">
 
-                                                <input class="form-check-input" type="radio" name="query" onChange={e => {
-                                                    filterData(e.currentTarget.value);
+                                                <input class="form-check-input" type="radio" checked={radioVal === 'Open'} value={radioVal} name="query" onChange={e => {
+                                                    setRadioVal('Open');
+                                                    filterData('Open');
                                                 }}
-                                                    value="Open" />
+                                                />
                                                 Open</label>
                                         </div>
 
 
                                         <div class="form-check form-check-inline">
                                             <label class="form-check-label">
-                                                <input class="form-check-input" type="radio" name="query" onChange={e => {
-                                                    filterData(e.currentTarget.value);
+                                                <input class="form-check-input" type="radio" checked={radioVal === 'Closed'} value={radioVal} name="query" onChange={e => {
+                                                    setRadioVal('Closed');
+                                                    filterData('Closed');
                                                 }}
-                                                    value="Closed" />
+                                                />
                                                 Closed</label>
                                         </div>
 
@@ -234,7 +239,7 @@ export default function HelpDeskViewHelpdeskTicket() {
                                                 <div class="col-12">
                                                     <div class="form-wrapper">
                                                         <label>Message</label>
-                                                        <textarea name="" onChange={e => setMsgReply(e.target.value)} placeholder="Please enter message" cols="30" rows="2"></textarea>
+                                                        <textarea name="" value={messageReply} onChange={e => setMsgReply(e.target.value)} placeholder="Please enter message" cols="30" rows="2"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-8">
