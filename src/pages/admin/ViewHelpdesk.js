@@ -197,7 +197,12 @@ export default function HelpDeskViewHelpdeskTicket() {
                                                                 <td style={{
                                                                     border: '2px solid grey',
                                                                     borderRadius: '#212529',
-                                                                }} dangerouslySetInnerHTML={{ __html: ticket?.message }}></td>
+                                                                }}>
+                                                                    <div style={{ width: '32em' }} dangerouslySetInnerHTML={{ __html: ticket?.message }}>
+
+                                                                    </div>
+                                                                </td>
+                                                                <td></td>
                                                                 <td>{ticket?.categoryName}</td>
                                                                 <td>{ticket?.subject}</td>
                                                                 <td>{ticket?.statusName}</td>
