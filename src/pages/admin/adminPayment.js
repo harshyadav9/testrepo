@@ -6,17 +6,28 @@ import axios from "axios";
 function AdminPayment() {
 
     const [paymentData, setPaymentData] = useState([]);
-
-
+    const [tSchool, seTSchool] = useState(0);
+    const [tCandidate, seTCandidate] = useState(0);
+    const [tNOPayRecieved, setTNOPayRecieved] = useState(0);
+    const [tNOPayPending, setTNOPayPending] = useState(0);
+    const [tAmountReceived, setTAmountReceived] = useState(0);
+    const [tAmountPending, setTAmountPending] = useState(0);
     useEffect(() => {
 
-
+        //totalThemeExamPay = paymentStatus.reduce((acc, el) => el.ExamTheme * el.StudentCount + acc, 0);
         const getPaymentData = async () => {
 
             const isPaymentAllowed = await axios.get(`${API_BASE_URL}${API_END_POINTS.paymentTrackerHelpDesk}`);
             if (isPaymentAllowed?.status === 200) {
                 console.log("isPaymentAllowed", isPaymentAllowed);
                 setPaymentData(isPaymentAllowed.data.data);
+
+                seTSchool(isPaymentAllowed.data.data.reduce((acc, el) => el.TotalNoOfSchools + acc, 0));
+                seTCandidate(isPaymentAllowed.data.data.reduce((acc, el) => el.TotalNoOfCandidates + acc, 0));
+                setTNOPayRecieved(isPaymentAllowed.data.data.reduce((acc, el) => el.NoOfCandidatePaymentReceived + acc, 0));
+                setTNOPayPending(isPaymentAllowed.data.data.reduce((acc, el) => el.NoOfCandidatePaymentPending + acc, 0));
+                setTAmountReceived(isPaymentAllowed.data.data.reduce((acc, el) => el.TotalAmountPaymentReceived + acc, 0));
+                setTAmountPending(isPaymentAllowed.data.data.reduce((acc, el) => el.TotalAmountPaymentPending + acc, 0));
             }
 
         };
@@ -62,10 +73,9 @@ function AdminPayment() {
                                     <tbody>
                                         {
                                             paymentData.map((row, i) => {
-                                                console.log("row", row);
                                                 return (
-                                                    <tr>
-                                                        <td>{row.Mode}</td>
+                                                    <>                                                    <tr>
+                                                        <td>{row.Mode}({row.CountryCode})</td>
                                                         <td>{row.TotalNoOfSchools === null ? 0 : row.TotalNoOfSchools}</td>
                                                         <td>{row.TotalNoOfCandidates}</td>
                                                         <td>{row.NoOfCandidatePaymentReceived}</td>
@@ -73,9 +83,21 @@ function AdminPayment() {
                                                         <td>{row.TotalAmountPaymentReceived}</td>
                                                         <td>{row.TotalAmountPaymentPending}</td>
                                                     </tr>
+                                                    </>
                                                 )
                                             })
                                         }
+                                        {(
+                                            <tr>
+                                                <td><b>Total</b></td>
+                                                <td><b>{tSchool}</b></td>
+                                                <td><b>{tCandidate}</b></td>
+                                                <td><b>{tNOPayRecieved}</b></td>
+                                                <td><b>{tNOPayPending}</b></td>
+                                                <td><b>{tAmountReceived}</b></td>
+                                                <td><b>{tAmountPending}</b></td>
+                                            </tr>
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

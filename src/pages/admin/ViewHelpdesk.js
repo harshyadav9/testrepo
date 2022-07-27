@@ -167,7 +167,10 @@ export default function HelpDeskViewHelpdeskTicket() {
 
                                     </div>
                                     <div class="table-responsive ">
-                                        <table class="table table-striped">
+                                        <table style={{
+                                            borderCollapse: 'separate',
+                                            borderSpacing: '8px'
+                                        }} class="table table-striped">
                                             <thead>
                                                 <tr>
                                                     <th>S.No.</th>
@@ -189,9 +192,12 @@ export default function HelpDeskViewHelpdeskTicket() {
                                                             <tr>
                                                                 {/* <td>{ticket}</td> */}
                                                                 <td>{i + 1}</td>
-                                                                <td>{ticket?.createdBy}</td>
+                                                                <td style={{ padding: '18px' }}>{ticket?.createdBy}</td>
                                                                 <td>{ticket?.ticketID}</td>
-                                                                <td dangerouslySetInnerHTML={{ __html: ticket?.message }}></td>
+                                                                <td style={{
+                                                                    border: '2px solid grey',
+                                                                    borderRadius: '#212529',
+                                                                }} dangerouslySetInnerHTML={{ __html: ticket?.message }}></td>
                                                                 <td>{ticket?.categoryName}</td>
                                                                 <td>{ticket?.subject}</td>
                                                                 <td>{ticket?.statusName}</td>
