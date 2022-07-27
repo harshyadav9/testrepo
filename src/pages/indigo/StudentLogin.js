@@ -170,6 +170,7 @@ export default function SchoolInLogin({ isLogged }) {
                     <div className="loginbox w-100">
                       <div className="loginInner">
                         <h3>GO4Youth</h3>
+                        <h4>As a FIRST STEP, click on the 'Registration' link below and proceed further</h4>
                         <div className="newSchool text-center">
                           <img src="images/new-school.png" alt="" />
                           {/* <h4>New School</h4> */}
