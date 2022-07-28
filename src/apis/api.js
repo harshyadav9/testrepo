@@ -82,10 +82,12 @@ export const API_END_POINTS = {
 	updateHelpdeskTicketDetails: 'terry/updateHelpdeskTicketDetails',
 	sendconfirmationToStudent: 'api/sendconfirmationToStudent',
 	changePassword: 'terry/changePassword',
-	forgetPassword: 'api/forgetPassword'
+	forgetPassword: 'api/forgetPassword',
 	// getCategory: 'api/get-category',
 	// createTicket: 'api/create-help-ticket',
 	// getAllTickets: 'api/get-ticket-by-id'
+	paymentTrackerHelpDesk: 'api/paymentTrackerHelpDesk',
+	getHelpdeskTicketDetailsForAdmin: 'terry/getHelpdeskTicketDetailsForAdmin'
 
 
 
