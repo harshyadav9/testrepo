@@ -24,7 +24,7 @@ export default function HelpDeskViewHelpdeskTicket() {
     let [savedCopy, setSavedCopy] = useState([]);
     let [replyStatus, setReplystatus] = useState(1);
     let [messageReply, setMsgReply] = useState("");
-    let [radioVal, setRadioVal] = useState("All");
+    let [radioVal, setRadioVal] = useState("Open");
     let [ticketDetail, setTicketDetail] = useState({});
 
 
@@ -157,13 +157,14 @@ export default function HelpDeskViewHelpdeskTicket() {
                                             <thead>
                                                 <tr>
                                                     <th>S.No.</th>
+                                                    <th>Reply</th>
                                                     <th>Created By</th>
                                                     <th>Ticket ID</th>
                                                     <th>Message</th>
                                                     <th>Category Name</th>
                                                     <th>Subject</th>
                                                     <th>Status</th>
-                                                    <th>Reply</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -177,6 +178,10 @@ export default function HelpDeskViewHelpdeskTicket() {
                                                             <tr index={i}>
                                                                 {/* <td>{ticket}</td> */}
                                                                 <td>{i + 1}</td>
+                                                                <td> <button className="btn btn-outline-secondary" onClick={e => {
+                                                                    setTicketDetail(ticket);
+                                                                    document.getElementsByClassName('modal')[0].style.display = 'block';
+                                                                }}>Reply</button></td>
                                                                 <td style={{ padding: '18px' }}>{ticket?.createdBy}</td>
                                                                 <td>{ticket?.ticketID}</td>
                                                                 <td style={{
@@ -190,10 +195,7 @@ export default function HelpDeskViewHelpdeskTicket() {
                                                                 <td>{ticket?.categoryName}</td>
                                                                 <td>{ticket?.subject}</td>
                                                                 <td>{ticket?.statusName}</td>
-                                                                <td> <button className="btn btn-outline-secondary" onClick={e => {
-                                                                    setTicketDetail(ticket);
-                                                                    document.getElementsByClassName('modal')[0].style.display = 'block';
-                                                                }}>Reply</button></td>
+
 
 
                                                             </tr>

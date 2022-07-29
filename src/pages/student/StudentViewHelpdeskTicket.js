@@ -21,7 +21,7 @@ export default function StudentViewHelpdeskTicket() {
   let [savedCopy, setSavedCopy] = useState([]);
   let [replyStatus, setReplystatus] = useState(1);
   let [messageReply, setMsgReply] = useState("");
-  let [radioVal, setRadioVal] = useState("");
+  let [radioVal, setRadioVal] = useState("Open");
   let [ticketDetail, setTicketDetail] = useState({});
 
 
@@ -129,30 +129,33 @@ export default function StudentViewHelpdeskTicket() {
 
                         {/* <div class="form-check form-check-inline"> */}
                         {/* <label class="form-check-label"> */}
-                        <input class="form-check-input" type="radio" name="query" onChange={e => {
-                          filterData(e.currentTarget.value);
+                        <input class="form-check-input" type="radio" checked={radioVal === 'All'} value={radioVal} name="query" onChange={e => {
+                          setRadioVal('All');
+                          filterData('All');
                         }}
-                          value="All" />All
+                        />All
                       </label>
                     </div>
 
                     <div class="form-check form-check-inline">
                       <label class="form-check-label">
 
-                        <input class="form-check-input" type="radio" name="query" onChange={e => {
-                          filterData(e.currentTarget.value);
+                        <input class="form-check-input" type="radio" checked={radioVal === 'Open'} value={radioVal} name="query" onChange={e => {
+                          setRadioVal('Open');
+                          filterData('Open');
                         }}
-                          value="Open" />
+                        />
                         Open</label>
                     </div>
 
 
                     <div class="form-check form-check-inline">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="query" onChange={e => {
-                          filterData(e.currentTarget.value);
+                        <input class="form-check-input" type="radio" checked={radioVal === 'Closed'} value={radioVal} name="query" onChange={e => {
+                          setRadioVal('Closed');
+                          filterData('Closed');
                         }}
-                          value="Closed" />
+                        />
                         Closed</label>
                     </div>
 
